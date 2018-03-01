@@ -4,6 +4,8 @@ public class ISA {
 	protected static String R;
 	protected static String X;
 	protected static String I;
+	protected static String RX;
+	protected static String RY;
 	protected static String address;
 	
 	public static void execute(String op, String r, String x, String i, String addr) {

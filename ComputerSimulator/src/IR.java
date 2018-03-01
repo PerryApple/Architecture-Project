@@ -1,5 +1,6 @@
 //IR stands for Instruction Register. Our computer only has one IR.
-public class IR extends Register {
+public class IR implements Register {
+	
 	private static final String name = "IR";
 	//the size of IR is set to be 16bits.
 	private static final int size = 16;
@@ -27,8 +28,7 @@ public class IR extends Register {
 	@Override
 	public String getContent() {
 		// TODO Auto-generated method stub
-		content = CPU.alignment(content);
-		return content;
+		return CPU.alignment(content);
 	}
 
 

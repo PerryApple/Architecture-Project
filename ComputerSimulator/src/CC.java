@@ -1,5 +1,5 @@
 //Reserved Register CC, Only one instance of this class exist in computer
-public class CC extends Register {
+public class CC implements Register {
 
 	private static final String name  = "CC";
 	//Size of Program Counter is 4bits.
@@ -27,7 +27,7 @@ public class CC extends Register {
 	@Override
 	public String getContent() {
 		// TODO Auto-generated method stub
-		return content;
+		return CPU.alignment(content);
 	}
 
 	@Override

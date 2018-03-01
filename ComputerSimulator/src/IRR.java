@@ -1,5 +1,5 @@
 //IRR stands for Internal Result Register, this is use to temporarily store calculation results.
-public class IRR extends Register {
+public class IRR implements Register {
 
 	private String name;
 	//Size of MAR is 16bits.
@@ -20,8 +20,7 @@ public class IRR extends Register {
 	@Override
 	public String getContent() {
 		// TODO Auto-generated method stub
-		content = CPU.alignment(content);
-		return content;
+		return CPU.alignment(content);
 	}
 
 	@Override

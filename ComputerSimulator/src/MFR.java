@@ -1,5 +1,5 @@
 //Reserved Register MFR, Only one instance of this class exist in computer
-public class MFR extends Register {
+public class MFR implements Register {
 
 	private static final String name  = "MFR";
 	//Size of Program Counter is 4bits.
@@ -27,7 +27,7 @@ public class MFR extends Register {
 	@Override
 	public String getContent() {
 		// TODO Auto-generated method stub
-		return content;
+		return CPU.alignment(content);
 	}
 
 	@Override

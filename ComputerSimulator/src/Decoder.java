@@ -30,21 +30,37 @@ public class Decoder {
     //decode instruction
     public void decode(){
     	
-        String op=instruction.substring(0,6);
-        R=instruction.substring(6,8);
-        X=instruction.substring(8,10);
-        I=instruction.substring(10,11);
-        address=instruction.substring(11,16);
-        
-        switch (op){
-            case"000001":opCode="LDR";break;
-            case"000010":opCode="STR";break;
-            case"000011":opCode="LDA";break;
-            case"101001":opCode="LDX";break;
-            case"101010":opCode="STX";break;
+    	 	String op=instruction.substring(0,6);
+    	 	switch (op){
+    	 	
+    	 		//Load and Store Instructions
+            case"000001":
+            		opCode="LDR";
+            		decodeLoadAndStore();
+            		break;
+            case"000010":
+            		opCode="STR";
+            		decodeLoadAndStore();
+            		break;
+            case"000011":
+            		opCode="LDA";
+            		decodeLoadAndStore();
+            		break;
+            case"100001":
+            		opCode="LDX";
+            		decodeLoadAndStore();
+            		break;
+            case"100010":
+            		opCode = "STX";
+            		decodeLoadAndStore();
+            		break;
+            		
+            	//Arithmetic Instructions
+            case"010000":
+            		opCode = "MLT";
+            		
+            	
         }
-
-        Addressing.getEffectiveAddress(X,I,address);
 
     }
     
@@ -58,5 +74,15 @@ public class Decoder {
     		instruction = "0000000000000000";
     		decode();
     }
+    
+    //Decode instructions which belong to Load and Store
+    private void decodeLoadAndStore() {
+    	 	R=instruction.substring(6,8);
+        X=instruction.substring(8,10);
+        I=instruction.substring(10,11);
+        address=instruction.substring(11,16);
+        Addressing.getEffectiveAddress(X,I,address);
+    }
+    
     
 }

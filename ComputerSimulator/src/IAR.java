@@ -1,5 +1,5 @@
 //IAR stands for Internal Address Register. There might be several IAR in a computer.
-public class IAR extends Register {
+public class IAR implements Register {
 	private String name;
 	//Size of MAR is 16bits.
 	private static final int size = 16;
@@ -19,8 +19,7 @@ public class IAR extends Register {
 	@Override
 	public String getContent() {
 		// TODO Auto-generated method stub
-		content = CPU.alignment(content);
-		return content;
+		return CPU.alignment(content);
 	}
 
 	@Override
