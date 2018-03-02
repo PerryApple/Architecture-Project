@@ -1,6 +1,7 @@
 // Arithmetic Logic Unit
 public class ALU {
-
+	//This attribute is to store result which length is 32bits
+	private String thirtyTwoBitsContent;
     //Instance of ALU
     private static final ALU instance = new ALU();
     //Singleton ALU constructor
@@ -50,7 +51,11 @@ public class ALU {
         String ans = res.reverse().toString();
         ans = ans.substring(0, 1).equals("0") ? ans : complement(ans);
         // if the result is negative number, we should transform it to true form.
-        CPU.getInstance().getZ().setContent(ans);
+        if(ans.length() == 16) {
+        		CPU.getInstance().getZ().setContent(ans);
+        }else if(ans.length() == 32) {
+        		this.thirtyTwoBitsContent = ans;
+        }
         return ans;
     }
 
@@ -68,5 +73,9 @@ public class ALU {
 
     public String addPC(Register pc) {
     		return add(pc.getContent(), "000000000001");
+    }
+    
+    public String get32BitsContent() {
+    		return this.thirtyTwoBitsContent;
     }
 }

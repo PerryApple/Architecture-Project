@@ -38,6 +38,18 @@ public class ISA {
 	     }
 	}
 	
-	
+	public static void execute(String op, String rx, String ry) {
+		RX = rx;
+		RY = ry;
+		
+		//MLT
+		if(op.equals("MLT")) {
+			ArithmeticInstructions.MLT();
+		}
+		//DVD
+		if(op.equals("DVD")) {
+			ArithmeticInstructions.DVD();
+		}
+	}
 	
 }

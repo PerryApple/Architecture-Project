@@ -2,7 +2,7 @@
 public class PR implements Register {
 
 	private final static String name = "PR";
-	//Initially set the content to 16 zeroes.
+	//Initially set the content to 32 zeroes.
 	private String content = "00000000000000000000000000000000";
 	private final static int size = 32;
 	//Our computer has only one PR register
@@ -52,7 +52,7 @@ public class PR implements Register {
 		this.content = product + this.content.substring(16);
 	}
 
-	//This register has the ability of right shift.
+	//This register provide shift right function
 	public void rightShift() {
 		this.content = "0" + content.substring(0,31);
 	}

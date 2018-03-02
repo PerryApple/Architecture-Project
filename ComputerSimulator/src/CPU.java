@@ -18,6 +18,9 @@ public class CPU {
 	private Register cc = CC.getInstance();
 	private Register mfr = MFR.getInstance();
 	private PR pr = PR.getInstance();
+	private DR dr = DR.getInstance();
+	private QR qr = QR.getInstance();
+	private Register rr = RR.getInstance();
 	private Register mlr = MLR.getInstance();
 	private Decoder decoder = Decoder.getInstance();
 	private ALU alu = ALU.getInstance();
@@ -94,6 +97,15 @@ public class CPU {
 	public Register getMLR() {
 		return mlr;
 	}
+	public DR getDR() {
+		return dr;
+	} 
+	public QR getQR() {
+		return qr;
+	} 
+	public Register getRR() {
+		return rr;
+	} 
 	public Decoder getDecoder() {
 		return decoder;
 	}
@@ -130,7 +142,10 @@ public class CPU {
 		cc.setContent("0000");
         mfr.setContent("0000");
         pr.setContent("00000000000000000000000000000000");
-        mlr.setContent("0000000000000000000");
+        mlr.setContent("0000000000000000");
+        dr.setContent("0000000000000000");
+        qr.setContent("0000000000000000");
+        rr.setContent("0000000000000000");
 		cycle = 0;
 		Monitor.setStepInformation("",false);
 	}

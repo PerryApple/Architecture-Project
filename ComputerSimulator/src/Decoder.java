@@ -1,10 +1,15 @@
 public class Decoder {
+	private String opClass;
     private String opCode;
+    private String instruction;
+    //data using in load and store instruction
     private String X;
     private String R;
     private String I;
     private String address;
-    private String instruction;
+    //Data using in arithmetic instruction
+    private String RX;
+    private String RY;
     //Single instance for class Decoder
     private static final Decoder instance = new Decoder();
     //private constructor
@@ -58,7 +63,12 @@ public class Decoder {
             	//Arithmetic Instructions
             case"010000":
             		opCode = "MLT";
-            		
+            		arithmetic();
+            		break;
+            case"010001":
+            		opCode = "DVD";
+            		arithmetic();
+            		break;
             	
         }
 
@@ -66,7 +76,12 @@ public class Decoder {
     
     //search in ISA to identify the instruction.
     public void identify(){
-    		ISA.execute(opCode, R, X, I, address);
+    		if(opClass.equals("LS")) {
+    			ISA.execute(opCode, R, X, I, address);
+    		}else if(opClass.equals("AR")) {
+    			ISA.execute(opCode, RX, RY);
+    		}
+    		
     }
     
     //clear decoder
@@ -77,6 +92,7 @@ public class Decoder {
     
     //Decode instructions which belong to Load and Store
     private void decodeLoadAndStore() {
+    		opClass = "LS";
     	 	R=instruction.substring(6,8);
         X=instruction.substring(8,10);
         I=instruction.substring(10,11);
@@ -84,5 +100,10 @@ public class Decoder {
         Addressing.getEffectiveAddress(X,I,address);
     }
     
+    private void arithmetic() {
+    		opClass = "AR";
+    		RX = instruction.substring(6, 8);
+    		RY = instruction.substring(8, 10);
+    }
     
 }

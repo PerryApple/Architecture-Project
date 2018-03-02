@@ -27,13 +27,24 @@ public class CC implements Register {
 	@Override
 	public String getContent() {
 		// TODO Auto-generated method stub
-		return CPU.alignment(content);
+		return content;
 	}
 
 	@Override
 	public void setContent(String content) {
 		// TODO Auto-generated method stub
 		//Reserved
+		if(content.equalsIgnoreCase("OVERFLOW")) {
+			this.content = "1" + this.content.substring(1);
+		}else if(content.equalsIgnoreCase("UNDERFLOW")) {
+			this.content = this.content.substring(0, 1) + "1" + this.content.substring(2);
+		}else if (content.equalsIgnoreCase("DIVZERO")){
+			this.content = this.content.substring(0,2) + "1" + this.content.substring(3);
+		}else if (content.equalsIgnoreCase("EQUALORNOT")) {
+			this.content = this.content.substring(0,3) + "1";
+		}else {
+			content = "CC Error!";
+		}
 	}
 
 	@Override
