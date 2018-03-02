@@ -120,7 +120,7 @@ public class ArithmeticInstructions extends ISA{
 		cpu.cyclePlusOne();
 		qr.setContent("0000000000000000");
 		//2.calculate
-		for(int i = 0 ; i < 33; i++) {
+		for(int i = 0 ; i < 17; i++) {
 			//2a. subtract divider from remainder register. 
 			cpu.getALU().minus(rr.getContent(), dr.getContent());
 			//2b. write the result back to remainder register 
@@ -154,8 +154,15 @@ public class ArithmeticInstructions extends ISA{
 	
 	//Test function
 	public static void main(String[] s) {
-		System.out.println(cpu.getCC().getContent());
-		cpu.getCC().setContent("DIVZERO");
-		System.out.println(cpu.getCC().getContent());
+		cpu.getR0().setContent("1000000000001111");
+		cpu.getR2().setContent("0000000000000011");
+		RX = "00";
+		RY = "10";
+		MLT();
+		System.out.println(cpu.getR0().getContent());
+		System.out.println(cpu.getR1().getContent());
+//		System.out.println(cpu.getCC().getContent());
+//		cpu.getCC().setContent("DIVZERO");
+//		System.out.println(cpu.getCC().getContent());
 	}
 }

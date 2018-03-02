@@ -34,6 +34,8 @@ public class RR implements Register {
 		// TODO Auto-generated method stub
 		if(content.length() == 16) {
 			this.content = "0000000000000000" + content;
+		}else if (content.length() == 32 ){
+			this.content = content;
 		}else {
 			this.content = "RR Error!";
 		}
