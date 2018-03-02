@@ -1,6 +1,5 @@
 package gui.controllers;
 
-import core.Main;
 import core.*;
 import gui.Controller;
 import javafx.fxml.FXML;
