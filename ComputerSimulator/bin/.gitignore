@@ -60,3 +60,5 @@
 /RR.class
 /DR.class
 /LogicalInstruction.class
+/Cache.class
+/CacheLine.class
