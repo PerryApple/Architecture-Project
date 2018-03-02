@@ -1,7 +1,7 @@
-//Version: 2.0
-//time: 18:31
+//Version: 1.0.9.
+//time: 18:12
 // These are the data loaded into the memory
-DATA:02/28/2018
+DATA:
 // used to set X1, X2, X3
 000000011011,0000000100000000
 000000011100,0000001000000000
