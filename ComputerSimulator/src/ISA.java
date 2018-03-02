@@ -42,6 +42,7 @@ public class ISA {
 		RX = rx;
 		RY = ry;
 		
+		//Arithmetic Instructions with out address field
 		//MLT
 		if(op.equals("MLT")) {
 			ArithmeticInstructions.MLT();
@@ -49,6 +50,24 @@ public class ISA {
 		//DVD
 		if(op.equals("DVD")) {
 			ArithmeticInstructions.DVD();
+		}
+		
+		//Logical Instructions
+		//TRR
+		if(op.equals("TRR")) {
+			LogicalInstruction.TRR();
+		}
+		//AND
+		if(op.equals("AND")) {
+			LogicalInstruction.AND();
+		}
+		//ORR
+		if(op.equals("ORR")) {
+			LogicalInstruction.ORR();
+		}
+		//NOT
+		if(op.equals("NOT")) {
+			LogicalInstruction.NOT();
 		}
 	}
 	

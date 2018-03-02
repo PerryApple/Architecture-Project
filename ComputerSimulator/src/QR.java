@@ -38,7 +38,7 @@ public class QR implements Register {
 		return size;
 	}
 	
-	//This register provide shift left function
+	
 	//This function add a 0 at the end of the content when left shift finish.
 	public void leftShiftWithZero() {
 		this.content = content.substring(1) + "0";

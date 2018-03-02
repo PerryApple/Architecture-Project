@@ -69,16 +69,29 @@ public class Decoder {
             		opCode = "DVD";
             		arithmetic();
             		break;
-            	
+            		
+            	//Logical Instructions
+            case"010010":
+            		opCode = "TRR";
+            		logical();
+            case"010011":
+            		opCode = "AND";
+            		logical();
+            case"010100":
+            		opCode = "ORR";
+            		logical();
+            case"010101":
+            		opCode = "NOT";
+            		logical();
         }
 
     }
     
     //search in ISA to identify the instruction.
     public void identify(){
-    		if(opClass.equals("LS")) {
+    		if(opClass.equals("LSI")) {
     			ISA.execute(opCode, R, X, I, address);
-    		}else if(opClass.equals("AR")) {
+    		}else if(opClass.equals("AI")||opClass.equals("LI")) {
     			ISA.execute(opCode, RX, RY);
     		}
     		
@@ -92,7 +105,8 @@ public class Decoder {
     
     //Decode instructions which belong to Load and Store
     private void decodeLoadAndStore() {
-    		opClass = "LS";
+    		//LSI stands for Load and Store Instructions
+    		opClass = "LSI";
     	 	R=instruction.substring(6,8);
         X=instruction.substring(8,10);
         I=instruction.substring(10,11);
@@ -101,9 +115,17 @@ public class Decoder {
     }
     
     private void arithmetic() {
-    		opClass = "AR";
+    		//AI stands for Arithmetic Instructions
+    		opClass = "AI";
     		RX = instruction.substring(6, 8);
     		RY = instruction.substring(8, 10);
     }
+    
+    private void logical() {
+    		//LI stands for Logical Instructions
+		opClass = "LI";
+		RX = instruction.substring(6, 8);
+		RY = instruction.substring(8, 10);
+}
     
 }

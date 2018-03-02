@@ -13,7 +13,8 @@ public class Controler {
         //Instruction Fetch start here
         //MAR = PC
         while(!CPU.getInstance().getMemory().getContent(CPU.getInstance().getPC().getContent()).equals("0000000000000000")){
-            Monitor.instructionNum++;//Monitor shows what instruction is processing
+            CPU.getInstance().getCC().setContent("0000");
+        		Monitor.instructionNum++;//Monitor shows what instruction is processing
             CPU.getInstance().getMAR().setContent(CPU.getInstance().getPC().getContent());
             stepInformation=("Instruction Fetch:MAR<=PC");
             sendStepInformation();
@@ -61,7 +62,7 @@ public class Controler {
             stepInformation=("PC <= Z");
             sendStepInformation();
             Halt.halt();
-            CPU.cyclePlusOne();/*@@@@@@@@@ cycle?@@@@@@@@@@@@@@*/
+            CPU.cyclePlusOne();
         }
     }
 

@@ -52,6 +52,7 @@ public class ALU {
         ans = ans.substring(0, 1).equals("0") ? ans : complement(ans);
         // if the result is negative number, we should transform it to true form.
         if(ans.length() == 16) {
+        		CPU.cyclePlusOne();
         		CPU.getInstance().getZ().setContent(ans);
         }else if(ans.length() == 32) {
         		this.thirtyTwoBitsContent = ans;
@@ -70,7 +71,76 @@ public class ALU {
         }
         return add(num1, num2);
     }
-
+    
+    //Logical operations
+    //this is a compare operation, the result will change the 4th bit of CC register.
+    public boolean compareTwo(String num1, String num2) {
+    		for(int i = 0 ; i < num1.length(); i++) {
+    			if (num1.charAt(i)!=num2.charAt(i)){
+    	    			CPU.getInstance().getCC().setContent("NEQ");
+    				CPU.cyclePlusOne();
+    				return false;
+    			}
+    		}
+    		CPU.getInstance().getCC().setContent("EQ");
+    		CPU.cyclePlusOne();
+    		return true;
+    }
+    //This is a Logical OR operation.
+    public void or(String num1, String num2) {
+    		StringBuilder result = new StringBuilder();
+    		for(int i = 0 ; i < num1.length(); i++) {
+    			if(num1.charAt(i)=='1'||num2.charAt(i)=='1') {
+    				result.append("1");
+    			}else {
+    				result.append("0");
+    			}
+    		}
+    		if(result.length() == 16) {
+    			//store the result in Register Z
+    			CPU.getInstance().getZ().setContent(result.toString());
+    			CPU.cyclePlusOne();
+    		}else {
+    			CPU.getInstance().getZ().setContent("ORR Result ERROR");
+    		}
+    }
+    //This is a Logical AND operation.
+    public void and(String num1, String num2) {
+		StringBuilder result = new StringBuilder();
+		for(int i = 0 ; i < num1.length(); i++) {
+			if(num1.charAt(i)=='0'||num2.charAt(i)=='0') {
+				result.append("0");
+			}else {
+				result.append("1");
+			}
+		}
+		if(result.length() == 16) {
+			//store the result in Register Z
+			CPU.getInstance().getZ().setContent(result.toString());
+			CPU.cyclePlusOne();
+		}else {
+			CPU.getInstance().getZ().setContent("AND Result ERROR");
+		}
+    }
+    //This is a Logical NOT operation.
+    public void not(String num) {
+		StringBuilder result = new StringBuilder();
+		for(int i = 0 ; i < num.length(); i++) {
+			if(num.charAt(i)=='0') {
+				result.append("1");
+			}else {
+				result.append("0");
+			}
+		}
+		if(result.length() == 16) {
+			//store the result in Register Z
+			CPU.getInstance().getZ().setContent(result.toString());
+			CPU.cyclePlusOne();
+		}else {
+			CPU.getInstance().getZ().setContent("NOT Result ERROR");
+		}
+    }
+    
     public String addPC(Register pc) {
     		return add(pc.getContent(), "000000000001");
     }
@@ -78,4 +148,5 @@ public class ALU {
     public String get32BitsContent() {
     		return this.thirtyTwoBitsContent;
     }
+    
 }

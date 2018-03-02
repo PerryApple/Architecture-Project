@@ -103,7 +103,7 @@ public class ArithmeticInstructions extends ISA{
 		}
 		//if c(ry) = 0 , set cc(3) to 1
 		if(ry.getContent().equals("0000000000000000")) {
-			cpu.getCC().setContent("DIVZERO");
+			cpu.getCC().setContent("DZ");
 		}
 		//Get the instance of quotient register and remainder register.
 		DR dr = cpu.getDR();
