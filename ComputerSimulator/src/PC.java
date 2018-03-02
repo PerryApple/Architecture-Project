@@ -1,7 +1,7 @@
 
 
 //PC is a subclass of Register, our simulated computer has only one PC register.
-public class PC extends Register {
+public class PC implements Register {
 
 	private static final String name  = "PC";
 	//Size of Program Counter is 12bits.
@@ -28,8 +28,7 @@ public class PC extends Register {
 	@Override
 	public String getContent() {
 		// TODO Auto-generated method stub
-		content = CPU.alignment(content);
-		return content;
+		return CPU.alignment(content);
 	}
 	@Override
 	public int getSize() {

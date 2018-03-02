@@ -1,5 +1,5 @@
 //MBR stands for Memory Buffer Register, our computer only has one MBR.
-public class MBR extends Register {
+public class MBR implements Register {
 	private static final String name = "MBR";
 	//Size of MBR is 16 bits.
 	private static final int size = 16;
@@ -28,8 +28,7 @@ public class MBR extends Register {
 	@Override
 	public String getContent() {
 		// TODO Auto-generated method stub
-		content = CPU.alignment(content);
-		return content;
+		return CPU.alignment(content);
 	}
 
 

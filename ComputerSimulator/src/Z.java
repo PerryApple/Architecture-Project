@@ -1,6 +1,6 @@
 //Z is register to store the result calculated in ALU. This is an accumulator.
 //This class will be construct 
-public class Z extends Register {
+public class Z implements Register {
 	private static final String name = "Z";
 	//Size of this register is set as 16 bits
 	private static final int size = 16;
@@ -25,8 +25,7 @@ public class Z extends Register {
 	@Override
 	public String getContent() {
 		// TODO Auto-generated method stub
-		content = CPU.alignment(content);
-		return content;
+		return CPU.alignment(content);
 	}
 
 	@Override

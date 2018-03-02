@@ -1,6 +1,6 @@
 // Y is a temporary register to store operands for calculation in ALU.
 // This class will be construct using singleton pattern
-public class Y extends Register {
+public class Y implements Register {
 
 	private static final String name = "Y";
 	//The size of this register is set as 16bits.
@@ -29,8 +29,7 @@ public class Y extends Register {
 	@Override
 	public String getContent() {
 		// TODO Auto-generated method stub
-		content = CPU.alignment(content);
-		return content;
+		return CPU.alignment(content);
 	}
 
 	@Override

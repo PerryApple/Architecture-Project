@@ -4,6 +4,8 @@ public class ISA {
 	protected static String R;
 	protected static String X;
 	protected static String I;
+	protected static String RX;
+	protected static String RY;
 	protected static String address;
 	
 	public static void execute(String op, String r, String x, String i, String addr) {
@@ -36,6 +38,37 @@ public class ISA {
 	     }
 	}
 	
-	
+	public static void execute(String op, String rx, String ry) {
+		RX = rx;
+		RY = ry;
+		
+		//Arithmetic Instructions with out address field
+		//MLT
+		if(op.equals("MLT")) {
+			ArithmeticInstructions.MLT();
+		}
+		//DVD
+		if(op.equals("DVD")) {
+			ArithmeticInstructions.DVD();
+		}
+		
+		//Logical Instructions
+		//TRR
+		if(op.equals("TRR")) {
+			LogicalInstruction.TRR();
+		}
+		//AND
+		if(op.equals("AND")) {
+			LogicalInstruction.AND();
+		}
+		//ORR
+		if(op.equals("ORR")) {
+			LogicalInstruction.ORR();
+		}
+		//NOT
+		if(op.equals("NOT")) {
+			LogicalInstruction.NOT();
+		}
+	}
 	
 }

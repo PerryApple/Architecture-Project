@@ -13,20 +13,18 @@ public class Controler {
         //Instruction Fetch start here
         //MAR = PC
         while(!CPU.getInstance().getMemory().getContent(CPU.getInstance().getPC().getContent()).equals("0000000000000000")){
-            Monitor.instructionNum++;//Monitor shows what instruction is processing
+            CPU.getInstance().getCC().setContent("0000");
+        		Monitor.instructionNum++;//Monitor shows what instruction is processing
             CPU.getInstance().getMAR().setContent(CPU.getInstance().getPC().getContent());
             stepInformation=("Instruction Fetch:MAR<=PC");
             sendStepInformation();
             Halt.halt();
             CPU.cyclePlusOne();
-            //uses the address in the MAR to fetch a word from memory. This fetch occurs in one cycle.
-            //The word fetched from memory is placed in the Memory Buffer Register (MBR).
-            //MBR = Memory[MAR]
-            CPU.getInstance().getMBR().setContent(CPU.getInstance().getMemory().getContent(CPU.getInstance().getMAR().getContent()));
-            stepInformation=("Instruction Fetch:MBR<=Memory[MAR]");
-            sendStepInformation();
-            Halt.halt();
-            CPU.cyclePlusOne();
+
+            //uses the address in the MAR to fetch a word from cache. This fetch occurs in one cycle.
+            //The word fetched from cache is placed in the Memory Buffer Register (MBR).
+            //if it is a miss, extract from memory and store it in cache
+            Cache.getInstance().cacheToMBR(CPU.getInstance().getMAR().getContent());
 
             //Instruction decode start here
             //The contents of the Memory Buffer Register (MBR) are moved to the Instruction Register (IR).
@@ -61,7 +59,7 @@ public class Controler {
             stepInformation=("PC <= Z");
             sendStepInformation();
             Halt.halt();
-            CPU.cyclePlusOne();/*@@@@@@@@@ cycle?@@@@@@@@@@@@@@*/
+            CPU.cyclePlusOne();
         }
     }
 

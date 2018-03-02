@@ -1,5 +1,5 @@
 //X stands to index register. our computer has 3 index registers.
-public class X extends Register {
+public class X implements Register {
 	//Our computer has 3 index register which will be named to X1, X2, X3 when instantiate.
 	private String name;
 	//The size of index registers is constant, so declare the attribute "size" as 16.
@@ -23,8 +23,7 @@ public class X extends Register {
 	@Override
 	public String getContent() {
 		// TODO Auto-generated method stub
-		content = CPU.alignment(content);
-		return content;
+		return CPU.alignment(content);
 	}
 
 

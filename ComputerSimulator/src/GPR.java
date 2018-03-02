@@ -1,5 +1,5 @@
 //GPR stands for General Program Register. our computer has 4 GPRs.
-public class GPR extends Register {
+public class GPR implements Register {
 	private String name;
 	//The size of GPR is constant, so declare the attribute "size" as 16.
 	private static final int size = 16;
@@ -21,8 +21,7 @@ public class GPR extends Register {
 	@Override
 	public String getContent() {
 		// TODO Auto-generated method stub
-		content = CPU.alignment(content);
-		return content;
+		return CPU.alignment(content);
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 //Reserved Register CC, Only one instance of this class exist in computer
-public class CC extends Register {
+public class CC implements Register {
 
 	private static final String name  = "CC";
 	//Size of Program Counter is 4bits.
@@ -34,6 +34,27 @@ public class CC extends Register {
 	public void setContent(String content) {
 		// TODO Auto-generated method stub
 		//Reserved
+		if(content.equalsIgnoreCase("OF")) {
+			this.content = "1" + this.content.substring(1);
+		}else if(content.equalsIgnoreCase("UF")) {
+			this.content = this.content.substring(0, 1) + "1" + this.content.substring(2);
+		}else if (content.equalsIgnoreCase("DZ")){
+			this.content = this.content.substring(0,2) + "1" + this.content.substring(3);
+		}else if (content.equalsIgnoreCase("EQ")) {
+			this.content = this.content.substring(0,3) + "1";
+		}else if(content.equalsIgnoreCase("NOF")) {
+			this.content = "0" + this.content.substring(1);
+		}else if(content.equalsIgnoreCase("NUF")) {
+			this.content = this.content.substring(0, 1) + "0" + this.content.substring(2);
+		}else if (content.equalsIgnoreCase("NDZ")){
+			this.content = this.content.substring(0,2) + "0" + this.content.substring(3);
+		}else if (content.equalsIgnoreCase("NEQ")) {
+			this.content = this.content.substring(0,3) + "0";
+		}else if (content.equalsIgnoreCase("0000")){
+			this.content = "0000";
+		}else {
+			content = "CC Error!";
+		}
 	}
 
 	@Override

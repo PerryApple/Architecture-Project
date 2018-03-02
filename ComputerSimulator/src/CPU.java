@@ -17,6 +17,11 @@ public class CPU {
 	private Register r3 = new GPR("R3");
 	private Register cc = CC.getInstance();
 	private Register mfr = MFR.getInstance();
+	private PR pr = PR.getInstance();
+	private DR dr = DR.getInstance();
+	private QR qr = QR.getInstance();
+	private Register rr = RR.getInstance();
+	private Register mlr = MLR.getInstance();
 	private Decoder decoder = Decoder.getInstance();
 	private ALU alu = ALU.getInstance();
 	private Memory memory = Memory.getInstance();
@@ -86,6 +91,21 @@ public class CPU {
 	public Register getMFR() {
 		return mfr;
 	} 
+	public PR getPR() {
+		return pr;
+	}
+	public Register getMLR() {
+		return mlr;
+	}
+	public DR getDR() {
+		return dr;
+	} 
+	public QR getQR() {
+		return qr;
+	} 
+	public Register getRR() {
+		return rr;
+	} 
 	public Decoder getDecoder() {
 		return decoder;
 	}
@@ -119,8 +139,13 @@ public class CPU {
 		r3.setContent("0000000000000000");
 		irr.setContent("0000000000000000");
 		iar.setContent("0000000000000000");
-                cc.setContent("0000");
-                mfr.setContent("0000");
+		cc.setContent("0000");
+        mfr.setContent("0000");
+        pr.setContent("00000000000000000000000000000000");
+        mlr.setContent("0000000000000000");
+        dr.setContent("0000000000000000");
+        qr.setContent("0000000000000000");
+        rr.setContent("0000000000000000");
 		cycle = 0;
 		Monitor.setStepInformation("",false);
 	}
