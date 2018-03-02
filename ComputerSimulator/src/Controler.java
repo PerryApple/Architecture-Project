@@ -19,14 +19,31 @@ public class Controler {
             sendStepInformation();
             Halt.halt();
             CPU.cyclePlusOne();
-            //uses the address in the MAR to fetch a word from memory. This fetch occurs in one cycle.
-            //The word fetched from memory is placed in the Memory Buffer Register (MBR).
-            //MBR = Memory[MAR]
-            CPU.getInstance().getMBR().setContent(CPU.getInstance().getMemory().getContent(CPU.getInstance().getMAR().getContent()));
+            //uses the address in the MAR to fetch a word from cache. This fetch occurs in one cycle.
+            //The word fetched from cache is placed in the Memory Buffer Register (MBR).
+            //if it is a miss, extract from memory and store it in cache
+            String address = CPU.getInstance().getMAR().getContent();
+            String data = Cache.getInstance().getCacheLine(address);
+            //it is a miss
+            if(data.equals("miss")){
+                data = Cache.getInstance().getIfMiss(address);
+                CPU.getInstance().getMBR().setContent(data);
+                stepInformation = "Instruction Fetch:miss,MBR<=Cache<=Memory[MAR]";
+                sendStepInformation();
+                CPU.cyclePlusOne(); //??????????????? add how many ???????????????
+            }else{
+                //hit , and store the data in MBR
+                CPU.getInstance().getMBR().setContent(data);
+                stepInformation = "Instruction Fetch:Cache hit, MBR<=Cache";
+                sendStepInformation();
+                CPU.cyclePlusOne();//??????????????? add how many ????????????????
+            }
+            /*CPU.getInstance().getMBR().setContent(CPU.getInstance().getMemory().getContent(CPU.getInstance().getMAR().getContent()));
             stepInformation=("Instruction Fetch:MBR<=Memory[MAR]");
             sendStepInformation();
             Halt.halt();
-            CPU.cyclePlusOne();
+            CPU.cyclePlusOne();*/
+
 
             //Instruction decode start here
             //The contents of the Memory Buffer Register (MBR) are moved to the Instruction Register (IR).
