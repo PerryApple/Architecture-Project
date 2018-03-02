@@ -10,19 +10,8 @@ public class LoadAndStore extends ISA{
         sendStepInformation();
         Halt.halt();
         cpu.cyclePlusOne();
-
         //get the content in memory using address in MAR, and load it to MBR.
-        String address = cpu.getMAR().getContent();
-        String data = Cache.getInstance().getCacheLine(address);
-        cacheToMBR(address,data);
-
-        /*cpu.getMBR().setContent(cpu.getMemory().getContent(cpu.getMAR().getContent()));
-        memoryInformation=true;
-        stepInformation="Execute:MBR<=Memory[MAR]";
-        sendStepInformation();
-        Halt.halt();
-        cpu.cyclePlusOne();*/
-
+        Cache.getInstance().cacheToMBR(cpu.getMAR().getContent());
         //Execute the operation move data to IRR
         cpu.getIRR().setContent(cpu.getMBR().getContent());
         stepInformation="Execute:IRR<=MBR";
@@ -86,9 +75,7 @@ public class LoadAndStore extends ISA{
         cpu.cyclePlusOne();
 
         //put data into cache and then write back to memory which takes one cycle
-        String address = cpu.getMAR().getContent();
-        String data = cpu.getMBR().getContent();
-        Cache.getInstance().writeBack(address,data);
+        Cache.getInstance().writeBack(cpu.getMAR().getContent(),cpu.getMBR().getContent());
         memoryInformation=true;
         stepInformation=("Execute:Memory[MAR]<=Cache<=MBR");
         sendStepInformation();
@@ -123,10 +110,7 @@ public class LoadAndStore extends ISA{
         Halt.halt();
         cpu.cyclePlusOne();
         //fetch the data from cache according to MAR
-        String address = cpu.getMAR().getContent();
-        String data = Cache.getInstance().getCacheLine(address);
-        cacheToMBR(address,data);
-
+        Cache.getInstance().cacheToMBR(cpu.getMAR().getContent());
         //put data into IRR
         cpu.getIRR().setContent(cpu.getMBR().getContent());
         stepInformation="Execute:IRR<=MBR";
@@ -190,25 +174,7 @@ public class LoadAndStore extends ISA{
         cpu.cyclePlusOne();
     }
 
-    public static void cacheToMBR(String address,String data){
-        if(data.equals("miss")){
-            data = Cache.getInstance().getIfMiss(address);
-            cpu.getMBR().setContent(data);
-            memoryInformation = true;
-            stepInformation = "Execute:Cache miss,MBR<=Cache<=Memory[MAR]";
-            sendStepInformation();
-            Halt.halt();
-            cpu.cyclePlusOne(); //??????????????? add how many ???????????????
-        }else{
-            //hit , and store the data in MBR
-            cpu.getMBR().setContent(data);
-            memoryInformation = true;
-            stepInformation = "Execute:Cache hit, MBR<=Cache";
-            sendStepInformation();
-            Halt.halt();
-            cpu.cyclePlusOne();//??????????????? add how many ????????????????
-        }
-    }
+
 
     public static void  sendStepInformation(){
         Monitor.setStepInformation(stepInformation,memoryInformation);

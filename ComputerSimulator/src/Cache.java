@@ -17,7 +17,7 @@ public class Cache {
         }
     }
     //According to address ,return data
-    public String getCacheLine(String address){
+    public String getdata(String address){
         if(address.length()==16) address = address.substring(4,16);
         String tag = address.substring(0,10);
         int offset = Integer.valueOf(address.substring(10,12),2);
@@ -87,6 +87,23 @@ public class Cache {
             cacheLines.add(cacheLine);
             //write back to memory
             Memory.getInstance().setContent(address,data);
+        }
+    }
+
+    public  void cacheToMBR(String address){
+        String data = getdata(address);
+        if(data.equals("miss")){
+            data = Cache.getInstance().getIfMiss(address);
+            CPU.getInstance().getMBR().setContent(data);
+            Monitor.setStepInformation("Execute:Cache miss,MBR<=Cache<=Memory[MAR]",true);
+            Halt.halt();
+            CPU.getInstance().cyclePlusOne(); //??????????????? add how many ???????????????
+        }else{
+            //hit , and store the data in MBR
+            CPU.getInstance().getMBR().setContent(data);
+            Monitor.setStepInformation("Execute:Cache hit, MBR<=Cache",true);
+            Halt.halt();
+            CPU.getInstance().cyclePlusOne();//??????????????? add how many ????????????????
         }
     }
 
