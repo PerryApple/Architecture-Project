@@ -35,28 +35,37 @@
     </HBox>
 
     <!--Show Status about Current Step, Current Instruction and Memory-->
-    <HBox styleClass="center_box">
-        <GridPane styleClass="center_grid" alignment="CENTER">
+    <GridPane styleClass="center_box">
+        <VBox styleClass="info_box" GridPane.rowIndex="0" GridPane.columnIndex="0">
             <Label text="Current Step:"/>
-            <TextArea fx:id="StepInformation" wrapText="true" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="2" text=""
-                       maxWidth="200" GridPane.halignment="CENTER"/>
-        </GridPane>
-
-        <GridPane styleClass="center_grid" alignment="CENTER">
+            <TextArea fx:id="StepInformation" wrapText="true"/>
+        </VBox>
+        <VBox styleClass="info_box" GridPane.rowIndex="0" GridPane.columnIndex="1">
+            <Label text="OUTPUT:"/>
+            <TextArea fx:id="OUTPUT" wrapText="true"/>
+        </VBox>
+        <VBox styleClass="info_box" GridPane.rowIndex="1" GridPane.columnIndex="0">
             <Label text="Current Instructions:"/>
-            <TextArea fx:id="InstructionField" wrapText="true" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="2" text=""
-                        maxWidth="200" GridPane.halignment="CENTER"/>
-        </GridPane>
+            <TextArea fx:id="InstructionField" wrapText="true"/>
+        </VBox>
+        <VBox styleClass="info_box" GridPane.rowIndex="1" GridPane.columnIndex="1">
+            <GridPane hgap="4" vgap="4">
+                <HBox GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2">
+                    <TextField fx:id="input" prefWidth="280"/>
+                    <Button fx:id="INPUT" text="Input" onAction="#Input"/>
+                </HBox>
+                <Label text="Memory" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER"/>
+                <Label text="Address:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <HBox GridPane.rowIndex="2" GridPane.columnIndex="1">
+                    <TextField fx:id="Address" prefWidth="215"/>
+                    <Button text="Search" onAction="#searchMemory"/>
+                </HBox>
+                <Label text="Content:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                <TextField fx:id="Content" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
 
-        <GridPane styleClass="center_grid" alignment="CENTER">
-            <Label text="Memory" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER"/>
-            <Label text="Address:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-            <TextField fx:id="Address" text="" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-            <Label text="Content:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-            <TextField fx:id="Content" text="" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
-            <Button text="Search" onAction="#searchMemory" prefHeight="40" GridPane.rowIndex="1" GridPane.columnIndex="3" GridPane.rowSpan="2" GridPane.halignment="CENTER"/>
-        </GridPane>
-    </HBox>
+            </GridPane>
+        </VBox>
+    </GridPane>
 
     <VBox styleClass="registers_box">
         <Label text="Registers" styleClass="label_register" GridPane.rowIndex="0" GridPane.halignment="CENTER"/>

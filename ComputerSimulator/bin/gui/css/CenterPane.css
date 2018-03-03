@@ -1,8 +1,33 @@
+/*main*/
 .root {
     -fx-background-color: -fx-outer-border, -fx-inner-border, -fx-body-color;
     -fx-background-insets: 0, 1, 2;
     -fx-background-radius: 5, 4, 3;
+    -fx-padding: 10;
 }
+
+/*for the center box to show the info in the process*/
+.center_box {
+    -fx-font-family: "Arial";
+    -fx-font-size: 12;
+    -fx-border-color: #ccc;
+    -fx-border-width: 1;
+    -fx-border-radius: 3, 2;
+}
+
+.info_box {
+    -fx-padding: 10;
+    -fx-min-width: 345;
+    -fx-max-width: 345;
+    -fx-min-height: 115;
+    -fx-max-height: 115;
+}
+
+.info_show {
+    -fx-padding: 5;
+}
+
+/*main*/
 Label.label_register {
     -fx-font-size: 20px;
     -fx-font-family: "Arial Black";
@@ -18,13 +43,7 @@ Label.label_register {
     -fx-border-radius: 3, 2;
 }
 
-.center_box {
-    -fx-font-family: "Arial";
-    -fx-font-size: 12;
-    -fx-border-color: #ccc;
-    -fx-border-width: 1;
-    -fx-border-radius: 3, 2;
-}
+
 .center_grid {
     -fx-padding: 10 10;
 }
@@ -42,4 +61,8 @@ Label.label_register {
 
 Button:hover {
     -fx-background-color: #99CCFF;
+}
+
+IO {
+    -fx-padding: 0 20;
 }
