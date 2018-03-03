@@ -23,9 +23,9 @@ public class Main extends Application {
         root.setCenter(centerPane);
 
         primaryStage.setTitle("SIMULATED COMPUTER");
-        primaryStage.setScene(new Scene(root, 750, 520));
-        primaryStage.setMaxWidth(750);
-        primaryStage.setMaxHeight(520);
+        primaryStage.setScene(new Scene(root, 750, 640));
+//        primaryStage.setMaxWidth(750);
+//        primaryStage.setMaxHeight(520);
         primaryStage.show();
     }
 

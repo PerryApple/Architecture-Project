@@ -37,12 +37,10 @@ public class ALU {
         }
     }
 
-    // the result of num1 + num2
+    // the result of num1 + num2(num1 and num2 is complement number)
     public String add(String num1, String num2){
         StringBuilder res = new StringBuilder();
         int carry = 0;
-        num1 = complement(num1);
-        num2 = complement(num2);
         for(int i = num1.length() - 1, j = num2.length() - 1; i >= 0 || j >= 0; i--, j--){
             int x = i < 0 ? 0 : num1.charAt(i) - '0';
             int y = j < 0 ? 0 : num2.charAt(j) - '0';
@@ -64,13 +62,7 @@ public class ALU {
 
     // the result of num1 - num2
     public String minus(String num1, String num2){
-        // transform num1 - num2 to num1 + (-num2)
-        if(num2.substring(0, 1).equals("0")){
-            num2 = num2.replaceFirst("0", "1");
-        }
-        else if(num2.substring(0, 1).equals("1")){
-            num2 = num2.replaceFirst("1", "0");
-        }
+        num2 = complement(num2);
         return add(num1, num2);
     }
     

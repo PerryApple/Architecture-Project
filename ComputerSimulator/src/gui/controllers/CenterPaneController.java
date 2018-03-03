@@ -155,6 +155,10 @@ public class CenterPaneController implements Controller {
         stage.show();
     }
 
+    public void Input() {
+
+    }
+
     public void searchMemory() {
         String searchField = Address.getText();
         Content.setText(CPU.getInstance().getMemory().getContent(searchField));
@@ -216,6 +220,10 @@ public class CenterPaneController implements Controller {
         R3.setText("");
         CC.setText("");
         MFR.setText("");
+        QR.setText("");
+        MLR.setText("");
+        PR.setText("");
+        RR.setText("");
         Halt.flag=true;
     }
 
