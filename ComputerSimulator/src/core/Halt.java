@@ -12,7 +12,7 @@ public class Halt implements Runnable {
         CPU.getInstance().getControler().process();
     }
     public static void halt(){
-        flag=true;
+        flag = true;
         while(flag) {
         		if (CenterPaneController.getOpen()==false) break;
         };

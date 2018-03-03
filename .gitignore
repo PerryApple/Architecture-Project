@@ -1,0 +1,7 @@
+.DS_Store
+ComputerSimulator/.DS_Store
+*.xml
+*.class
+ComputerSimulator/src/.DS_Store
+ComputerSimulator/out/
+.idea/

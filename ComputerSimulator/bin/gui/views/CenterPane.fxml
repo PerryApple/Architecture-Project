@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.control.cell.TextFieldListCell?>
+<?import java.net.URL?>
+<VBox fx:controller="gui.controllers.CenterPaneController"
+      xmlns:fx="http://javafx.com/fxml" minWidth="400" spacing="10" styleClass="root">
+    <padding>
+        <Insets bottom="10.0" left="10.0" right ="10.0" top="10.0"/>
+    </padding>
+
+
+    <HBox prefHeight="15.0" alignment="CENTER_LEFT" spacing="5" styleClass="control_box">
+        <padding>
+            <Insets bottom="5" left="5" right ="5" top="5"/>
+        </padding>
+        <Button text="Switch" fx:id="switch" onAction="#switchOnOff"/>
+        <Button text="Load" fx:id="load" onAction="#loadInstruction"/>
+        <Button text="Next" fx:id="next" onAction="#nextStep"/>
+        <Button text="View Cache" fx:id="cache" onAction="#viewCache"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <HBox GridPane.rowIndex="0" GridPane.columnIndex="1"
+              alignment="CENTER_RIGHT">
+            <Label text="Cycle:"/>
+            <Text fx:id="cycle" text=""/>
+        </HBox>
+    </HBox>
+
+    <!--Show Status about Current Step, Current Instruction and Memory-->
+    <HBox styleClass="center_box">
+        <GridPane styleClass="center_grid" alignment="CENTER">
+            <Label text="Current Step:"/>
+            <TextArea fx:id="StepInformation" wrapText="true" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="2" text=""
+                       maxWidth="200" GridPane.halignment="CENTER"/>
+        </GridPane>
+
+        <GridPane styleClass="center_grid" alignment="CENTER">
+            <Label text="Current Instructions:"/>
+            <TextArea fx:id="InstructionField" wrapText="true" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="2" text=""
+                        maxWidth="200" GridPane.halignment="CENTER"/>
+        </GridPane>
+
+        <GridPane styleClass="center_grid" alignment="CENTER">
+            <Label text="Memory" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER"/>
+            <Label text="Address:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <TextField fx:id="Address" text="" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+            <Label text="Content:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <TextField fx:id="Content" text="" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+            <Button text="Search" onAction="#searchMemory" prefHeight="40" GridPane.rowIndex="1" GridPane.columnIndex="3" GridPane.rowSpan="2" GridPane.halignment="CENTER"/>
+        </GridPane>
+    </HBox>
+
+    <VBox styleClass="registers_box">
+        <Label text="Registers" styleClass="label_register" GridPane.rowIndex="0" GridPane.halignment="CENTER"/>
+        <HBox>
+        <GridPane alignment="center" hgap="10" vgap="10">
+            <padding>
+                <Insets bottom="10.0" left="10.0" right ="10.0" top="10.0"/>
+            </padding>
+            <!--<gridLinesVisible>true</gridLinesVisible>-->
+
+
+
+            <Label text="PC" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <TextField fx:id="PC" text="" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+            <Label text="MAR" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <TextField fx:id="MAR" text="" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+            <Label text="MBR" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+            <TextField fx:id="MBR" text="" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+            <Label text="IRR" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+            <TextField fx:id="IRR" text="" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+            <Label text="IAR" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+            <TextField fx:id="IAR" text="" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+
+            <Label text="IR" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+            <TextField fx:id="IR" text="" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+
+            <Label text="Y" GridPane.rowIndex="7" GridPane.columnIndex="0"/>
+            <TextField fx:id="Y" text="" GridPane.rowIndex="7" GridPane.columnIndex="1"/>
+        </GridPane>
+
+        <GridPane alignment="center" hgap="10" vgap="10">
+            <padding>
+                <Insets bottom="10.0" left="10.0" right ="10.0" top="10.0"/>
+            </padding>
+            <Label text="Z" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <TextField fx:id="Z" text="" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+            <Label text="X1" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <TextField fx:id="X1" text="" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+            <Label text="X2" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <TextField fx:id="X2" text="" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+            <Label text="X3" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+            <TextField fx:id="X3" text="" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+            <Label text="R0" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+            <TextField fx:id="R0" text="" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+            <Label text="R1" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+            <TextField fx:id="R1" text="" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+
+            <Label text="R2" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+            <TextField fx:id="R2" text="" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+        </GridPane>
+
+        <GridPane alignment="center" hgap="10" vgap="10">
+            <padding>
+                <Insets bottom="10.0" left="10.0" right ="10.0" top="10.0"/>
+            </padding>
+            <Label text="R3" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <TextField fx:id="R3" text="" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+            <Label text="CC" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <TextField fx:id="CC" text="" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+            <Label text="MFR" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <TextField fx:id="MFR" text="" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+            <Label text="QR" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+            <TextField fx:id="QR" text="" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+            <Label text="MLR" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+            <TextField fx:id="MLR" text="" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+            <Label text="PR" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+            <TextField fx:id="PR" text="" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+
+            <Label text="RR" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+            <TextField fx:id="RR" text="" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+        </GridPane>
+        </HBox>
+    </VBox>
+
+    <stylesheets>
+        <URL value="@../css/Global.css"/>
+        <URL value="@../css/CenterPane.css"/>
+    </stylesheets>
+</VBox>
