@@ -52,7 +52,7 @@
             <GridPane hgap="4" vgap="4">
                 <HBox GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2">
                     <TextField fx:id="input" prefWidth="280"/>
-                    <Button fx:id="INPUT" text="Input"/>
+                    <Button fx:id="INPUT" text="Input" onAction="#Input"/>
                 </HBox>
                 <Label text="Memory" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER"/>
                 <Label text="Address:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
