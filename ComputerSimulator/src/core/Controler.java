@@ -24,8 +24,8 @@ public class Controler {
         		CenterPaneController.instructionNum++;//Monitor shows what instruction is processing
             CPU.getInstance().getMAR().setContent(CPU.getInstance().getPC().getContent());
             sendStepInformation();
-            Halt.halt();
             CPU.cyclePlusOne();
+            Halt.halt();
 
             //uses the address in the MAR to fetch a word from cache. This fetch occurs in one cycle.
             //The word fetched from cache is placed in the Memory Buffer Register (MBR).
@@ -38,16 +38,16 @@ public class Controler {
             CPU.getInstance().getIR().setContent(CPU.getInstance().getMBR().getContent());
             stepInformation=("Instruction Fetch:IR<=MBR");
             sendStepInformation();
-            Halt.halt();
             CPU.cyclePlusOne();
+            Halt.halt();
             //Decode the instruction in IR
             //In 1 cycle  process the instruction and use it to set several flags:
             CPU.getInstance().getDecoder().setInstruction(CPU.getInstance().getIR().getContent());
             CPU.getInstance().getDecoder().decode();
             stepInformation=("Instruction Decode...");
             sendStepInformation();
-            Halt.halt();
             CPU.cyclePlusOne();
+            Halt.halt();
 
             //Identify the instruction and execute it.
             //The specific steps of different instructions are handled in the ISA class and its subclasses
@@ -57,17 +57,18 @@ public class Controler {
             //Next Instruction
             //PC++
             //get content from pc, add one in ALU, store the result in Z temporarily and send it to pc.
-            if(jump){
+            if(!jump){
                 CPU.getInstance().getZ().setContent(CPU.getInstance().getALU().addPC(CPU.getInstance().getPC()));
                 stepInformation=("Next Instruction: Z <= PC++ (ALU)");
                 sendStepInformation();
-                Halt.halt();
                 CPU.cyclePlusOne();
+                Halt.halt();
+
                 CPU.getInstance().getPC().setContent(CPU.getInstance().getZ().getContent());
                 stepInformation=("PC <= Z");
                 sendStepInformation();
-                Halt.halt();
                 CPU.cyclePlusOne();
+                Halt.halt();
             }
         }
     }
