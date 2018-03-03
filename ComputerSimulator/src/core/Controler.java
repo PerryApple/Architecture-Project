@@ -6,7 +6,10 @@ public class Controler {
     private static final Controler instance = new Controler();
     private  String stepInformation="";
     private Controler() {}
+    //if jump == true PC<-EA
     public boolean jump = false;
+    //if hlt == true halt the process
+    public boolean hlt = false;
     public static Controler getInstance() {
     		return instance;
     }
@@ -16,6 +19,7 @@ public class Controler {
         Halt.halt();
         //Instruction Fetch start here
         //MAR = PC
+        hlt = false;
         while(!CPU.getInstance().getMemory().getContent(CPU.getInstance().getPC().getContent()).equals("0000000000000000")){
             //initialize jump
             jump = false;
@@ -53,7 +57,8 @@ public class Controler {
             //The specific steps of different instructions are handled in the ISA class and its subclasses
             //Operand Fetch, Execute and Result Store will be done in specific instruction method according to the instruction.
             CPU.getInstance().getDecoder().identify();
-
+            //if the instruntion is HALT then break the while loop
+            if(hlt) break;
             //Next Instruction
             //PC++
             //get content from pc, add one in ALU, store the result in Z temporarily and send it to pc.
