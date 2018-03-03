@@ -24,7 +24,7 @@ public class PR implements Register {
 	@Override
 	public String getContent() {
 		// TODO Auto-generated method stub
-			return "Error: Wrong function, use getHighOrderBits() or getLowOrderBits()!";
+			return this.content;
 	}
 	
 	//get high or low order bits. H: high order bits; L: low order bits.
