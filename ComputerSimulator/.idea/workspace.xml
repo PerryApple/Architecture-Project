@@ -71,7 +71,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CenterPaneController.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="CenterPaneController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/gui/controllers/CenterPaneController.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="134">
@@ -80,6 +80,39 @@
                 <element signature="imports" expanded="true" />
                 <element signature="method#loadInstruction#0;class#CenterPaneController#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Addressing.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/core/Addressing.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-246">
+              <caret line="28" column="16" lean-forward="true" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="16" />
+              <folding>
+                <element signature="e#4400#4401#0" expanded="true" />
+                <element signature="e#4472#4473#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CC.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/core/CC.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="537">
+              <caret line="50" column="32" lean-forward="true" selection-start-line="50" selection-start-column="32" selection-end-line="50" selection-end-column="32" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Cache.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/core/Cache.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="272">
+              <caret line="63" column="36" lean-forward="true" selection-start-line="63" selection-start-column="36" selection-end-line="63" selection-end-column="36" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -234,6 +267,13 @@
               <item name="ComputerSimulator" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="core" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ComputerSimulator" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ComputerSimulator" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="Cache.java" type="529ef68f:ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
             </path>
             <path>
               <item name="ComputerSimulator" type="b2602c69:ProjectViewProjectNode" />
@@ -444,12 +484,12 @@
       <workItem from="1359379250712" duration="1302000" />
       <workItem from="1519922910053" duration="5611000" />
       <workItem from="1519929655018" duration="27874000" />
-      <workItem from="1520020378090" duration="21263000" />
+      <workItem from="1520020378090" duration="23398000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="56050000" />
+    <option name="totallyTimeSpent" value="58185000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="873" extended-state="0" />
@@ -695,17 +735,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/Addressing.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-928">
-          <caret line="28" column="16" lean-forward="true" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="16" />
-          <folding>
-            <element signature="e#4400#4401#0" expanded="true" />
-            <element signature="e#4472#4473#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk-9.0.4.jdk/Contents/Home/lib/src.zip!/java.base/java/lang/String.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="251">
@@ -726,14 +755,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="5" column="19" lean-forward="false" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/CC.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="720">
-          <caret line="50" column="32" lean-forward="true" selection-start-line="50" selection-start-column="32" selection-end-line="50" selection-end-column="32" />
           <folding />
         </state>
       </provider>
@@ -940,18 +961,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/Cache.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1290">
-          <caret line="86" column="76" lean-forward="false" selection-start-line="86" selection-start-column="76" selection-end-line="86" selection-end-column="76" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#5248#5249#0" expanded="false" />
-            <element signature="e#5280#5281#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/gui/views/CenterPane.fxml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
@@ -971,6 +980,33 @@
             <element signature="imports" expanded="true" />
             <element signature="method#loadInstruction#0;class#CenterPaneController#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/Addressing.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-246">
+          <caret line="28" column="16" lean-forward="true" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="16" />
+          <folding>
+            <element signature="e#4400#4401#0" expanded="true" />
+            <element signature="e#4472#4473#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/CC.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="537">
+          <caret line="50" column="32" lean-forward="true" selection-start-line="50" selection-start-column="32" selection-end-line="50" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/Cache.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="63" column="36" lean-forward="true" selection-start-line="63" selection-start-column="36" selection-end-line="63" selection-end-column="36" />
+          <folding />
         </state>
       </provider>
     </entry>
