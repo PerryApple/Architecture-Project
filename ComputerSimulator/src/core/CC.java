@@ -54,7 +54,7 @@ public class CC implements Register {
 		}else if (content.equalsIgnoreCase("0000")){
 			this.content = "0000";
 		}else {
-			content = "CC Error!";
+			this.content = "CC Error!";
 		}
 	}
 

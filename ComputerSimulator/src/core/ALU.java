@@ -119,7 +119,6 @@ public class ALU {
 		if(result.length() == 16) {
 			//store the result in Register Z
 			CPU.getInstance().getZ().setContent(result.toString());
-			CPU.cyclePlusOne();
 		}else {
 			CPU.getInstance().getZ().setContent("AND Result ERROR");
 		}

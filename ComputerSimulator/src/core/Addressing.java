@@ -53,13 +53,7 @@ public class Addressing {
         
         //if I field  = 1 
         else if(i.equals("1")){
-        	
-	        	//In one cycle, move the first operand address from the IR to the Internal Address Register IAR
-			cpu.getIAR().setContent(cpu.alignment(address));
-			stepInformation=("Locate and fetch operand data:IAR=IR");
-			sendStepInformation();
-			Halt.halt();
-			cpu.cyclePlusOne();
+
 			stepInformation=("Locate and fetch operand data");
 			sendStepInformation();
         		//if IX = 00, c(Address). Indirect addressing, but NO indexing

@@ -4,14 +4,18 @@ public class Decoder {
 	private String opClass;
     private String opCode;
     private String instruction;
-    //data using in load and store instruction
+    //data using in load and store instruction (LSI)
     private String X;
-    private String R;
+    private String R;//also using in SRI
     private String I;
     private String address;
-    //Data using in arithmetic instruction
+    //Data using in arithmetic instruction (AI) and Logical instructions (LI)
     private String RX;
     private String RY;
+    //Data using in Shift and Rotate instructions (SRI)
+    private String LorR;
+    private String AorL;
+    private Integer count;
     //Single instance for class Decoder
     private static final Decoder instance = new Decoder();
     //private constructor
@@ -76,15 +80,25 @@ public class Decoder {
             case"010010":
             		opCode = "TRR";
             		logical();
+            		break;
             case"010011":
             		opCode = "AND";
             		logical();
+            		break;
             case"010100":
             		opCode = "ORR";
             		logical();
+            		break;
             case"010101":
             		opCode = "NOT";
             		logical();
+            		break;
+            		
+            	//Shift and Rotate Instruction
+            case "011001":
+            		opCode = "SRC";
+            case "011010":
+            		opCode = "RRC";
         }
 
     }
@@ -95,6 +109,8 @@ public class Decoder {
     			ISA.execute(opCode, R, X, I, address);
     		}else if(opClass.equals("AI")||opClass.equals("LI")) {
     			ISA.execute(opCode, RX, RY);
+    		}else if(opClass.equals("SRI")) {
+    			ISA.execute(opCode, R, count, LorR, AorL);
     		}
     		
     }
@@ -128,6 +144,14 @@ public class Decoder {
 		opClass = "LI";
 		RX = instruction.substring(6, 8);
 		RY = instruction.substring(8, 10);
-}
+    }
     
+    private void shiftAndRotate() {
+    		//SRI stands for Shift and Rotate Instructions
+    		opClass = "SRI";
+    		R = instruction.substring(6,8);
+    		LorR = instruction.substring(8, 9);
+    		AorL = instruction.substring(9, 10);
+    		count = Integer.valueOf(instruction.substring(12, 15),2);
+    }
 }

@@ -25,6 +25,7 @@ public class CPU {
 	private QR qr = QR.getInstance();
 	private Register rr = RR.getInstance();
 	private Register mlr = MLR.getInstance();
+	private SRR srr = SRR.getInstance();
 	private Decoder decoder = Decoder.getInstance();
 	private ALU alu = ALU.getInstance();
 	private Memory memory = Memory.getInstance();
@@ -109,6 +110,9 @@ public class CPU {
 	public Register getRR() {
 		return rr;
 	} 
+	public SRR getSRR() {
+		return srr;
+	}
 	public Decoder getDecoder() {
 		return decoder;
 	}
@@ -149,6 +153,7 @@ public class CPU {
         dr.setContent("0000000000000000");
         qr.setContent("0000000000000000");
         rr.setContent("0000000000000000");
+        srr.setContent("0000000000000000");
 		cycle = 0;
 		CenterPaneController.setStepInformation("",false);
 	}
@@ -163,8 +168,13 @@ public class CPU {
 		int supplement = 16 - content.length();
 		if(supplement >= 0) {
 			while(supplement > 0) {
-				content = "0" + content;
-				supplement--;
+				if(content.charAt(0) == '0') {
+					content = "0" + content;
+					supplement--;
+				}else {
+					content = "1" + content;
+					supplement--;
+				}
 			}
 		}
 		return content;
