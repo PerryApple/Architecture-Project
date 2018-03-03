@@ -134,6 +134,10 @@ public class CenterPaneController implements Controller {
 
     public void nextStep() {
         Halt.flag = false;
+        
+        while(!Halt.flag){
+        	
+        }
         update();
     }
 

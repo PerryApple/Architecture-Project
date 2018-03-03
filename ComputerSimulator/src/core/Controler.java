@@ -19,10 +19,10 @@ public class Controler {
         while(!CPU.getInstance().getMemory().getContent(CPU.getInstance().getPC().getContent()).equals("0000000000000000")){
             //initialize jump
             jump = false;
+            stepInformation=("Instruction Fetch:MAR<=PC");
             CPU.getInstance().getCC().setContent("0000");
         		CenterPaneController.instructionNum++;//Monitor shows what instruction is processing
             CPU.getInstance().getMAR().setContent(CPU.getInstance().getPC().getContent());
-            stepInformation=("Instruction Fetch:MAR<=PC");
             sendStepInformation();
             Halt.halt();
             CPU.cyclePlusOne();
