@@ -11,6 +11,9 @@ public class ISA {
 	protected static String AorL;
 	protected static Integer count;
 	protected static String address;
+    protected static Integer CC;
+    protected static String Immed;
+    protected static String DevID;
 	
 	public static void execute(String op, String r, String x, String i, String addr) {
 		//Store R, X, I and address bits for later use.
@@ -19,62 +22,41 @@ public class ISA {
 		I = i;
 		address = addr;
 		// Identify the operation code and execute in specific subclass
-		//Subclass Load and Store.
-		//LDR
-		 if(op.equals("LDR")) {
-			 LoadAndStore.LDR();
-		 }
-		 //STR
-	     else if(op.equals("STR")){
-	        LoadAndStore.STR();
-	     }
-		 //LDA
-	     else if(op.equals("LDA")){
-	        LoadAndStore.LDA();
-	     }
-		 //LDX
-	     else if(op.equals("LDX")){
-	        LoadAndStore.LDX();
-	     }
-		 //STX
-	     else if(op.equals("STX")){
-	        LoadAndStore.STX();
-	     }
-	     else if(op.equals("AMR")){
+		switch (op){
+			//Load and Store Instruction.
+			case "LDR": LoadAndStore.LDR();break;
+			case "STR": LoadAndStore.STR();break;
+			case "LDA": LoadAndStore.LDA();break;
+			case "LDX": LoadAndStore.LDX();break;
+			case "STX": LoadAndStore.STX();break;
+			
+			//Arithmetic with address field
+			case "AMR": ArithmeticInstructions.AMR();break;
+			case "SMR": ArithmeticInstructions.SMR();break;
+			
+		}
 
-		 }
 	}
 	
 	public static void execute(String op, String rx, String ry) {
-		RX = rx;
-		RY = ry;
-		
-		//Arithmetic Instructions with out address field
-		//MLT
-		if(op.equals("MLT")) {
-			ArithmeticInstructions.MLT();
-		}
-		//DVD
-		else if(op.equals("DVD")) {
-			ArithmeticInstructions.DVD();
-		}
-		
-		//Logical Instructions
-		//TRR
-		else if(op.equals("TRR")) {
-			LogicalInstruction.TRR();
-		}
-		//AND
-		else if(op.equals("AND")) {
-			LogicalInstruction.AND();
-		}
-		//ORR
-		else if(op.equals("ORR")) {
-			LogicalInstruction.ORR();
-		}
-		//NOT
-		else if(op.equals("NOT")) {
-			LogicalInstruction.NOT();
+
+		switch (op){
+			//Arithmetic with Immed field
+			case "AIR": R = rx; Immed = ry; ArithmeticInstructions.AIR();break;
+			case "SIR": R = rx; Immed = ry; ArithmeticInstructions.SIR();break;
+			//Arithmetic Instructions with out address field
+			case "MLT": 	RX = rx; RY = ry; ArithmeticInstructions.MLT();break;
+			case "DVD": RX = rx; RY = ry; ArithmeticInstructions.DVD();break;
+			//Logical Instructions
+			case "TRR": RX = rx; RY = ry; LogicalInstruction.TRR();break;
+			case "AND": RX = rx; RY = ry; LogicalInstruction.AND();break;
+			case "ORR": RX = rx; RY = ry; LogicalInstruction.ORR();break;
+			case "NOT": R = rx; LogicalInstruction.NOT();break;
+			//Transfer Instruction RFS
+			case "RFS": Immed = rx; TransferInstruction.RFS(); break;
+			//IO Instruction
+			case "IN": R = rx; DevID = ry; IOinstructions.IN(); break;
+			case "OUT": R = rx; DevID = ry; IOinstructions.OUT(); break;
 		}
 	}
 	
@@ -83,14 +65,21 @@ public class ISA {
 		count = c;
 		LorR = LR;
 		AorL = AL;
-		//SRC
-		if(op.equals("SRC")) {
-			ShiftAndRotate.SRC();
-		}
-		//RRC
-		else if(op.equals("RRC")) {
-			ShiftAndRotate.RRC();
-		}
+		
+		switch(op) {
+			//Shift and Rotate Instruction
+			case "SRC":
+				ShiftAndRotate.SRC();
+				break;
+			case "RRC":
+				ShiftAndRotate.RRC();
+				break;
+			//JCC
+			case "JCC":
+				CC = c;
+				TransferInstruction.JCC();
+				break;
+		}	
 	}
 	
 }

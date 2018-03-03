@@ -18,11 +18,12 @@ public class IOinstructions extends ISA {
             case "11": r = cpu.getR3();break;
         }
         // c(r) <- IOmemory(DevID)
-        r.setContent(IOmemory.getInstance().getContent(address));
+        r.setContent(IOmemory.getInstance().getContent(DevID));
         CenterPaneController.setStepInformation(r.getName()+"<-I/O",false);
+        CPU.cyclePlusOne();
         Halt.halt();
-        cpu.cyclePlusOne();
     }
+    
 //    Output Character to Device from Register, r = 0..3
     public static void OUT(){
         Register r = null;
@@ -34,9 +35,9 @@ public class IOinstructions extends ISA {
             case "11": r = cpu.getR3();break;
         }
         // IOmemory(DevID)<-c(r)
-        IOmemory.getInstance().setContent(address,r.getContent());
+        IOmemory.getInstance().setContent(DevID,r.getContent());
         CenterPaneController.setStepInformation("I/0<-"+r.getName(),false);
+        CPU.cyclePlusOne();
         Halt.halt();
-        cpu.cyclePlusOne();
     }
 }

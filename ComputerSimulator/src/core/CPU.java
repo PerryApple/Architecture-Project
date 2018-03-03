@@ -174,6 +174,25 @@ public class CPU {
 		}
 		return content;
 	}
+	
+	public static String alignmentImmed(String content) {
+		int supplement = 16 - content.length();
+		if(supplement >= 0) {
+			if(content.charAt(0) == '0') {
+				while(supplement > 0) {
+					content = "0" + content;
+					supplement--;
+				}
+			}else {
+				while(supplement > 0) {
+					content = "1" + content;
+					supplement--;
+				}
+			}
+			
+		}
+		return content;
+	}
 
 	
 }

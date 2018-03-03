@@ -59,10 +59,9 @@ public class TransferInstruction  extends ISA{
 //    If cc bit  = 1, PC <- EA
 //    Else PC <- PC + 1
     public static void JCC(){
-        //get the check bit number :0 ,1 ,2 or 3
-        int checkBit = Integer.valueOf(R,2);
+
         //check CC register
-        if(cpu.getCC().getContent().charAt(checkBit)=='1'){
+        if(cpu.getCC().getContent().charAt(CC)=='1'){
             cpu.getPC().setContent(cpu.getIAR().getContent());
             //UI shows step information
             CenterPaneController.setStepInformation("PC<-EA",false);
@@ -106,7 +105,7 @@ public class TransferInstruction  extends ISA{
 //    IX, I fields are ignored.
     public static void RFS(){
         //R0 <-Immed
-        cpu.getR0().setContent(address);
+        cpu.getR0().setContent(CPU.alignment(Immed));
         CenterPaneController.setStepInformation("RO<-Immed",false);
         CPU.cyclePlusOne();
         Halt.halt();
