@@ -1,3 +1,6 @@
+.DS_Store
+ComputerSimulator/.DS_Store
 *.xml
 *.class
-*.DS_Store
+ComputerSimulator/src/.DS_Store
+ComputerSimulator/out/
