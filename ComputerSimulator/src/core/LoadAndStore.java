@@ -1,8 +1,6 @@
 package core;
+import gui.controllers.CenterPaneController;
 
-import gui.controllers.CenterPaneController;
-import core.*;
-import gui.controllers.CenterPaneController;
 public class LoadAndStore extends ISA{
     private static String stepInformation;
     // record if we should update the memory context in  Monitor
@@ -14,7 +12,7 @@ public class LoadAndStore extends ISA{
         stepInformation="Execute:MAR<=IAR";
         sendStepInformation();
         Halt.halt();
-        cpu.cyclePlusOne();
+        CPU.cyclePlusOne();
         //get the content in memory using address in MAR, and load it to MBR.
         Cache.getInstance().cacheToMBR(cpu.getMAR().getContent());
         //Execute the operation move data to IRR
@@ -22,7 +20,7 @@ public class LoadAndStore extends ISA{
         stepInformation="Execute:IRR<=MBR";
         sendStepInformation();
         Halt.halt();
-        cpu.cyclePlusOne();
+        CPU.cyclePlusOne();
 
         //select the register and put the data into register
         switch (R){
@@ -41,7 +39,7 @@ public class LoadAndStore extends ISA{
         stepInformation="Execute:Register<=IRR";
         sendStepInformation();
         Halt.halt();
-        cpu.cyclePlusOne();
+        CPU.cyclePlusOne();
     }
 
     public static void STR(){
@@ -50,7 +48,7 @@ public class LoadAndStore extends ISA{
         stepInformation="Execute:MAR<=IAR";
         sendStepInformation();
         Halt.halt();
-        cpu.cyclePlusOne();
+        CPU.cyclePlusOne();
         
         // select register and put data into IRR which takes one cycle
         switch (R){
@@ -70,14 +68,14 @@ public class LoadAndStore extends ISA{
         stepInformation=("Execute:IRR<=Register");
         sendStepInformation();
         Halt.halt();
-        cpu.cyclePlusOne();
+        CPU.cyclePlusOne();
 
         //move data from IRR to MBR which takes one cycle
         cpu.getMBR().setContent(cpu.getIRR().getContent());
         stepInformation="Execute:MBR<=IRR";
         sendStepInformation();
         Halt.halt();
-        cpu.cyclePlusOne();
+        CPU.cyclePlusOne();
 
         //put data into cache and then write back to memory which takes one cycle
         Cache.getInstance().writeBack(cpu.getMAR().getContent(),cpu.getMBR().getContent());
@@ -85,7 +83,7 @@ public class LoadAndStore extends ISA{
         stepInformation=("Execute:Memory[MAR]<=Cache<=MBR");
         sendStepInformation();
         Halt.halt();
-        cpu.cyclePlusOne();//??????????????? how many?????????????
+        CPU.cyclePlusOne();//??????????????? how many?????????????
     }
 
     public static void LDA(){
@@ -104,7 +102,7 @@ public class LoadAndStore extends ISA{
         stepInformation="Execute:Register<=IAR";
         sendStepInformation();
         Halt.halt();
-        cpu.cyclePlusOne();
+        CPU.cyclePlusOne();
     }
 
     public static void LDX(){
@@ -113,7 +111,7 @@ public class LoadAndStore extends ISA{
         stepInformation="Execute:MAR<=IAR";
         sendStepInformation();
         Halt.halt();
-        cpu.cyclePlusOne();
+        CPU.cyclePlusOne();
         //fetch the data from cache according to MAR
         Cache.getInstance().cacheToMBR(cpu.getMAR().getContent());
         //put data into IRR
@@ -121,7 +119,7 @@ public class LoadAndStore extends ISA{
         stepInformation="Execute:IRR<=MBR";
         sendStepInformation();
         Halt.halt();
-        cpu.cyclePlusOne();
+        CPU.cyclePlusOne();
         //put the data from IRR into index register
         switch (X){
             case "01":
@@ -136,7 +134,7 @@ public class LoadAndStore extends ISA{
         stepInformation="Execute:Register<=IRR";
         sendStepInformation();
         Halt.halt();
-        cpu.cyclePlusOne();
+        CPU.cyclePlusOne();
     }
 
     public static void STX(){
@@ -145,7 +143,7 @@ public class LoadAndStore extends ISA{
         stepInformation="Execute:MAR<=IAR";
         sendStepInformation();
         Halt.halt();
-        cpu.cyclePlusOne();
+        CPU.cyclePlusOne();
         //move data from index register to IRR'
         switch (X){
             case "01":
@@ -161,13 +159,13 @@ public class LoadAndStore extends ISA{
         stepInformation="Execute:IRR<=Register";
         sendStepInformation();
         Halt.halt();
-        cpu.cyclePlusOne();
+        CPU.cyclePlusOne();
         //move data from IRR to MBR
         cpu.getMBR().setContent(cpu.getIRR().getContent());
         stepInformation="Execute:MBR<=IRR";
         sendStepInformation();
         Halt.halt();
-        cpu.cyclePlusOne();
+        CPU.cyclePlusOne();
         //move data from MBR to memory
         String address = cpu.getMAR().getContent();
         String data = cpu.getMBR().getContent();
@@ -176,7 +174,7 @@ public class LoadAndStore extends ISA{
         stepInformation="Execute:Memory[MAR]<=Cache<=MBR";
         sendStepInformation();
         Halt.halt();
-        cpu.cyclePlusOne();
+        CPU.cyclePlusOne();
     }
 
 
