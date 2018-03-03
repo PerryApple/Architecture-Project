@@ -6,6 +6,7 @@ public class Controler {
     private static final Controler instance = new Controler();
     private  String stepInformation="";
     private Controler() {}
+    public boolean jump = false;
     public static Controler getInstance() {
     		return instance;
     }
@@ -16,6 +17,8 @@ public class Controler {
         //Instruction Fetch start here
         //MAR = PC
         while(!CPU.getInstance().getMemory().getContent(CPU.getInstance().getPC().getContent()).equals("0000000000000000")){
+            //initialize jump
+            jump = false;
             CPU.getInstance().getCC().setContent("0000");
         		CenterPaneController.instructionNum++;//Monitor shows what instruction is processing
             CPU.getInstance().getMAR().setContent(CPU.getInstance().getPC().getContent());
@@ -45,6 +48,7 @@ public class Controler {
             sendStepInformation();
             Halt.halt();
             CPU.cyclePlusOne();
+
             //Identify the instruction and execute it.
             //The specific steps of different instructions are handled in the ISA class and its subclasses
             //Operand Fetch, Execute and Result Store will be done in specific instruction method according to the instruction.
@@ -53,16 +57,18 @@ public class Controler {
             //Next Instruction
             //PC++
             //get content from pc, add one in ALU, store the result in Z temporarily and send it to pc.
-            CPU.getInstance().getZ().setContent(CPU.getInstance().getALU().addPC(CPU.getInstance().getPC()));
-            stepInformation=("Next Instruction: Z <= PC++ (ALU)");
-            sendStepInformation();
-            Halt.halt();
-            CPU.cyclePlusOne();
-            CPU.getInstance().getPC().setContent(CPU.getInstance().getZ().getContent());
-            stepInformation=("PC <= Z");
-            sendStepInformation();
-            Halt.halt();
-            CPU.cyclePlusOne();
+            if(jump){
+                CPU.getInstance().getZ().setContent(CPU.getInstance().getALU().addPC(CPU.getInstance().getPC()));
+                stepInformation=("Next Instruction: Z <= PC++ (ALU)");
+                sendStepInformation();
+                Halt.halt();
+                CPU.cyclePlusOne();
+                CPU.getInstance().getPC().setContent(CPU.getInstance().getZ().getContent());
+                stepInformation=("PC <= Z");
+                sendStepInformation();
+                Halt.halt();
+                CPU.cyclePlusOne();
+            }
         }
     }
 

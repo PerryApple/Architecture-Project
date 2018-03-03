@@ -1,4 +1,7 @@
 package core;
+
+import java.util.concurrent.TransferQueue;
+
 public class ISA {
     protected static CPU cpu = CPU.getInstance();
 	protected static String R;
@@ -39,6 +42,9 @@ public class ISA {
 	     else if(op.equals("STX")){
 	        LoadAndStore.STX();
 	     }
+	     else if(op.equals("AMR")){
+
+		 }
 	}
 	
 	public static void execute(String op, String rx, String ry) {

@@ -56,6 +56,11 @@ public class CenterPaneController implements Controller {
 
     public void switchOnOff() {
         if (!open) {
+            CPU.getInstance().clearAll();
+            CPU.getInstance().getMemory().clear();
+            instructionNum = 0;
+            loadStatus = false;
+            stepInformation = "";
             update();
             open = !open;
         }
