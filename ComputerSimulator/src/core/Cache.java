@@ -65,15 +65,15 @@ public class Cache {
         if(data.equals("miss")){
             data = Cache.getInstance().getIfMiss(address);
             CPU.getInstance().getMBR().setContent(data);
-            CenterPaneController.setStepInformation("Execute:Cache miss,MBR<=Cache<=Memory[MAR]",true);
+            CenterPaneController.setStepInformation("Execute:Cache miss, MBR<=Cache<=Memory[MAR]",true);
+			CPU.cyclePlusOne();
             Halt.halt();
-            CPU.getInstance().cyclePlusOne(); //??????????????? add how many ???????????????
         }else{
             //hit , and store the data in MBR
             CPU.getInstance().getMBR().setContent(data);
             CenterPaneController.setStepInformation("Execute:Cache hit, MBR<=Cache",true);
+			CPU.cyclePlusOne();
             Halt.halt();
-            CPU.getInstance().cyclePlusOne();//??????????????? add how many ????????????????
         }
     }
 

@@ -11,13 +11,12 @@ public class Addressing {
 	
 	//calculate effective address
     public static void getEffectiveAddress(String x, String i, String address){
-    	
-		//In one cycle, move the first operand address from the IR to the Internal Address Register IAR
-		cpu.getIAR().setContent(cpu.alignment(address));
-		stepInformation=("Locate and fetch operand data:IAR<=IR");
+		//In one cycle, move the first operand address to the Internal Address Register IAR
+		cpu.getIAR().setContent(CPU.alignment(address));
+		stepInformation=("Locate and fetch operand data:IAR<=address");
 		sendStepInformation();
 		Halt.halt();
-		cpu.cyclePlusOne();
+		CPU.cyclePlusOne();
 		
     		//if I field = 0, NO indirect addressing
         if(i.equals("0")){
@@ -61,15 +60,15 @@ public class Addressing {
             		//In 1 cycle, move the contents of the IAR to the MAR
             		cpu.getMAR().setContent(cpu.getIAR().getContent());
             		Halt.halt();
-            		cpu.cyclePlusOne();	
+            		CPU.cyclePlusOne();	
             		//In one cycle fetch the contents of the word in memory specified by the MAR into the MBR
                 cpu.getMBR().setContent(cpu.getMemory().getContent(cpu.getMAR().getContent()));
                 Halt.halt();
-        			cpu.cyclePlusOne();
+        			CPU.cyclePlusOne();
         			//IAR = MBR
                 cpu.getIAR().setContent(cpu.getMBR().getContent());
                 Halt.halt();
-    				cpu.cyclePlusOne();
+    				CPU.cyclePlusOne();
                 
             }else{
             		//if IX = 1..3, c(c(Xj) + Address), where j = c(IX). Both indirect addressing and indexing
@@ -95,19 +94,19 @@ public class Addressing {
 				stepInformation=("MAR <= IAR");
 				sendStepInformation();
 				Halt.halt();
-				cpu.cyclePlusOne();
+				CPU.cyclePlusOne();
 				//Get content in Memory using address in MAR, and move it to MBR.
 				stepInformation=("MBR <= Memory[MAR]");
 				sendStepInformation();
 				cpu.getMBR().setContent(cpu.getMemory().getContent(cpu.getMAR().getContent()));
 				Halt.halt();
-				cpu.cyclePlusOne();
+				CPU.cyclePlusOne();
 				//Move the effective address from MBR to IAR
 				cpu.getIAR().setContent(cpu.getMBR().getContent());
 				stepInformation=("IAR <= MBR");
 				sendStepInformation();
 				Halt.halt();
-				cpu.cyclePlusOne();
+				CPU.cyclePlusOne();
             }
         }
     }
@@ -126,17 +125,17 @@ public class Addressing {
 		sendStepInformation();
 		//@@@@@@Question@@@@@
 		Halt.halt();
-		cpu.cyclePlusOne();
+		CPU.cyclePlusOne();
 		//add content in specific index register with content in IAR to get effective address
 		cpu.getALU().add(cpu.getY().getContent(), x.getContent());
 		stepInformation=("ALU calculate: Y + c(" + x.getName() + ").");
 		sendStepInformation();
 		Halt.halt();
-		cpu.cyclePlusOne();
+		CPU.cyclePlusOne();
 		cpu.getIAR().setContent(cpu.getZ().getContent());
 		stepInformation=("ALU calculate: IAR <= Z (ALU result)");
 		sendStepInformation();
 		Halt.halt();
-		cpu.cyclePlusOne();
+		CPU.cyclePlusOne();
     }
 }

@@ -1,4 +1,5 @@
 package core;
+
 public class ISA {
     protected static CPU cpu = CPU.getInstance();
 	protected static String R;
@@ -6,6 +7,9 @@ public class ISA {
 	protected static String I;
 	protected static String RX;
 	protected static String RY;
+	protected static String LorR;
+	protected static String AorL;
+	protected static Integer count;
 	protected static String address;
 	
 	public static void execute(String op, String r, String x, String i, String addr) {
@@ -36,6 +40,9 @@ public class ISA {
 	     else if(op.equals("STX")){
 	        LoadAndStore.STX();
 	     }
+	     else if(op.equals("AMR")){
+
+		 }
 	}
 	
 	public static void execute(String op, String rx, String ry) {
@@ -48,26 +55,41 @@ public class ISA {
 			ArithmeticInstructions.MLT();
 		}
 		//DVD
-		if(op.equals("DVD")) {
+		else if(op.equals("DVD")) {
 			ArithmeticInstructions.DVD();
 		}
 		
 		//Logical Instructions
 		//TRR
-		if(op.equals("TRR")) {
+		else if(op.equals("TRR")) {
 			LogicalInstruction.TRR();
 		}
 		//AND
-		if(op.equals("AND")) {
+		else if(op.equals("AND")) {
 			LogicalInstruction.AND();
 		}
 		//ORR
-		if(op.equals("ORR")) {
+		else if(op.equals("ORR")) {
 			LogicalInstruction.ORR();
 		}
 		//NOT
-		if(op.equals("NOT")) {
+		else if(op.equals("NOT")) {
 			LogicalInstruction.NOT();
+		}
+	}
+	
+	public static void execute(String op, String r, Integer c, String LR, String AL) {
+		R = r;
+		count = c;
+		LorR = LR;
+		AorL = AL;
+		//SRC
+		if(op.equals("SRC")) {
+			ShiftAndRotate.SRC();
+		}
+		//RRC
+		else if(op.equals("RRC")) {
+			ShiftAndRotate.RRC();
 		}
 	}
 	
