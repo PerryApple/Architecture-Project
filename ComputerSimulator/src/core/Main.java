@@ -1,5 +1,7 @@
 package core;
 
+import java.io.IOException;
+
 import gui.Controller;
 
 //import gui.controllers.*;
@@ -8,11 +10,9 @@ import gui.Controller;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class Main extends Application {
 

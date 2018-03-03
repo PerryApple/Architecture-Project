@@ -1,7 +1,5 @@
 package core;
 
-import java.util.concurrent.TransferQueue;
-
 public class ISA {
     protected static CPU cpu = CPU.getInstance();
 	protected static String R;
