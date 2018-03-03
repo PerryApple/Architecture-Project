@@ -14,6 +14,8 @@ public class Cache {
     //get instance
     private static final Cache instance = new Cache();
 
+    public static Cache getInstance(){ return instance; }
+
     private Cache(){
         cacheLines = new LinkedList<>();
         for(int i=0;i<numOfLine;i++){
@@ -57,18 +59,39 @@ public class Cache {
         cacheLines.add(cacheLine);
         return res;
     }
+
+    public  void cacheToMBR(String address){
+        String data = getdata(address);
+        if(data.equals("miss")){
+            data = Cache.getInstance().getIfMiss(address);
+            CPU.getInstance().getMBR().setContent(data);
+            CenterPaneController.setStepInformation("Execute:Cache miss,MBR<=Cache<=Memory[MAR]",true);
+            Halt.halt();
+            CPU.getInstance().cyclePlusOne(); //??????????????? add how many ???????????????
+        }else{
+            //hit , and store the data in MBR
+            CPU.getInstance().getMBR().setContent(data);
+            CenterPaneController.setStepInformation("Execute:Cache hit, MBR<=Cache",true);
+            Halt.halt();
+            CPU.getInstance().cyclePlusOne();//??????????????? add how many ????????????????
+        }
+    }
+
+
     //write back data
     public void writeBack(String address,String data){
         String tag = address.substring(0,10);
         int offset = Integer.valueOf(address.substring(10,12),2);
         boolean done = false;
         for(CacheLine cacheLine : cacheLines){
+            // if it exists in cache, just update it in the cache and memory
             if(cacheLine.getTag().equals(tag)){
                cacheLine.setBlock(offset,data);
+               Memory.getInstance().setContent(address, data);
                done = true;
             }
         }
-        //it doesn't exist in cache , so write it in cache
+        //it doesn't exist in cache , so write it to cache and memory
         if(!done){
             CacheLine cacheLine = new CacheLine();
             cacheLine.setValid(1);
@@ -93,26 +116,6 @@ public class Cache {
             Memory.getInstance().setContent(address,data);
         }
     }
-
-    public  void cacheToMBR(String address){
-        String data = getdata(address);
-        if(data.equals("miss")){
-            data = Cache.getInstance().getIfMiss(address);
-            CPU.getInstance().getMBR().setContent(data);
-            CenterPaneController.setStepInformation("Execute:Cache miss,MBR<=Cache<=Memory[MAR]",true);
-            Halt.halt();
-            CPU.getInstance().cyclePlusOne(); //??????????????? add how many ???????????????
-        }else{
-            //hit , and store the data in MBR
-            CPU.getInstance().getMBR().setContent(data);
-            CenterPaneController.setStepInformation("Execute:Cache hit, MBR<=Cache",true);
-            Halt.halt();
-            CPU.getInstance().cyclePlusOne();//??????????????? add how many ????????????????
-        }
-    }
-
-    public static Cache getInstance(){ return instance; }
-
 }
 class CacheLine{
     //valid bit,if valid equals to one that means this line has data else if equals to zero then no data
@@ -157,4 +160,5 @@ class CacheLine{
     public String getBlock(int i){
         return blocks[i];
     }
+
 }

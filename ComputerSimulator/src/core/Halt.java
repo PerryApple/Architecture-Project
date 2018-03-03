@@ -9,9 +9,7 @@ public class Halt implements Runnable {
 //	}
     public static volatile boolean flag=true;
     public void run() {
-        //System.out.println("started");
         CPU.getInstance().getControler().process();
-        
     }
     public static void halt(){
         flag=true;

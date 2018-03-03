@@ -112,7 +112,6 @@ public class Decoder {
     		}else if(opClass.equals("SRI")) {
     			ISA.execute(opCode, R, count, LorR, AorL);
     		}
-    		
     }
     
     //clear decoder

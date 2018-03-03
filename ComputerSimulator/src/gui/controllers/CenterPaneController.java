@@ -4,18 +4,23 @@ import gui.Controller;
 import javafx.fxml.FXML;
 import core.*;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
 public class CenterPaneController implements Controller {
-    @FXML private TextField StepInformation;
+    @FXML private TextArea StepInformation;
     @FXML private TextField Address;
     @FXML private TextField Content;
-    @FXML private TextField InstructionField;
+    @FXML private TextArea InstructionField;
     @FXML private Text cycle;
 
     @FXML private TextField PC;
@@ -50,17 +55,19 @@ public class CenterPaneController implements Controller {
     Halt halt = new Halt();
 
     @Override
-    public void initialise(){
+    public void initialise(){}
 
-    }
-
+    // button control
     public void switchOnOff() {
         if (!open) {
+            // clear all data before run
+            stepInformation = "";
             CPU.getInstance().clearAll();
             CPU.getInstance().getMemory().clear();
+            Decoder.getInstance().clear();
             instructionNum = 0;
             loadStatus = false;
-            stepInformation = "";
+            // show the information and reverse open status
             update();
             open = !open;
         }
@@ -70,6 +77,8 @@ public class CenterPaneController implements Controller {
         }
     }
 
+
+    // load data
     public void loadInstruction() {
         if(open){
             if(loadStatus) {
@@ -118,7 +127,6 @@ public class CenterPaneController implements Controller {
                     stepInformation="Load error";
                     update();
                     System.out.println(e.toString());
-                    //show the error on the Monitor
                 }
             }
         }
@@ -129,12 +137,27 @@ public class CenterPaneController implements Controller {
         update();
     }
 
+    public void viewCache() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader()
+                .getResource("gui/views/SeeCachePane.fxml"));
+        Pane seeCachePane = loader.load();
+        Controller controller = loader.getController();
+        controller.initialise();
+        Stage stage = new Stage();
+
+        stage.setTitle("Cache");
+        stage.setScene(new Scene(seeCachePane));
+        stage.setResizable(false);
+        stage.show();
+    }
+
     public void searchMemory() {
         String searchField = Address.getText();
         Content.setText(CPU.getInstance().getMemory().getContent(searchField));
     }
 
     private void update() {
+        // set all the TextField in the GUI
         StepInformation.setText(stepInformation);
         if (memoryInformation) {
             Address.setText(CPU.getInstance().getMAR().getContent());
@@ -142,8 +165,6 @@ public class CenterPaneController implements Controller {
         }
         InstructionField.setText(instruction[instructionNum]);
         cycle.setText(String.valueOf(CPU.getCycle()));
-
-
         PC.setText(CPU.getInstance().getPC().getContent().substring(4, 16));
         MAR.setText(CPU.getInstance().getMAR().getContent());
         MBR.setText(CPU.getInstance().getMBR().getContent());
@@ -161,9 +182,13 @@ public class CenterPaneController implements Controller {
         R3.setText(CPU.getInstance().getR3().getContent());
         CC.setText(CPU.getInstance().getCC().getContent());
         MFR.setText(CPU.getInstance().getMFR().getContent());
-//        QR.setText(CPU.getInstance().getQR().getContent());
+        QR.setText(CPU.getInstance().getQR().getContent());
+        MLR.setText(CPU.getInstance().getMLR().getContent());
+        PR.setText(CPU.getInstance().getPR().getContent());
+        RR.setText(CPU.getInstance().getRR().getContent());
     }
 
+    // switch off the GUI
     private void shutdown() {
         StepInformation.setText("");
         Address.setText("");
@@ -187,12 +212,15 @@ public class CenterPaneController implements Controller {
         R3.setText("");
         CC.setText("");
         MFR.setText("");
+        Halt.flag=true;
     }
 
+    // used by Halt Thread to detect if need to pause
     public static boolean getOpen() {
         return open;
     }
 
+    // used by other class to set current stepInformation and memoryInformation
     public static void setStepInformation(String stepInformation, boolean memoryInformation) {
         CenterPaneController.stepInformation = stepInformation;
         CenterPaneController.memoryInformation = memoryInformation;

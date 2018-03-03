@@ -24,8 +24,8 @@ public class Main extends Application {
 
         primaryStage.setTitle("SIMULATED COMPUTER");
         primaryStage.setScene(new Scene(root, 750, 520));
-        primaryStage.setMinWidth(750);
-        primaryStage.setMinHeight(520);
+        primaryStage.setMaxWidth(750);
+        primaryStage.setMaxHeight(520);
         primaryStage.show();
     }
 
