@@ -96,7 +96,6 @@ public class Decoder {
     		}else if(opClass.equals("AI")||opClass.equals("LI")) {
     			ISA.execute(opCode, RX, RY);
     		}
-    		
     }
     
     //clear decoder
