@@ -3,7 +3,7 @@ import gui.controllers.CenterPaneController;
 //===============================================//
 //            Transfer instruction               //
 //===============================================//
-public class Transfer  extends ISA{
+public class TransferInstruction  extends ISA{
 //    Jump If Zero:
 //    If c(r) = 0, then PC <- EA
 //    Else PC <- PC+1
@@ -44,7 +44,7 @@ public class Transfer  extends ISA{
         //set PC
         if(r!=null&&!r.getContent().equals("0000000000000000")){
             cpu.getPC().setContent(cpu.getIAR().getContent());
-            //UI shows step infromation
+            //UI shows step information
             CenterPaneController.setStepInformation("PC<-EA",false);
             //set jump to make PC not ++
             Controler.getInstance().jump = true;
