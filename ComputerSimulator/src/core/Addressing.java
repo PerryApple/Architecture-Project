@@ -12,9 +12,9 @@ public class Addressing {
 	//calculate effective address
     public static void getEffectiveAddress(String x, String i, String address){
     	
-		//In one cycle, move the first operand address from the IR to the Internal Address Register IAR
+		//In one cycle, move the first operand address to the Internal Address Register IAR
 		cpu.getIAR().setContent(cpu.alignment(address));
-		stepInformation=("Locate and fetch operand data:IAR<=IR");
+		stepInformation=("Locate and fetch operand data:IAR<=address");
 		sendStepInformation();
 		Halt.halt();
 		cpu.cyclePlusOne();

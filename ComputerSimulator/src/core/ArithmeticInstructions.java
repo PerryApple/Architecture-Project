@@ -1,4 +1,5 @@
 package core;
+import gui.controllers.CenterPaneController;
 //This class contains all arithmetic instructions includes add, subtract, multiply and divide.
 //These instructions are parts of ISA.
 public class ArithmeticInstructions extends ISA{
@@ -151,19 +152,159 @@ public class ArithmeticInstructions extends ISA{
 		cpu.cyclePlusOne();
 		rxPlusOne.setContent(rr.getContent().substring(16));
 	}
-	
-	
-	//Test function
-	public static void main(String[] s) {
-		cpu.getR0().setContent("1000000000001111");
-		cpu.getR2().setContent("0000000000000011");
-		RX = "00";
-		RY = "10";
-		MLT();
-		System.out.println(cpu.getR0().getContent());
-		System.out.println(cpu.getR1().getContent());
-//		System.out.println(cpu.getCC().getContent());
-//		cpu.getCC().setContent("DIVZERO");
-//		System.out.println(cpu.getCC().getContent());
+
+//	Add Memory To Register, r = 0..3
+//	r<- c(r) + c(EA)
+	public static void AMR(){
+		Register r = null;
+		//get the Register according to R
+		switch (R){
+			case "00": r = cpu.getR0(); break;
+			case "01": r = cpu.getR1();break;
+			case "10": r = cpu.getR2();break;
+			case "11": r = cpu.getR3();break;
+		}
+		//set MAR register
+		cpu.getMAR().setContent(cpu.getIAR().getContent());
+		CenterPaneController.setStepInformation("Execute:MAR<=IAR",false);
+		Halt.halt();
+		cpu.cyclePlusOne();
+		//get the content in memory using address in MAR, and load it to MBR.
+		Cache.getInstance().cacheToMBR(cpu.getMAR().getContent());
+		//Execute the operation move data to IRR
+		cpu.getIRR().setContent(cpu.getMBR().getContent());
+		CenterPaneController.setStepInformation("Execute:IRR<=MBR",false);
+		Halt.halt();
+		cpu.cyclePlusOne();
+		//move c(r) to Y
+		cpu.getY().setContent(r.getContent());
+		CenterPaneController.setStepInformation("Execute:Y<=c(r)",false);
+		Halt.halt();
+		cpu.cyclePlusOne();
+		// r<- c(r)+c(EA)
+		r.setContent(ALU.getInstance().add(cpu.getY().getContent(),cpu.getIRR().getContent()));
+		CenterPaneController.setStepInformation("Execute:r<=c(r)+c(EA)",false);
+		Halt.halt();
 	}
+//	Add Immediate to Register, r = 0..3
+//	r <- c(r) + Immed
+//	Note:
+//	 1. if Immed = 0, does nothing
+//   2. if c(r) = 0, loads r with Immed
+//	IX and I are ignored in this instruction
+
+	public static void AIR(){
+		Register r = null;
+		//get the Register according to R
+		switch (R){
+			case "00": r = cpu.getR0(); break;
+			case "01": r = cpu.getR1();break;
+			case "10": r = cpu.getR2();break;
+			case "11": r = cpu.getR3();break;
+		}
+		if(!address.equals("00000")){
+			cpu.getIAR().setContent(cpu.alignment(address));
+			CenterPaneController.setStepInformation("Execute:IAR<-immed",false);
+			Halt.halt();
+			if(r.getContent().equals("0000000000000000")){
+				r.setContent(cpu.getIAR().getContent());
+				CenterPaneController.setStepInformation("Execute:r<-immed",false);
+				Halt.halt();
+			}else{
+				// Y<-c(r)
+				cpu.getY().setContent(r.getContent());
+				CenterPaneController.setStepInformation("Execute:Y<-c(r)",false);
+				Halt.halt();
+				// r<-c(r)+ immed
+				r.setContent(ALU.getInstance().add(cpu.getY().getContent(),cpu.getIAR().getContent()));
+				CenterPaneController.setStepInformation("Execute:r<-c(r)+immed",false);
+				Halt.halt();
+			}
+		}
+	}
+//	Subtract  Immediate  from Register, r = 0..3
+//	r <- c(r) - Immed
+//	Note:
+//	1. if Immed = 0, does nothing
+//  2. if c(r) = 0, loads r1 with –(Immed)
+//	IX and I are ignored in this instruction
+
+	public static void SIR(){
+		Register r = null;
+		//get the Register according to R
+		switch (R){
+			case "00": r = cpu.getR0(); break;
+			case "01": r = cpu.getR1();break;
+			case "10": r = cpu.getR2();break;
+			case "11": r = cpu.getR3();break;
+		}
+		if(!address.equals("00000")){
+			cpu.getIAR().setContent(cpu.alignment(address));
+			CenterPaneController.setStepInformation("Execute:IAR<-immed",false);
+			Halt.halt();
+			if(r.getContent().equals("0000000000000000")){
+				r.setContent(ALU.getInstance().minus("000000000000000",cpu.getIAR().getContent()));
+				CenterPaneController.setStepInformation("Execute:r<-(-immed)",false);
+				Halt.halt();
+			}else{
+				// Y<-c(r)
+				cpu.getY().setContent(r.getContent());
+				CenterPaneController.setStepInformation("Execute:Y<-c(r)",false);
+				Halt.halt();
+				// r<-c(r)+ immed
+				r.setContent(ALU.getInstance().minus(cpu.getY().getContent(),cpu.getIAR().getContent()));
+				CenterPaneController.setStepInformation("Execute:r<-c(r)-immed",false);
+				Halt.halt();
+			}
+		}
+	}
+
+//	Subtract Memory From Register, r = 0..3
+//	r<- c(r) – c(EA)
+	public static void SMR(){
+		Register r = null;
+		//get the Register according to R
+		switch (R){
+			case "00": r = cpu.getR0(); break;
+			case "01": r = cpu.getR1();break;
+			case "10": r = cpu.getR2();break;
+			case "11": r = cpu.getR3();break;
+		}
+		//set MAR register
+		cpu.getMAR().setContent(cpu.getIAR().getContent());
+		CenterPaneController.setStepInformation("Execute:MAR<=IAR",false);
+		Halt.halt();
+		cpu.cyclePlusOne();
+		//get the content in memory using address in MAR, and load it to MBR.
+		Cache.getInstance().cacheToMBR(cpu.getMAR().getContent());
+		//Execute the operation move data to IRR
+		cpu.getIRR().setContent(cpu.getMBR().getContent());
+		CenterPaneController.setStepInformation("Execute:IRR<=MBR",false);
+		Halt.halt();
+		cpu.cyclePlusOne();
+		//move c(r) to Y
+		cpu.getY().setContent(r.getContent());
+		CenterPaneController.setStepInformation("Execute:Y<=c(r)",false);
+		Halt.halt();
+		cpu.cyclePlusOne();
+		// r<- c(r)-c(EA)
+		r.setContent(ALU.getInstance().minus(cpu.getY().getContent(),cpu.getIRR().getContent()));
+		CenterPaneController.setStepInformation("Execute:r<=c(r)+c(EA)",false);
+		Halt.halt();
+	}
+
+
+	//Test function
+//	public static void main(String[] s) {
+//		cpu.getR0().setContent("1000000000001111");
+//		cpu.getR2().setContent("0000000000000011");
+//		RX = "00";
+//		RY = "10";
+//		MLT();
+//		System.out.println(cpu.getR0().getContent());
+//		System.out.println(cpu.getR1().getContent());
+////		System.out.println(cpu.getCC().getContent());
+////		cpu.getCC().setContent("DIVZERO");
+////		System.out.println(cpu.getCC().getContent());
+//	}
 }
