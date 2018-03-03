@@ -161,7 +161,7 @@ public class LogicalInstruction extends ISA {
 		//This operation will be done by ALU.
 		//Firstly, get rx, determine which register will be used in this instruction
 		Register rx = null;
-		switch(RX) {
+		switch(R) {
 			case"00":
 	            rx = cpu.getR0();
 	            break;

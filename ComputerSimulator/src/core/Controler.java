@@ -6,7 +6,10 @@ public class Controler {
     private static final Controler instance = new Controler();
     private  String stepInformation="";
     private Controler() {}
+    //if jump == true PC<-EA
     public boolean jump = false;
+    //if hlt == true halt the process
+    public boolean hlt = false;
     public static Controler getInstance() {
     		return instance;
     }
@@ -16,6 +19,7 @@ public class Controler {
         Halt.halt();
         //Instruction Fetch start here
         //MAR = PC
+        hlt = false;
         while(!CPU.getInstance().getMemory().getContent(CPU.getInstance().getPC().getContent()).equals("0000000000000000")){
             //initialize jump
             jump = false;
@@ -24,8 +28,8 @@ public class Controler {
         		CenterPaneController.instructionNum++;//Monitor shows what instruction is processing
             CPU.getInstance().getMAR().setContent(CPU.getInstance().getPC().getContent());
             sendStepInformation();
-            Halt.halt();
             CPU.cyclePlusOne();
+            Halt.halt();
 
             //uses the address in the MAR to fetch a word from cache. This fetch occurs in one cycle.
             //The word fetched from cache is placed in the Memory Buffer Register (MBR).
@@ -38,36 +42,38 @@ public class Controler {
             CPU.getInstance().getIR().setContent(CPU.getInstance().getMBR().getContent());
             stepInformation=("Instruction Fetch:IR<=MBR");
             sendStepInformation();
-            Halt.halt();
             CPU.cyclePlusOne();
+            Halt.halt();
             //Decode the instruction in IR
             //In 1 cycle  process the instruction and use it to set several flags:
             CPU.getInstance().getDecoder().setInstruction(CPU.getInstance().getIR().getContent());
             CPU.getInstance().getDecoder().decode();
             stepInformation=("Instruction Decode...");
             sendStepInformation();
-            Halt.halt();
             CPU.cyclePlusOne();
+            Halt.halt();
 
             //Identify the instruction and execute it.
             //The specific steps of different instructions are handled in the ISA class and its subclasses
             //Operand Fetch, Execute and Result Store will be done in specific instruction method according to the instruction.
             CPU.getInstance().getDecoder().identify();
-
+            //if the instruntion is HALT then break the while loop
+            if(hlt) break;
             //Next Instruction
             //PC++
             //get content from pc, add one in ALU, store the result in Z temporarily and send it to pc.
-            if(jump){
+            if(!jump){
                 CPU.getInstance().getZ().setContent(CPU.getInstance().getALU().addPC(CPU.getInstance().getPC()));
                 stepInformation=("Next Instruction: Z <= PC++ (ALU)");
                 sendStepInformation();
-                Halt.halt();
                 CPU.cyclePlusOne();
+                Halt.halt();
+
                 CPU.getInstance().getPC().setContent(CPU.getInstance().getZ().getContent());
                 stepInformation=("PC <= Z");
                 sendStepInformation();
-                Halt.halt();
                 CPU.cyclePlusOne();
+                Halt.halt();
             }
         }
     }

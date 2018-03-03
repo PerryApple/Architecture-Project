@@ -230,25 +230,20 @@ public class ArithmeticInstructions extends ISA{
 			case "11": r = cpu.getR3();break;
 		}
 		if(!address.equals("00000")){
-			cpu.getIAR().setContent(CPU.alignment(address));
+			cpu.getY().setContent(CPU.alignmentImmed(Immed));
 			CPU.cyclePlusOne();
-			CenterPaneController.setStepInformation("Execute:IAR<-immed",false);
+			CenterPaneController.setStepInformation("Y <= immed",false);
 			Halt.halt();
 			if(r.getContent().equals("0000000000000000")){
-				r.setContent(cpu.getIAR().getContent());
+				r.setContent(cpu.getY().getContent());
 				CPU.cyclePlusOne();
-				CenterPaneController.setStepInformation("Execute:r<-immed",false);
+				CenterPaneController.setStepInformation(r.getName() + " <= immed",false);
 				Halt.halt();
 			}else{
-				// Y<-c(r)
-				cpu.getY().setContent(r.getContent());
+				// r<-c(r)+ c(Y)
+				r.setContent(ALU.getInstance().add(r.getContent(),cpu.getY().getContent()));
 				CPU.cyclePlusOne();
-				CenterPaneController.setStepInformation("Execute:Y<-c(r)",false);
-				Halt.halt();
-				// r<-c(r)+ immed
-				r.setContent(ALU.getInstance().add(cpu.getY().getContent(),cpu.getIAR().getContent()));
-				CPU.cyclePlusOne();
-				CenterPaneController.setStepInformation("Execute:r<-c(r)+immed",false);
+				CenterPaneController.setStepInformation(r.getName() + " <= c(r) + c(Y) (Immed)",false);
 				Halt.halt();
 			}
 		}
@@ -270,25 +265,20 @@ public class ArithmeticInstructions extends ISA{
 			case "11": r = cpu.getR3();break;
 		}
 		if(!address.equals("00000")){
-			cpu.getIAR().setContent(CPU.alignment(address));
+			cpu.getY().setContent(CPU.alignmentImmed(Immed));
 			CPU.cyclePlusOne();
-			CenterPaneController.setStepInformation("Execute:IAR<-immed",false);
+			CenterPaneController.setStepInformation("Y <= immed",false);
 			Halt.halt();
 			if(r.getContent().equals("0000000000000000")){
-				r.setContent(ALU.getInstance().minus("000000000000000",cpu.getIAR().getContent()));
+				r.setContent(ALU.getInstance().minus("0000000000000000",cpu.getY().getContent()));
 				CPU.cyclePlusOne();
-				CenterPaneController.setStepInformation("Execute:r<-(-immed)",false);
+				CenterPaneController.setStepInformation(r.getName() + " <= (-immed)",false);
 				Halt.halt();
 			}else{
-				// Y<-c(r)
-				cpu.getY().setContent(r.getContent());
+				// r<-c(r)+ c(Y)immed
+				r.setContent(ALU.getInstance().minus(r.getContent(),cpu.getY().getContent()));
 				CPU.cyclePlusOne();
-				CenterPaneController.setStepInformation("Execute:Y<-c(r)",false);
-				Halt.halt();
-				// r<-c(r)+ immed
-				r.setContent(ALU.getInstance().minus(cpu.getY().getContent(),cpu.getIAR().getContent()));
-				CPU.cyclePlusOne();
-				CenterPaneController.setStepInformation("Execute:r<-c(r)-immed",false);
+				CenterPaneController.setStepInformation(r.getName() + " <= c(r) - c(Y) (Immed)",false);
 				Halt.halt();
 			}
 		}
@@ -308,7 +298,7 @@ public class ArithmeticInstructions extends ISA{
 		//set MAR register
 		cpu.getMAR().setContent(cpu.getIAR().getContent());
 		CPU.cyclePlusOne();
-		CenterPaneController.setStepInformation("Execute:MAR<=IAR",false);
+		CenterPaneController.setStepInformation("Execute: MAR <= IAR",false);
 		Halt.halt();
 
 		//get the content in memory using address in MAR, and load it to MBR.
@@ -316,19 +306,19 @@ public class ArithmeticInstructions extends ISA{
 		//Execute the operation move data to IRR
 		cpu.getIRR().setContent(cpu.getMBR().getContent());
 		CPU.cyclePlusOne();
-		CenterPaneController.setStepInformation("Execute:IRR<=MBR",false);
+		CenterPaneController.setStepInformation("Execute: IRR <= MBR",false);
 		Halt.halt();
 
 		//move c(r) to Y
 		cpu.getY().setContent(r.getContent());
 		CPU.cyclePlusOne();
-		CenterPaneController.setStepInformation("Execute:Y<=c(r)",false);
+		CenterPaneController.setStepInformation("Execute:Y <= c(r)",false);
 		Halt.halt();
 
 		// r<- c(r)-c(EA)
 		r.setContent(ALU.getInstance().minus(cpu.getY().getContent(),cpu.getIRR().getContent()));
 		CPU.cyclePlusOne();
-		CenterPaneController.setStepInformation("Execute:r<=c(r)+c(EA)",false);
+		CenterPaneController.setStepInformation("Execute: r <= c(r) + c(EA)",false);
 		Halt.halt();
 	}
 }
