@@ -2,7 +2,7 @@ package core;
 
 //This is multiplicand register. Store the content of Rx in MLT instruction.
 public class MLR implements Register {
-	private static final String name = "MAR";
+	private static final String name = "MLR";
 	//Size of MLR is 16bits.
 	private static final int size = 16;
 	//Initially set the content to 16 zeroes.

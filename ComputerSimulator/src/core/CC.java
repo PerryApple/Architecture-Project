@@ -1,7 +1,6 @@
 package core;
 //Reserved Register CC, Only one instance of this class exist in computer
 public class CC implements Register {
-
 	private static final String name  = "CC";
 	//Size of Program Counter is 4bits.
 	private static final int size = 4;
@@ -54,7 +53,7 @@ public class CC implements Register {
 		}else if (content.equalsIgnoreCase("0000")){
 			this.content = "0000";
 		}else {
-			content = "CC Error!";
+			this.content = "CC Error!";
 		}
 	}
 
