@@ -298,4 +298,5 @@ public class Decoder {
     		R = instruction.substring(6,8);
     		DevID = instruction.substring(11,16);
     }
+
 }

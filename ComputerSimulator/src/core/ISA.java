@@ -1,7 +1,7 @@
 package core;
 
 public class ISA {
-    protected static CPU cpu = CPU.getInstance();
+	protected static CPU cpu = CPU.getInstance();
 	protected static String R;
 	protected static String X;
 	protected static String I;
@@ -14,7 +14,6 @@ public class ISA {
     protected static Integer CC;
     protected static String Immed;
     protected static String DevID;
-	
 	public static void execute(String op, String r, String x, String i, String addr) {
 		//Store R, X, I and address bits for later use.
 		R = r;
@@ -49,10 +48,8 @@ public class ISA {
 				case "SMR": ArithmeticInstructions.SMRNHLT();break;	
 			}
 		}
-		
-
 	}
-	
+
 	public static void execute(String op, String rx, String ry) {
 		if(cpu.getControler().singleStep) {
 			switch (op){
@@ -132,5 +129,5 @@ public class ISA {
 			}	
 		}
 	}
-	
+
 }

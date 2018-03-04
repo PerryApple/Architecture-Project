@@ -94,35 +94,23 @@ public class CenterPaneController implements Controller {
                     fr=new FileReader(txt);
                     br=new BufferedReader(fr);
                     String line;
-                    String address="000000001000";
                     // flag is used to mark whether the loaded line is data or instruction
                     Boolean flag = true;
                     while((line=br.readLine())!=null){
-                        if(line.substring(0,2).equals("//"))
-                            continue;
-                        if(line.substring(0,4).equals("DATA")){
-                            flag = true;
-                            continue;
-                        }
-                        else if(line.substring(0, 12).equals("INSTRUCTIONS")){
-                            flag = false;
+                        String test = line.substring(0,2);
+                        char xx = test.charAt(0);
+                        if(line.substring(0,2).equals("//")) {
                             continue;
                         }
                         // when flag is true, the loaded content is data, put it into the memory
-                        if(flag){
                             String[] contents = line.split(",");
                             CPU.getInstance().getMemory().setContent(contents[0], contents[1]);
                         }
                         // when flag is false, the loaded content is instruction, put it into the memory
-                        else{
-                            CPU.getInstance().getMemory().setContent(address,line);
-                            address=CPU.getInstance().getMemory().addressAddone(address);
-                        }
-                    }
                     stepInformation="Load success";
                     loadStatus = true;
                     //put the beginning address of a program into PC.
-                    CPU.getInstance().getPC().setContent("000000001000");
+                    CPU.getInstance().getPC().setContent("000010000000");
                     update();
                     new Thread(halt).start();
 
