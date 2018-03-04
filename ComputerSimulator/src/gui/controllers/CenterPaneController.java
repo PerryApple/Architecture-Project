@@ -209,7 +209,7 @@ public class CenterPaneController implements Controller {
         Address.setText("");
         Content.setText("");
         InstructionField.setText("");
-
+        INPUT.setText("");
         PC.setText("");
         MAR.setText("");
         MBR.setText("");

@@ -181,28 +181,37 @@ public class Decoder {
 		switch(opClass) {
 			case "LSI":
 				ISA.execute(opCode, R, X, I, address);
+				break;
 			case "TI":
 				switch(opCode) {
 					case "JCC":
 						ISA.execute(opCode, X, cc,  I, address);
+						break;
 					case "RFS":
 						ISA.execute(opCode, Immed, "0");
+						break;
 					default:
 						ISA.execute(opCode, R, X, I, address);
+						break;
 				}
 			case "AIA":
 				ISA.execute(opCode, R, X, I, address);
+				break;
 			case "AII":
 				ISA.execute(opCode, R, Immed);
+				break;
 			case "AI":
 				ISA.execute(opCode, RX, RY);
+				break;
 			case "LI":
 				ISA.execute(opCode, RX, RY);
+				break;
 			case "SRI":
 				ISA.execute(opCode, R, count, LorR, AorL);
+				break;
 			case "IOI":
 				ISA.execute(opCode, R, DevID);
-
+				break;
 		}
 	}
 

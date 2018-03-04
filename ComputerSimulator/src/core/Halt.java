@@ -23,6 +23,5 @@ public class Halt implements Runnable {
         while (flag) {
             if (CenterPaneController.getOpen() == false) break;
         }
-        ;
     }
 }
