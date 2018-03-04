@@ -123,10 +123,8 @@ public class Controler {
                 CPU.getInstance().getZ().setContent(CPU.getInstance().getALU().addPC(CPU.getInstance().getPC()));
                 CPU.cyclePlusOne();
 
-
                 CPU.getInstance().getPC().setContent(CPU.getInstance().getZ().getContent());
                 CPU.cyclePlusOne();
-                Halt.halt();
             }
         }
     }

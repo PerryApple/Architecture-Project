@@ -172,7 +172,6 @@ public class Decoder {
             		ioInstruction();
             		break;
         }
-
     }
     
     //search in ISA to identify the instruction.
@@ -202,7 +201,6 @@ public class Decoder {
     				ISA.execute(opCode, R, count, LorR, AorL);
     			case "IOI":
     				ISA.execute(opCode, R, DevID);
-    			
     		}
     }
     
@@ -220,7 +218,11 @@ public class Decoder {
         X=instruction.substring(8,10);
         I=instruction.substring(10,11);
         address=instruction.substring(11,16);
-        Addressing.getEffectiveAddress(X,I,address);
+        if(CPU.getInstance().getControler().singleStep) {
+	    		Addressing.getEffectiveAddress(X,I,address);
+	    }else {
+	    		Addressing.getEffectiveAddressNHLT(X,I,address);
+	    }
     }
     
     private void arithmetic() {
@@ -253,11 +255,18 @@ public class Decoder {
         X=instruction.substring(8,10);
         I=instruction.substring(10,11);
         address=instruction.substring(11,16);
-        Addressing.getEffectiveAddress(X,I,address);
+        
+        if(!opCode.equals("RFS")) {
+            if(CPU.getInstance().getControler().singleStep) {
+	        		Addressing.getEffectiveAddress(X,I,address);
+	        }else {
+	        		Addressing.getEffectiveAddressNHLT(X,I,address);
+	        }
+        }
+        
     		if(opCode.equals("JCC")) {
     			this.cc = Integer.valueOf(R, 2);
-    		}
-    		if(opCode.equals("RFS")) {
+    		}else if(opCode.equals("RFS")) {
     			this.Immed = address;
     		}
     }
@@ -269,6 +278,11 @@ public class Decoder {
         X=instruction.substring(8,10);
         I=instruction.substring(10,11);
         address=instruction.substring(11,16);
+        if(CPU.getInstance().getControler().singleStep) {
+	    		Addressing.getEffectiveAddress(X,I,address);
+	    }else {
+	    		Addressing.getEffectiveAddressNHLT(X,I,address);
+	    }
     }
     
     private void arithmeticInstructionImmed() {
