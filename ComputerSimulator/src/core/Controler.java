@@ -96,7 +96,7 @@ public class Controler {
             //uses the address in the MAR to fetch a word from cache. This fetch occurs in one cycle.
             //The word fetched from cache is placed in the Memory Buffer Register (MBR).
             //if it is a miss, extract from memory and store it in cache
-            Cache.getInstance().cacheToMBR(CPU.getInstance().getMAR().getContent());
+            Cache.getInstance().cacheToMBRNHLT(CPU.getInstance().getMAR().getContent());
 
             //Instruction decode start here
             //The contents of the Memory Buffer Register (MBR) are moved to the Instruction Register (IR).

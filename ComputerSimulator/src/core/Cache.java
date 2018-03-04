@@ -77,6 +77,20 @@ public class Cache {
             Halt.halt();
         }
     }
+    
+    //Cache to MBR without halt
+    public  void cacheToMBRNHLT(String address){
+        String data = getdata(address);
+        if(data.equals("miss")){
+            data = Cache.getInstance().getIfMiss(address);
+            CPU.getInstance().getMBR().setContent(data);
+			CPU.cyclePlusOne();
+        }else{
+            //hit , and store the data in MBR
+            CPU.getInstance().getMBR().setContent(data);
+			CPU.cyclePlusOne();
+        }
+    }
 
 
     //write back data
