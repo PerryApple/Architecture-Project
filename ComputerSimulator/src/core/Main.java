@@ -26,9 +26,9 @@ public class Main extends Application {
         root.setCenter(centerPane);
 
         primaryStage.setTitle("SIMULATED COMPUTER");
-        primaryStage.setScene(new Scene(root, 750, 640));
-        primaryStage.setMaxWidth(750);
-        primaryStage.setMaxHeight(640);
+        primaryStage.setScene(new Scene(root, 760, 700));
+//        primaryStage.setMaxWidth(750);
+//        primaryStage.setMaxHeight(640);
         primaryStage.show();
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override

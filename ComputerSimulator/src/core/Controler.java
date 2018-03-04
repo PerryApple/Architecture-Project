@@ -2,7 +2,7 @@ package core;
 import gui.controllers.CenterPaneController;
 
 public class Controler {
-	//Singleton Pattern
+    //Singleton Pattern
     private static final Controler instance = new Controler();
     private  String stepInformation="";
     private Controler() {}
@@ -10,12 +10,15 @@ public class Controler {
     public boolean jump = false;
     //if hlt == true halt the process
     public boolean hlt = false;
+    //Flag single step, if true, execute with single step
+    public boolean singleStep = true;
+
     public static Controler getInstance() {
-    		return instance;
+        return instance;
     }
 
-    //Main process 
-    public void process(){
+    //Main process
+    public void processSingleStep(){
         Halt.halt();
         //Instruction Fetch start here
         //MAR = PC
@@ -25,7 +28,7 @@ public class Controler {
             jump = false;
             stepInformation=("Instruction Fetch:MAR<=PC");
             CPU.getInstance().getCC().setContent("0000");
-        		CenterPaneController.instructionNum++;//Monitor shows what instruction is processing
+            CenterPaneController.instructionNum++;//Monitor shows what instruction is processing
             CPU.getInstance().getMAR().setContent(CPU.getInstance().getPC().getContent());
             sendStepInformation();
             CPU.cyclePlusOne();
@@ -74,6 +77,54 @@ public class Controler {
                 sendStepInformation();
                 CPU.cyclePlusOne();
                 Halt.halt();
+            }
+        }
+    }
+
+    public void processByInstruction(){
+        Halt.halt();
+        //Instruction Fetch start here
+        //MAR = PC
+        hlt = false;
+        while(!CPU.getInstance().getMemory().getContent(CPU.getInstance().getPC().getContent()).equals("0000000000000000")){
+            //initialize jump
+            jump = false;
+            CPU.getInstance().getCC().setContent("0000");
+            CenterPaneController.instructionNum++;//Monitor shows what instruction is processing
+            CPU.getInstance().getMAR().setContent(CPU.getInstance().getPC().getContent());
+            CPU.cyclePlusOne();
+
+            //uses the address in the MAR to fetch a word from cache. This fetch occurs in one cycle.
+            //The word fetched from cache is placed in the Memory Buffer Register (MBR).
+            //if it is a miss, extract from memory and store it in cache
+            Cache.getInstance().cacheToMBR(CPU.getInstance().getMAR().getContent());
+
+            //Instruction decode start here
+            //The contents of the Memory Buffer Register (MBR) are moved to the Instruction Register (IR).
+            //IR = MBR
+            CPU.getInstance().getIR().setContent(CPU.getInstance().getMBR().getContent());
+            CPU.cyclePlusOne();
+            //Decode the instruction in IR
+            //In 1 cycle  process the instruction and use it to set several flags:
+            CPU.getInstance().getDecoder().setInstruction(CPU.getInstance().getIR().getContent());
+            CPU.getInstance().getDecoder().decode();;
+            CPU.cyclePlusOne();
+
+            //Identify the instruction and execute it.
+            //The specific steps of different instructions are handled in the ISA class and its subclasses
+            //Operand Fetch, Execute and Result Store will be done in specific instruction method according to the instruction.
+            CPU.getInstance().getDecoder().identify();
+            //if the instruntion is HALT then break the while loop
+            if(hlt) break;
+            //Next Instruction
+            //PC++
+            //get content from pc, add one in ALU, store the result in Z temporarily and send it to pc.
+            if(!jump){
+                CPU.getInstance().getZ().setContent(CPU.getInstance().getALU().addPC(CPU.getInstance().getPC()));
+                CPU.cyclePlusOne();
+
+                CPU.getInstance().getPC().setContent(CPU.getInstance().getZ().getContent());
+                CPU.cyclePlusOne();
             }
         }
     }
