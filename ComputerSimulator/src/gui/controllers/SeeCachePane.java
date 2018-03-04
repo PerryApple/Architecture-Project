@@ -29,7 +29,11 @@ public class SeeCachePane implements Controller {
 
     @Override
     public void initialise() {
+        updateCache();
 
+    }
+
+    public void updateCache(){
         TAG.setCellValueFactory(new PropertyValueFactory<CacheLineOuput, String>("TAG"));
         Valid.setCellValueFactory(new PropertyValueFactory<CacheLineOuput, String>("Valid"));
         BLOCK1.setCellValueFactory(new PropertyValueFactory<CacheLineOuput, String>("BLOCK1"));
