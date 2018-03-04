@@ -20,28 +20,18 @@ public class ISA {
 		// Identify the operation code and execute in specific subclass
 		//Subclass Load and Store.
 		//LDR
-		 if(op.equals("LDR")) {
-			 LoadAndStore.LDR();
-		 }
-		 //STR
-	     else if(op.equals("STR")){
-	        LoadAndStore.STR();
-	     }
-		 //LDA
-	     else if(op.equals("LDA")){
-	        LoadAndStore.LDA();
-	     }
-		 //LDX
-	     else if(op.equals("LDX")){
-	        LoadAndStore.LDX();
-	     }
-		 //STX
-	     else if(op.equals("STX")){
-	        LoadAndStore.STX();
-	     }
-	     else if(op.equals("AMR")){
+		switch (op){
+			case "LDR": LoadAndStore.LDR();break;
+			case "STR": LoadAndStore.STR();break;
+			case "LDA": LoadAndStore.LDA();break;
+			case "LDX": LoadAndStore.LDX();break;
+			case "STX": LoadAndStore.STX();break;
+			case "AMR": ArithmeticInstructions.AMR();break;
+			case "SMR": ArithmeticInstructions.SMR();break;
+			case "AIR": ArithmeticInstructions.AIR();break;
+			case "SIR":ArithmeticInstructions.SIR();break;
+		}
 
-		 }
 	}
 	
 	public static void execute(String op, String rx, String ry) {
@@ -49,32 +39,16 @@ public class ISA {
 		RY = ry;
 		
 		//Arithmetic Instructions with out address field
-		//MLT
-		if(op.equals("MLT")) {
-			ArithmeticInstructions.MLT();
+		switch (op){
+			case "MLT": ArithmeticInstructions.MLT();break;
+			case "DVD": ArithmeticInstructions.DVD();break;
+			//Logical Instructions
+			case "TRR": LogicalInstruction.TRR();break;
+			case "AND": LogicalInstruction.AND();break;
+			case "ORR": LogicalInstruction.ORR();break;
+			case "NOT": LogicalInstruction.NOT();break;
 		}
-		//DVD
-		if(op.equals("DVD")) {
-			ArithmeticInstructions.DVD();
-		}
-		
-		//Logical Instructions
-		//TRR
-		if(op.equals("TRR")) {
-			LogicalInstruction.TRR();
-		}
-		//AND
-		if(op.equals("AND")) {
-			LogicalInstruction.AND();
-		}
-		//ORR
-		if(op.equals("ORR")) {
-			LogicalInstruction.ORR();
-		}
-		//NOT
-		if(op.equals("NOT")) {
-			LogicalInstruction.NOT();
-		}
+
 	}
-	
+
 }

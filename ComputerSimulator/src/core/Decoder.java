@@ -108,8 +108,8 @@ public class Decoder {
     //Decode instructions which belong to Load and Store
     private void decodeLoadAndStore() {
     		//LSI stands for Load and Store Instructions
-    		opClass = "LSI";
-    	 	R=instruction.substring(6,8);
+		opClass = "LSI";
+		R=instruction.substring(6,8);
         X=instruction.substring(8,10);
         I=instruction.substring(10,11);
         address=instruction.substring(11,16);
@@ -128,6 +128,6 @@ public class Decoder {
 		opClass = "LI";
 		RX = instruction.substring(6, 8);
 		RY = instruction.substring(8, 10);
-}
+	}
     
 }

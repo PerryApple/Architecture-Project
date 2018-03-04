@@ -9,6 +9,8 @@ import gui.controllers.CenterPaneController;
 public class IOinstructions extends ISA {
     //Input Character To Register from Device, r = 0..3
     public static void IN(){
+        Halt.halt();
+        CenterPaneController.setStepInformation("Please enter a number",false);
         Register r = null;
         //get the Register according to R
         switch (R){

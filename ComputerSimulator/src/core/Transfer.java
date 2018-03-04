@@ -143,7 +143,7 @@ public class Transfer  extends ISA{
         cpu.cyclePlusOne();
         Halt.halt();
         //first bit != 1 means >0
-        if(r.getContent().charAt(0)!=1&&r.getContent()!="0000000000000000"){
+        if(r.getContent().charAt(0)!='1'&&r.getContent()!="0000000000000000"){
             cpu.getPC().setContent(cpu.getIAR().getContent());
             //UI shows step information
             CenterPaneController.setStepInformation("PC<-EA",false);
@@ -166,7 +166,7 @@ public class Transfer  extends ISA{
             case "11": r = cpu.getR3();break;
         }
         // if c(r)>=0
-        if(r.getContent().charAt(0)!=1){
+        if(r.getContent().charAt(0)!='1'){
             cpu.getPC().setContent(cpu.getIAR().getContent());
             //UI shows step information
             CenterPaneController.setStepInformation("PC<-EA",false);
