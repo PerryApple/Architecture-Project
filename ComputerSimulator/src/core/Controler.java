@@ -2,7 +2,7 @@ package core;
 import gui.controllers.CenterPaneController;
 
 public class Controler {
-	//Singleton Pattern
+    //Singleton Pattern
     private static final Controler instance = new Controler();
     private  String stepInformation="";
     private Controler() {}
@@ -12,12 +12,11 @@ public class Controler {
     public boolean hlt = false;
     //Flag single step, if true, execute with single step
     public boolean singleStep = true;
-    
     public static Controler getInstance() {
-    		return instance;
+        return instance;
     }
-    
     //Main process 
+
     public void processSingleStep(){
         Halt.halt();
         //Instruction Fetch start here
@@ -28,7 +27,7 @@ public class Controler {
             jump = false;
             stepInformation=("Instruction Fetch:MAR<=PC");
             CPU.getInstance().getCC().setContent("0000");
-        		CenterPaneController.instructionNum++;//Monitor shows what instruction is processing
+            CenterPaneController.instructionNum++;//Monitor shows what instruction is processing
             CPU.getInstance().getMAR().setContent(CPU.getInstance().getPC().getContent());
             sendStepInformation();
             CPU.cyclePlusOne();
@@ -128,7 +127,6 @@ public class Controler {
             }
         }
     }
-
     public void sendStepInformation(){
         CenterPaneController.setStepInformation(stepInformation,false);
     }

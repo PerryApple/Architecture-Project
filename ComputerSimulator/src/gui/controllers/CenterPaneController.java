@@ -44,6 +44,9 @@ public class CenterPaneController implements Controller {
     @FXML private TextField MLR;
     @FXML private TextField PR;
     @FXML private TextField RR;
+    @FXML private TextField DR;
+    @FXML private TextField SRR;
+    @FXML private TextField INPUT;
 
     private static boolean open = false;
     private boolean loadStatus = false;
@@ -133,12 +136,14 @@ public class CenterPaneController implements Controller {
     }
 
     public void nextStep() {
-        Halt.flag = false;
-        
-        while(!Halt.flag){
-        	
+        if (open && loadStatus) {
+            Halt.flag = false;
+
+            while(!Halt.flag){
+
+            }
+            update();
         }
-        update();
     }
 
     public void viewCache() throws IOException {
@@ -156,12 +161,22 @@ public class CenterPaneController implements Controller {
     }
 
     public void Input() {
-
+        String tmp = INPUT.getText();
+        int cur = Integer.valueOf(tmp);
+        System.out.println(Integer.toBinaryString(cur));
     }
 
     public void searchMemory() {
         String searchField = Address.getText();
         Content.setText(CPU.getInstance().getMemory().getContent(searchField));
+    }
+
+    public void singleStep() {
+        Controler.getInstance().singleStep = true;
+    }
+
+    public void singleInstruction() {
+        Controler.getInstance().singleStep = false;
     }
 
     private void update() {
@@ -194,6 +209,8 @@ public class CenterPaneController implements Controller {
         MLR.setText(CPU.getInstance().getMLR().getContent());
         PR.setText(CPU.getInstance().getPR().getContent());
         RR.setText(CPU.getInstance().getRR().getContent());
+        DR.setText(CPU.getInstance().getDR().getContent());
+        SRR.setText(CPU.getInstance().getSRR().getContent());
     }
 
     // switch off the GUI
@@ -224,6 +241,8 @@ public class CenterPaneController implements Controller {
         MLR.setText("");
         PR.setText("");
         RR.setText("");
+        DR.setText("");
+        SRR.setText("");
         Halt.flag=true;
     }
 
