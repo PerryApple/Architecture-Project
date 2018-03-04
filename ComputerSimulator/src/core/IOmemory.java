@@ -39,6 +39,13 @@ public class IOmemory {
         }else {
             System.err.println("Illegal address length!!");
         }
+    }
 
+    public void clearIOmemory(){
+        String address="00000";
+        for(int i=0;i<size;i++){
+            IOmemorySpace.put(address,"0000000000000000");
+            address=Memory.getInstance().addressAddone(address);
+        }
     }
 }

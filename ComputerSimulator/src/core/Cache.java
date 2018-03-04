@@ -43,6 +43,7 @@ public class Cache {
         int dataoffset = Integer.valueOf(address.substring(10,12),2);
         CacheLine cacheLine = new CacheLine();
         cacheLine.setValid(1);
+        cacheLine.setTag(tag);
         for(int i=0;i<4;i++){
             String offset = Integer.toBinaryString(i);
             if(offset.length()<2) offset = "0"+offset;
@@ -114,6 +115,15 @@ public class Cache {
             cacheLines.add(cacheLine);
             //write back to memory
             Memory.getInstance().setContent(address,data);
+        }
+    }
+
+    public void clearCache(){
+        for(int i=0;i<numOfLine;i++){
+            cacheLines.remove();
+        }
+        for(int i=0;i<numOfLine;i++){
+            cacheLines.add(new CacheLine());
         }
     }
 

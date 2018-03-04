@@ -53,8 +53,8 @@ public class CenterPaneController implements Controller {
     private boolean loadStatus = false;
     private static String stepInformation = "";
     private static boolean memoryInformation;
-    static String[]  instruction={"","LDR:direct, no indexing","LDR:indirect, no indexing","STR:direct, no indexing","LDA:direct, no indexing","LDX:direct, indexing",
-            "LDR:indirect,indexing", "LDX:direct, indexing","LDX:direct, indexing","STX:direct, indexing"};
+    static String[]  instruction={"","LDX","LDX","IN 1","STR","IN 2","STR","IN 3","STR","IN 4","STR","IN 5","STR","IN 6","STR","IN 7","STR","IN 8","STR","IN 9","STR","IN 10","STR","IN 11",
+            "STR","IN 12","STR","IN 13","STR","IN 14","STR","IN 15","STR","IN 16","STR","IN 17","STR","IN 18","STR","IN 19","STR","IN 20","STR","IN 21","STR"};
     public static int instructionNum;
     Halt halt = new Halt();
 
@@ -68,6 +68,8 @@ public class CenterPaneController implements Controller {
             stepInformation = "";
             CPU.getInstance().clearAll();
             CPU.getInstance().getMemory().clear();
+            IOmemory.getInstance().clearIOmemory();
+            Cache.getInstance().clearCache();
             Decoder.getInstance().clear();
             OUTPUT.setText("");
             INPUT.setText("");
