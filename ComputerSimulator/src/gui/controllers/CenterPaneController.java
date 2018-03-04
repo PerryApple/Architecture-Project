@@ -47,7 +47,8 @@ public class CenterPaneController implements Controller {
     @FXML private TextField DR;
     @FXML private TextField SRR;
     @FXML private TextField INPUT;
-
+    @FXML private TextArea OUTPUT;
+    
     private static boolean open = false;
     private boolean loadStatus = false;
     private static String stepInformation = "";
@@ -68,6 +69,8 @@ public class CenterPaneController implements Controller {
             CPU.getInstance().clearAll();
             CPU.getInstance().getMemory().clear();
             Decoder.getInstance().clear();
+            OUTPUT.setText("");
+            INPUT.setText("");
             instructionNum = 0;
             loadStatus = false;
             // show the information and reverse open status
@@ -110,7 +113,7 @@ public class CenterPaneController implements Controller {
                     stepInformation="Load success";
                     loadStatus = true;
                     //put the beginning address of a program into PC.
-                    CPU.getInstance().getPC().setContent("000010000000");
+                    CPU.getInstance().getPC().setContent("000001111110");
                     update();
                     new Thread(halt).start();
 
@@ -150,8 +153,9 @@ public class CenterPaneController implements Controller {
 
     public void Input() {
         String tmp = INPUT.getText();
-        int cur = Integer.valueOf(tmp);
-        System.out.println(Integer.toBinaryString(cur));
+        String binaryInput = CPU.alignment(Integer.toBinaryString(Integer.valueOf(tmp))); 
+        IOmemory.getInstance().setContent("00000", binaryInput);
+        OUTPUT.setText("Input: " + binaryInput);
     }
 
     public void searchMemory() {
@@ -231,6 +235,8 @@ public class CenterPaneController implements Controller {
         RR.setText("");
         DR.setText("");
         SRR.setText("");
+        OUTPUT.setText("");
+        INPUT.setText("");
         Halt.flag=true;
     }
 
