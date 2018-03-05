@@ -80,5 +80,6 @@ public class IOinstructions extends ISA {
         // IOmemory(DevID)<-c(r)
         IOmemory.getInstance().setContent(DevID,r.getContent());
         CPU.cyclePlusOne();
+        
     }
 }

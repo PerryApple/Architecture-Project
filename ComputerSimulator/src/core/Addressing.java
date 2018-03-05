@@ -156,7 +156,7 @@ public class Addressing {
             		cpu.getMAR().setContent(cpu.getIAR().getContent());
             		CPU.cyclePlusOne();	
             		//In one cycle fetch the contents of the word in memory specified by the MAR into the MBR
-            		Cache.getInstance().cacheToMBR(cpu.getMAR().getContent());
+            		Cache.getInstance().cacheToMBRNHLT(cpu.getMAR().getContent());
     				CPU.cyclePlusOne();
         			//IAR = MBR
                 cpu.getIAR().setContent(cpu.getMBR().getContent());
@@ -185,7 +185,7 @@ public class Addressing {
 				cpu.getMAR().setContent(cpu.getIAR().getContent());
 				CPU.cyclePlusOne();
 				//Get content in Memory using address in MAR, and move it to MBR.
-				Cache.getInstance().cacheToMBR(cpu.getMAR().getContent());
+				Cache.getInstance().cacheToMBRNHLT(cpu.getMAR().getContent());
 				CPU.cyclePlusOne();
 				//Move the effective address from MBR to IAR
 				cpu.getIAR().setContent(cpu.getMBR().getContent());

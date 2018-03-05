@@ -49,7 +49,7 @@ public class LoadAndStore extends ISA{
         cpu.getMAR().setContent(cpu.getIAR().getContent());
         CPU.cyclePlusOne();
         //get the content in memory using address in MAR, and load it to MBR.
-        Cache.getInstance().cacheToMBR(cpu.getMAR().getContent());
+        Cache.getInstance().cacheToMBRNHLT(cpu.getMAR().getContent());
         CPU.cyclePlusOne();
         //Execute the operation move data to IRR
         cpu.getIRR().setContent(cpu.getMBR().getContent());
@@ -224,7 +224,7 @@ public class LoadAndStore extends ISA{
         cpu.getMAR().setContent(cpu.getIAR().getContent());
         CPU.cyclePlusOne();
         //fetch the data from cache according to MAR
-        Cache.getInstance().cacheToMBR(cpu.getMAR().getContent());
+        Cache.getInstance().cacheToMBRNHLT(cpu.getMAR().getContent());
         CPU.cyclePlusOne();
         //put data into IRR
         cpu.getIRR().setContent(cpu.getMBR().getContent());

@@ -282,7 +282,7 @@ public class TransferInstruction  extends ISA{
             case "11": r = cpu.getR3();break;
         }
         // if c(r)>=0
-        if(r.getContent().charAt(0)!=1){
+        if(r.getContent().charAt(0)!= '1'){
             cpu.getPC().setContent(cpu.getIAR().getContent());
             //UI shows step information
             CenterPaneController.setStepInformation("PC<-EA",false);
@@ -304,7 +304,7 @@ public class TransferInstruction  extends ISA{
             case "11": r = cpu.getR3();break;
         }
         // if c(r)>=0
-        if(r.getContent().charAt(0)!=1){
+        if(r.getContent().charAt(0)!= '1'){
             cpu.getPC().setContent(cpu.getIAR().getContent());
             //set jump to make PC not ++
             Controler.getInstance().jump = true;

@@ -366,7 +366,7 @@ public class ArithmeticInstructions extends ISA{
 		cpu.getMAR().setContent(cpu.getIAR().getContent());
 		CPU.cyclePlusOne();
 		//get the content in memory using address in MAR, and load it to MBR.
-		Cache.getInstance().cacheToMBR(cpu.getMAR().getContent());
+		Cache.getInstance().cacheToMBRNHLT(cpu.getMAR().getContent());
 		//Execute the operation move data to IRR
 		cpu.getIRR().setContent(cpu.getMBR().getContent());
 		CPU.cyclePlusOne();
@@ -535,7 +535,7 @@ public class ArithmeticInstructions extends ISA{
 		// r<- c(r)-c(EA)
 		r.setContent(ALU.getInstance().minus(cpu.getY().getContent(),cpu.getIRR().getContent()));
 		CPU.cyclePlusOne();
-		CenterPaneController.setStepInformation("Execute: r <= c(r) + c(EA)",false);
+		CenterPaneController.setStepInformation("Execute: r <= c(r) - c(EA)",false);
 		Halt.halt();
 	}
 	
@@ -554,7 +554,7 @@ public class ArithmeticInstructions extends ISA{
 		CPU.cyclePlusOne();
 
 		//get the content in memory using address in MAR, and load it to MBR.
-		Cache.getInstance().cacheToMBR(cpu.getMAR().getContent());
+		Cache.getInstance().cacheToMBRNHLT(cpu.getMAR().getContent());
 		CPU.cyclePlusOne();
 		//Execute the operation move data to IRR
 		cpu.getIRR().setContent(cpu.getMBR().getContent());
