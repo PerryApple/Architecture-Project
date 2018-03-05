@@ -46,11 +46,15 @@ public class Cache {
         cacheLine.setTag(tag);
         for(int i=0;i<4;i++){
             String offset = Integer.toBinaryString(i);
-            if(offset.length()<2) offset = "0"+offset;
+            if(offset.length()<2) {
+            		offset = "0"+offset;
+            }
             String addedAddress = tag + offset;
             String data = Memory.getInstance().getContent(addedAddress);
             //make res equals to data if i equals to dataoffset
-            if(dataoffset==i) res = data;
+            if(dataoffset==i) {
+            		res = data;
+            }
             //set blocks
             cacheLine.setBlock(i,data);
         }
@@ -58,7 +62,7 @@ public class Cache {
         cacheLines.remove();
         //put cacheline into queue
         cacheLines.add(cacheLine);
-        return res;
+        return getdata(address);
     }
 
     public  void cacheToMBR(String address){
