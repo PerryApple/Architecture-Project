@@ -12,6 +12,7 @@ public class Controler {
     public boolean hlt = false;
     //Flag single step, if true, execute with single step
     public boolean singleStep = true;
+    public boolean end = false;
     public static Controler getInstance() {
         return instance;
     }
@@ -22,7 +23,7 @@ public class Controler {
         //Instruction Fetch start here
         //MAR = PC
         hlt = false;
-        while(!CPU.getInstance().getMemory().getContent(CPU.getInstance().getPC().getContent()).equals("0000000000000000")){
+        while(true){
             //initialize jump
             jump = false;
             stepInformation=("Instruction Fetch:MAR<=PC");
@@ -78,6 +79,9 @@ public class Controler {
                 Halt.halt();
             }
         }
+        CenterPaneController.setStepInformation("Execute done, press next to exit", false);
+        this.end = true;
+        Halt.halt();
     }
     
     public void processByInstruction(){
@@ -85,8 +89,9 @@ public class Controler {
         //Instruction Fetch start here
         //MAR = PC
         hlt = false;
-        while(!CPU.getInstance().getMemory().getContent(CPU.getInstance().getPC().getContent()).equals("0000000000000000")){
+        while(true){
             //initialize jump
+        		//Halt.halt();
             jump = false;
             CPU.getInstance().getCC().setContent("0000");
         		CenterPaneController.instructionNum++;//Monitor shows what instruction is processing
@@ -121,11 +126,13 @@ public class Controler {
             if(!jump){
                 CPU.getInstance().getZ().setContent(CPU.getInstance().getALU().addPC(CPU.getInstance().getPC()));
                 CPU.cyclePlusOne();
-
                 CPU.getInstance().getPC().setContent(CPU.getInstance().getZ().getContent());
                 CPU.cyclePlusOne();
             }
         }
+        CenterPaneController.setStepInformation("Execute done, press next to exit", false);
+        this.end = true;
+        Halt.halt();
     }
     public void sendStepInformation(){
         CenterPaneController.setStepInformation(stepInformation,false);

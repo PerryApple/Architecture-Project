@@ -95,6 +95,7 @@ public class Cache {
 
     //write back data
     public void writeBack(String address,String data){
+     	if(address.length()==16) address = address.substring(4,16);
         String tag = address.substring(0,10);
         int offset = Integer.valueOf(address.substring(10,12),2);
         boolean done = false;
@@ -110,6 +111,7 @@ public class Cache {
         if(!done){
             CacheLine cacheLine = new CacheLine();
             cacheLine.setValid(1);
+            cacheLine.setTag(tag);
             for(int i=0;i<4;i++){
                 String addedOffset = Integer.toBinaryString(i);
                 if(addedOffset.length()<2) addedOffset = "0"+addedOffset;

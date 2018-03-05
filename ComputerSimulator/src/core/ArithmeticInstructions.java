@@ -535,7 +535,7 @@ public class ArithmeticInstructions extends ISA{
 		// r<- c(r)-c(EA)
 		r.setContent(ALU.getInstance().minus(cpu.getY().getContent(),cpu.getIRR().getContent()));
 		CPU.cyclePlusOne();
-		CenterPaneController.setStepInformation("Execute: r <= c(r) + c(EA)",false);
+		CenterPaneController.setStepInformation("Execute: r <= c(r) - c(EA)",false);
 		Halt.halt();
 	}
 	

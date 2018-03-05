@@ -29,7 +29,13 @@ public class ISA {
 				case "LDA": LoadAndStore.LDA();break;
 				case "LDX": LoadAndStore.LDX();break;
 				case "STX": LoadAndStore.STX();break;
-				
+				//Transfer Instructions
+				case "JZ": TransferInstruction.JZ(); break;
+				case "JNE": TransferInstruction.JNE(); break;
+				case "JMA": TransferInstruction.JMA(); break;
+				case "JSR": TransferInstruction.JSR(); break;
+				case "SOB": TransferInstruction.SOB(); break;
+				case "JGE": TransferInstruction.JGE(); break;
 				//Arithmetic with address field
 				case "AMR": ArithmeticInstructions.AMR();break;
 				case "SMR": ArithmeticInstructions.SMR();break;	
@@ -42,7 +48,13 @@ public class ISA {
 				case "LDA": LoadAndStore.LDANHLT();break;
 				case "LDX": LoadAndStore.LDXNHLT();break;
 				case "STX": LoadAndStore.STXNHLT();break;
-				
+				//Transfer Instructions
+				case "JZ": TransferInstruction.JZNHLT(); break;
+				case "JNE": TransferInstruction.JNENHLT(); break;
+				case "JMA": TransferInstruction.JMANHLT(); break;
+				case "JSR": TransferInstruction.JSRNHLT(); break;
+				case "SOB": TransferInstruction.SOBNHLT(); break;
+				case "JGE": TransferInstruction.JGENHLT(); break;
 				//Arithmetic with address field
 				case "AMR": ArithmeticInstructions.AMRNHLT();break;
 				case "SMR": ArithmeticInstructions.SMRNHLT();break;	

@@ -1,6 +1,7 @@
 package gui.controllers;
 
 import gui.Controller;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import core.*;
 
@@ -53,10 +54,11 @@ public class CenterPaneController implements Controller {
     private boolean loadStatus = false;
     private static String stepInformation = "";
     private static boolean memoryInformation;
-    static String[]  instruction={"","LDX","LDX","IN 1","STR","IN 2","STR","IN 3","STR","IN 4","STR","IN 5","STR","IN 6","STR","IN 7","STR","IN 8","STR","IN 9","STR","IN 10","STR","IN 11",
-            "STR","IN 12","STR","IN 13","STR","IN 14","STR","IN 15","STR","IN 16","STR","IN 17","STR","IN 18","STR","IN 19","STR","IN 20","STR","IN 21","STR"};
+    static String[]  instruction={"","","","INPUT NUMBER 1","","INPUT NUMBER 2","","INPUT NUMBER 3","","INPUT NUMBER 4","","INPUT NUMBER 5","","INPUT NUMBER 6","","INPUT NUMBER 7","","INPUT NUMBER 8","","INPUT NUMBER 9","","INPUT NUMBER 10","","INPUT NUMBER 11",
+    		"","INPUT NUMBER 12","","INPUT NUMBER 13","","INPUT NUMBER 14","","INPUT NUMBER 15","","INPUT NUMBER 16","","INPUT NUMBER 17","","INPUT NUMBER 18","","INPUT NUMBER 19","","INPUT NUMBER 20","","INPUT USER NUMBER","","Find The Closest Number"};
     public static int instructionNum;
     Halt halt = new Halt();
+    Thread simulator = new Thread(halt);
 
     @Override
     public void initialise(){}
@@ -117,7 +119,7 @@ public class CenterPaneController implements Controller {
                     //put the beginning address of a program into PC.
                     CPU.getInstance().getPC().setContent("000001111110");
                     update();
-                    new Thread(halt).start();
+                    simulator.start();
 
                 }catch (IOException e){
                     stepInformation="Load error";
@@ -129,14 +131,17 @@ public class CenterPaneController implements Controller {
     }
 
     public void nextStep() {
-        if (open && loadStatus) {
-            Halt.flag = false;
-
-            while(!Halt.flag){
-
-            }
-            update();
-        }
+    		if(!Controler.getInstance().end) {
+    			if(open && loadStatus) {
+            		Halt.flag = false;
+                while(!Halt.flag){}
+                update();
+            	}
+    		}else{
+    			Platform.exit();
+    			System.exit(0);
+    		}
+        	
     }
 
     public void viewCache() throws IOException {
@@ -158,6 +163,7 @@ public class CenterPaneController implements Controller {
         String binaryInput = CPU.alignment(Integer.toBinaryString(Integer.valueOf(tmp))); 
         IOmemory.getInstance().setContent("00000", binaryInput);
         OUTPUT.setText("Input: " + binaryInput);
+        INPUT.setText("");
     }
 
     public void searchMemory() {
@@ -176,11 +182,17 @@ public class CenterPaneController implements Controller {
     private void update() {
         // set all the TextField in the GUI
         StepInformation.setText(stepInformation);
+        if(!IOmemory.getInstance().getContent("00001").equals("0000000000000000")) {
+        		OUTPUT.setText(Integer.valueOf(IOmemory.getInstance().getContent("00001"), 2).toString());
+        		
+        }
         if (memoryInformation) {
             Address.setText(CPU.getInstance().getMAR().getContent());
             Content.setText(CPU.getInstance().getMBR().getContent());
         }
-        InstructionField.setText(instruction[instructionNum]);
+        if(instructionNum<instruction.length) {
+        	 	InstructionField.setText(instruction[instructionNum]);
+        }
         cycle.setText(String.valueOf(CPU.getCycle()));
         PC.setText(CPU.getInstance().getPC().getContent().substring(4, 16));
         MAR.setText(CPU.getInstance().getMAR().getContent());

@@ -49,6 +49,12 @@ public class Decoder {
     	 	String op=instruction.substring(0,6);
     	 	switch (op){
     	 	
+    	 		//Miscellaneous Instructions
+    	 		case "000000":
+    	 		opCode = "HLT";
+    	 		opClass = "HLT";
+    	 		break;
+    	 	
     	 		//Load and Store Instructions
             case "000001":
             		opCode="LDR";
@@ -108,7 +114,7 @@ public class Decoder {
             	//Arithmetic Instructions
 	        	//with Address field
             case "000100":
-            		opCode = "MAR";
+            		opCode = "AMR";
             		arithmeticInstructionwithAddress();
             		break;
             case "000101":
@@ -178,29 +184,31 @@ public class Decoder {
     public void identify(){
     		
     		switch(opClass) {
+    			case "HLT":
+    				Miscellaneousinstructions.HLT(); break;
     			case "LSI":
-    				ISA.execute(opCode, R, X, I, address);
+    				ISA.execute(opCode, R, X, I, address); break;
     			case "TI":
     				switch(opCode) {
     					case "JCC":
-    						ISA.execute(opCode, X, cc,  I, address);
+    						ISA.execute(opCode, X, cc,  I, address); break;
     					case "RFS":
-    						ISA.execute(opCode, Immed, "0");
+    						ISA.execute(opCode, Immed, "0"); break;
     					default:
-    						ISA.execute(opCode, R, X, I, address);
+    						ISA.execute(opCode, R, X, I, address); break;
     				}
     			case "AIA":
-    				ISA.execute(opCode, R, X, I, address);
+    				ISA.execute(opCode, R, X, I, address); break;
     			case "AII":
-    				ISA.execute(opCode, R, Immed);
+    				ISA.execute(opCode, R, Immed); break;
     			case "AI":
-    				ISA.execute(opCode, RX, RY);
+    				ISA.execute(opCode, RX, RY); break;
     			case "LI":
-    				ISA.execute(opCode, RX, RY);
+    				ISA.execute(opCode, RX, RY); break;
     			case "SRI":
-    				ISA.execute(opCode, R, count, LorR, AorL);
+    				ISA.execute(opCode, R, count, LorR, AorL); break;
     			case "IOI":
-    				ISA.execute(opCode, R, DevID);
+    				ISA.execute(opCode, R, DevID); break;
     		}
     }
     
