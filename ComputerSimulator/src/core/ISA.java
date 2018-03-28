@@ -14,6 +14,7 @@ public class ISA {
     protected static Integer CC;
     protected static String Immed;
     protected static String DevID;
+    protected static String trapCode;
 	public static void execute(String op, String r, String x, String i, String addr) {
 		//Store R, X, I and address bits for later use.
 		R = r;
@@ -139,6 +140,15 @@ public class ISA {
 					TransferInstruction.JCCNHLT();
 					break;
 			}	
+		}
+	}
+	
+	public static void execute(String opCode, String code) {
+		trapCode = code;
+		if(cpu.getControler().singleStep) {
+			Trap.trap();
+		}else {
+			Trap.trapNHLT();
 		}
 	}
 
