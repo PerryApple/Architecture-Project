@@ -1,0 +1,36 @@
+String[] s = read from file
+String userWord = "userInput"
+int sentenceNumber = 1
+int wordNumber = 1
+int searchPosition = 0
+
+1010:
+if(s[searchPosition] != "1010"){
+	goto 1011;
+}else{
+	sentenceNumber++;
+	wordNumber = 1;
+	searchPosition++;
+	goto 1010;	
+}
+
+1011:
+if(s[searchPosition] != "1011"){
+	goto COMP;
+}else{
+	sentenceNumber = 0;
+	goto OUTPUT;
+}
+
+COMP:
+if(userWord == s[searchPosition]){
+	goto OUTPUT;
+}else{
+	wordNumber++;
+	serchPosition++;
+	goto 1010;
+}
+
+OUTPUT:
+out sentenceNumber;
+out wordNumber;
