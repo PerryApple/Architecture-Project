@@ -145,6 +145,7 @@ public class ISA {
 	
 	public static void execute(String opCode, String code) {
 		trapCode = code;
+
 		//Illegal TRAP code
 		if(Integer.valueOf(code,2) > 15){
 			Fault f = new Fault(1,"Illegal TRAP code");

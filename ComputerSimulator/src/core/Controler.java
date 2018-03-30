@@ -15,6 +15,7 @@ public class Controler {
     public boolean end = false;
     public boolean trap = false;
     public boolean fault = false;
+    
     public static Controler getInstance() {
         return instance;
     }
