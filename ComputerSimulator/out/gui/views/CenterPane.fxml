@@ -21,12 +21,13 @@
         <padding>
             <Insets bottom="5" left="5" right ="5" top="5"/>
         </padding>
-        <Button text="Switch" fx:id="switch" onAction="#switchOnOff"/>
-        <Button text="Load" fx:id="load" onAction="#loadInstruction"/>
-        <Button text="Next" fx:id="next" onAction="#nextStep"/>
-        <Button text="SingleStep" onAction="#singleStep"/>
-        <Button text="SingleInstruction" onAction="#singleInstruction"/>
-        <Button text="View Cache" fx:id="cache" onAction="#viewCache"/>
+        <Button text="  Switch  " fx:id="switch" onAction="#switchOnOff"/>
+        <Button text="  Load  " fx:id="load" onAction="#loadInstruction"/>
+        <Button text="      Next Step      " fx:id="next" onAction="#nextStep"/>
+        <Button text=" View Cache " fx:id="cache" onAction="#viewCache"/>
+        <Button text="  SingleStep  " onAction="#singleStep"/>
+        <Button text="  SingleInstruction  " onAction="#singleInstruction"/>
+
         <Pane HBox.hgrow="ALWAYS"/>
         <HBox GridPane.rowIndex="0" GridPane.columnIndex="1"
               alignment="CENTER_RIGHT">

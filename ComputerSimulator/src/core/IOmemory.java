@@ -4,7 +4,7 @@ import java.util.HashMap;
 //I/O mapped I/O it has separated i/o memory space
 public class IOmemory {
     //use HashMap to represent IOmemory,key represents address,value represents data
-    private HashMap<String ,String> IOmemorySpace=new HashMap<String, String>();
+    private HashMap<String ,Device> IOmemorySpace=new HashMap<String, Device>();
     //size of the IOmemory
     private final int size = 32;
     //Single instance of IOMemory
@@ -14,7 +14,8 @@ public class IOmemory {
     private IOmemory(){
         String address="00000";
         for(int i=0;i<size;i++){
-            IOmemorySpace.put(address,"0000000000000000");
+            Device m = new Device();
+            IOmemorySpace.put(address,m);
             address=Memory.getInstance().addressAddone(address);
         }
     }
@@ -26,7 +27,7 @@ public class IOmemory {
     //get the content from  memory
     public String getContent(String address){
         if(address.length()==5){
-            return IOmemorySpace.get(address);
+            return IOmemorySpace.get(address).getValue();
         }else {
             return "Error";
         }
@@ -35,7 +36,24 @@ public class IOmemory {
     //store value to the address
     public void setContent(String address,String value){
        if(address.length()==5){
-           IOmemorySpace.put(address,value);
+           IOmemorySpace.get(address).setValue(value);
+        }else {
+            System.err.println("Illegal address length!!");
+        }
+    }
+
+    //get devID status
+    public String getStatus(String address){
+        if(address.length()==5){
+          return IOmemorySpace.get(address).getStatus();
+        }else {
+            return "Error";
+        }
+    }
+    //set devID status
+    public void setStatus(String address,String status){
+        if(address.length()==5){
+            IOmemorySpace.get(address).setStatus(status);
         }else {
             System.err.println("Illegal address length!!");
         }
@@ -44,8 +62,51 @@ public class IOmemory {
     public void clearIOmemory(){
         String address="00000";
         for(int i=0;i<size;i++){
-            IOmemorySpace.put(address,"0000000000000000");
+            IOmemorySpace.get(address).setValue("0000000000000000");
+            IOmemorySpace.get(address).setStatus("0");
             address=Memory.getInstance().addressAddone(address);
         }
     }
+}
+
+class Device{
+    private String value;
+    private String status;
+    public Device(){
+        value = "0000000000000000";
+        status = "0";
+    }
+    //check the length of value and set value
+    public void setValue(String value){
+        if(value.length()<16){
+           value = CPU.alignment(value);
+        }else if(value.length()>16){
+            value = value.substring(0,17);
+        }
+        this.value = value;
+    }
+
+    //get value
+    public String getValue(){
+        if(value.length()<16){
+            value = CPU.alignment(value);
+        }
+        return value;
+    }
+
+    //set status
+    public void setStatus(String s){
+        if(s.length()!=1){
+            System.out.println("status code length error");
+        }else {
+            status = s;
+        }
+    }
+
+    //get status
+    public String getStatus(){
+        return status;
+    }
+
+
 }

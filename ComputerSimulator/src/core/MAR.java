@@ -44,6 +44,8 @@ public class MAR implements Register {
 		//check the length of content, if length is not the same as "size", return an error;
 		if(content.length() == this.size) {
 			this.content = content;
+		}else if(content.length() == 16) {
+			this.content = content.substring(4);
 		}else{
 			//fault handle will be implement in later version.
 			this.content = "MAR Error";

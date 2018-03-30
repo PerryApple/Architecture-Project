@@ -13,6 +13,8 @@ public class Controler {
     //Flag single step, if true, execute with single step
     public boolean singleStep = true;
     public boolean end = false;
+    public boolean trap = false;
+    public boolean fault = false;
     public static Controler getInstance() {
         return instance;
     }
@@ -24,6 +26,8 @@ public class Controler {
         //MAR = PC
         hlt = false;
         while(true){
+            //if fault handled then junmp back
+            if(fault) FaultHandler.getInstance().backAfterHandle();
             //initialize jump
             jump = false;
             stepInformation=("Instruction Fetch:MAR<=PC");

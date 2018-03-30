@@ -23,19 +23,33 @@ public class Cache {
         }
     }
     //According to address ,return data
-    public String getdata(String address){
-        if(address.length()==16) address = address.substring(4,16);
-        String tag = address.substring(0,10);
-        int offset = Integer.valueOf(address.substring(10,12),2);
-        for(CacheLine cacheLine : cacheLines){
-            if(cacheLine.getValid().equals("1")&&cacheLine.getTag().equals(tag)){
-                return cacheLine.getBlock(offset);
-            }
+    private String getdata(String address){
+        //Illegal Memory Address to Reserved Locations   Illegal Memory Address to Reserved Locations
+        // creat Fault with id and message
+        //call FaultHandler to handle the fault
+        if(Integer.valueOf(address,2)==0 ||Integer.valueOf(address,2)==1) {
+            Fault f = new Fault(0,"Illegal Memory Address to Reserved Locations");
+            FaultHandler.getInstance().faultHandleNHLT(f);
+            return "error";
+        }else if(Integer.valueOf(address,2)>2048){
+            Fault f = new Fault(3,"Illegal Memory Address beyond 2048");
+            FaultHandler.getInstance().faultHandleNHLT(f);
+            return "error";
         }
-        return "miss";
+        else{
+            if(address.length()==16) address = address.substring(4,16);
+            String tag = address.substring(0,10);
+            int offset = Integer.valueOf(address.substring(10,12),2);
+            for(CacheLine cacheLine : cacheLines){
+                if(cacheLine.getValid().equals("1")&&cacheLine.getTag().equals(tag)){
+                    return cacheLine.getBlock(offset);
+                }
+            }
+            return "miss";
+        }
     }
     //if miss get data from memory
-    public String getIfMiss(String address){
+    private String getIfMiss(String address){
         // the begin address's last two bits are zeros
         if(address.length()==16) address = address.substring(4,16);
         String res ="";
@@ -99,42 +113,53 @@ public class Cache {
 
     //write back data
     public void writeBack(String address,String data){
-     	if(address.length()==16) address = address.substring(4,16);
-        String tag = address.substring(0,10);
-        int offset = Integer.valueOf(address.substring(10,12),2);
-        boolean done = false;
-        for(CacheLine cacheLine : cacheLines){
-            // if it exists in cache, just update it in the cache and memory
-            if(cacheLine.getTag().equals(tag)){
-               cacheLine.setBlock(offset,data);
-               Memory.getInstance().setContent(address, data);
-               done = true;
-            }
-        }
-        //it doesn't exist in cache , so write it to cache and memory
-        if(!done){
-            CacheLine cacheLine = new CacheLine();
-            cacheLine.setValid(1);
-            cacheLine.setTag(tag);
-            for(int i=0;i<4;i++){
-                String addedOffset = Integer.toBinaryString(i);
-                if(addedOffset.length()<2) addedOffset = "0"+addedOffset;
-                String addedAddress = tag + addedOffset;
-                String writeData = "";
-                if(offset!=i){
-                    writeData = Memory.getInstance().getContent(addedAddress);
-                }else{
-                    writeData = data;
+        //Illegal Memory Address to Reserved Locations  //Illegal Memory Address to Reserved Locations
+        // creat Fault with id and message
+        //call FaultHandler to handle the fault
+        if(Integer.valueOf(address,2)<6) {
+            Fault f = new Fault(0,"Illegal Memory Address to Reserved Locations");
+            FaultHandler.getInstance().faultHandleNHLT(f);
+        }else if(Integer.valueOf(address,2)>2048){
+            Fault f = new Fault(3,"Illegal Memory Address beyond 2048");
+            FaultHandler.getInstance().faultHandleNHLT(f);
+        } else {
+            if (address.length() == 16) address = address.substring(4, 16);
+            String tag = address.substring(0, 10);
+            int offset = Integer.valueOf(address.substring(10, 12), 2);
+            boolean done = false;
+            for (CacheLine cacheLine : cacheLines) {
+                // if it exists in cache, just update it in the cache and memory
+                if (cacheLine.getTag().equals(tag)) {
+                    cacheLine.setBlock(offset, data);
+                    Memory.getInstance().setContent(address, data);
+                    done = true;
                 }
-                //set blocks
-                cacheLine.setBlock(i,data);
             }
-            //get first-in data out
-            cacheLines.remove();
-            //put cacheline into queue
-            cacheLines.add(cacheLine);
-            //write back to memory
-            Memory.getInstance().setContent(address,data);
+            //it doesn't exist in cache , so write it to cache and memory
+            if (!done) {
+                CacheLine cacheLine = new CacheLine();
+                cacheLine.setValid(1);
+                cacheLine.setTag(tag);
+                for (int i = 0; i < 4; i++) {
+                    String addedOffset = Integer.toBinaryString(i);
+                    if (addedOffset.length() < 2) addedOffset = "0" + addedOffset;
+                    String addedAddress = tag + addedOffset;
+                    String writeData = "";
+                    if (offset != i) {
+                        writeData = Memory.getInstance().getContent(addedAddress);
+                    } else {
+                        writeData = data;
+                    }
+                    //set blocks
+                    cacheLine.setBlock(i, data);
+                }
+                //get first-in data out
+                cacheLines.remove();
+                //put cacheline into queue
+                cacheLines.add(cacheLine);
+                //write back to memory
+                Memory.getInstance().setContent(address, data);
+            }
         }
     }
 

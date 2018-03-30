@@ -62,7 +62,7 @@ public class IOinstructions extends ISA {
         }
         // IOmemory(DevID)<-c(r)
         IOmemory.getInstance().setContent(DevID,r.getContent());
-        CenterPaneController.setStepInformation("I/0<-"+r.getName(),false);
+        CenterPaneController.setStepInformation(r.getName()+"<-I/0",false);
         CPU.cyclePlusOne();
         Halt.halt();
     }
@@ -82,4 +82,39 @@ public class IOinstructions extends ISA {
         CPU.cyclePlusOne();
         
     }
+
+    //*************************************************************************************************************************
+//  Check device status
+
+    public static void CHK(){
+        Register r = null;
+        //get the Register according to R
+        switch (R){
+            case "00": r = cpu.getR0(); break;
+            case "01": r = cpu.getR1();break;
+            case "10": r = cpu.getR2();break;
+            case "11": r = cpu.getR3();break;
+        }
+        // c(r) <- IOmemorystatus(DevID)
+        r.setContent(IOmemory.getInstance().getStatus(DevID));
+        CenterPaneController.setStepInformation("I/0->"+r.getName(),false);
+        CPU.cyclePlusOne();
+        Halt.halt();
+    }
+    //Output without halt
+    public static void CHKNHLT(){
+        Register r = null;
+        //get the Register according to R
+        switch (R){
+            case "00": r = cpu.getR0(); break;
+            case "01": r = cpu.getR1();break;
+            case "10": r = cpu.getR2();break;
+            case "11": r = cpu.getR3();break;
+        }
+        // c(r) <- IOmemorystatus(DevID)
+        r.setContent(IOmemory.getInstance().getStatus(DevID));
+    }
+
+
+
 }
