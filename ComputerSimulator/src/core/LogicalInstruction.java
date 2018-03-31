@@ -1,5 +1,5 @@
 package core;
-import gui.controllers.CenterPaneController;
+import gui.controllers.EngineerConsoleController;
 
 public class LogicalInstruction extends ISA {
 	//******************************************************************************************************************************
@@ -41,12 +41,12 @@ public class LogicalInstruction extends ISA {
 		//move content of rx to register Y, get ready to compare.
 		cpu.getY().setContent(rx.getContent());
 		CPU.cyclePlusOne();
-		CenterPaneController.setStepInformation("Y <= " + rx.getName() , false);
+		EngineerConsoleController.setStepInformation("Y <= " + rx.getName() , false);
 		Halt.halt();
 		//compare content of rx (now in Y) and content of ry
 		cpu.getALU().compareTwo(cpu.getY().getContent(), ry.getContent());
 		CPU.cyclePlusOne();
-		CenterPaneController.setStepInformation("CC(4) <= ALU Compare( c(Y), c(" + ry.getName() + ") )." , false);
+		EngineerConsoleController.setStepInformation("CC(4) <= ALU Compare( c(Y), c(" + ry.getName() + ") )." , false);
 		Halt.halt();
 	}
 	
@@ -129,17 +129,17 @@ public class LogicalInstruction extends ISA {
 		}
 		//Move the content of rx to Register Y, get ready to do AND
 		cpu.getY().setContent(rx.getContent());
-		CenterPaneController.setStepInformation("Y <= " + rx.getName() , false);
+		EngineerConsoleController.setStepInformation("Y <= " + rx.getName() , false);
 		CPU.cyclePlusOne();
 		Halt.halt();
 		//Do "AND" operation in ALU, two operands are content of Y and content of RY;
 		//The result will be temporarily stored in Register Z.
 		cpu.getALU().and(cpu.getY().getContent(), ry.getContent());
-		CenterPaneController.setStepInformation("Z <= ALU AND( c(Y), c(" + ry.getName() + ") )." , false);
+		EngineerConsoleController.setStepInformation("Z <= ALU AND( c(Y), c(" + ry.getName() + ") )." , false);
 		Halt.halt();
 		//Store the result in RX
 		rx.setContent(cpu.getZ().getContent());
-		CenterPaneController.setStepInformation(rx.getName() + " <= Z." , false);
+		EngineerConsoleController.setStepInformation(rx.getName() + " <= Z." , false);
 		CPU.cyclePlusOne();
 		Halt.halt();
 	}
@@ -227,17 +227,17 @@ public class LogicalInstruction extends ISA {
 		}
 		//Move the content of rx to Register Y, get ready to do OR
 		cpu.getY().setContent(rx.getContent());
-		CenterPaneController.setStepInformation("Y <= " + rx.getName(), false);
+		EngineerConsoleController.setStepInformation("Y <= " + rx.getName(), false);
 		CPU.cyclePlusOne();
 		Halt.halt();
 		//Do "OR" operation in ALU, two operands are content of Y and content of RY;
 		//The result will be temporarily stored in Register Z.
 		cpu.getALU().or(cpu.getY().getContent(), ry.getContent());
-		CenterPaneController.setStepInformation("Z <= ALU OR( c(Y), c(" + ry.getName() + ") )." , false);
+		EngineerConsoleController.setStepInformation("Z <= ALU OR( c(Y), c(" + ry.getName() + ") )." , false);
 		Halt.halt();
 		//Store the result in RX
 		rx.setContent(cpu.getZ().getContent());
-		CenterPaneController.setStepInformation(rx.getName() + " <= Z." , false);
+		EngineerConsoleController.setStepInformation(rx.getName() + " <= Z." , false);
 		CPU.cyclePlusOne();
 		Halt.halt();
 	}
@@ -312,12 +312,12 @@ public class LogicalInstruction extends ISA {
 		//Do "NOT" operation in ALU
 		//The result will be temporarily stored in Register Z.
 		cpu.getALU().not(rx.getContent());
-		CenterPaneController.setStepInformation("Z <= ALU NOT( c(" + rx.getName() + ") )." , false);
+		EngineerConsoleController.setStepInformation("Z <= ALU NOT( c(" + rx.getName() + ") )." , false);
 		CPU.cyclePlusOne();
 		Halt.halt();
 		//Store the result in RX
 		rx.setContent(cpu.getZ().getContent());
-		CenterPaneController.setStepInformation(rx.getName() + " <= Z." , false);
+		EngineerConsoleController.setStepInformation(rx.getName() + " <= Z." , false);
 		CPU.cyclePlusOne();
 		Halt.halt();
 	}

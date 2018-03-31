@@ -1,0 +1,19 @@
+.mainBox {
+    -fx-padding: 20 60 0 60;
+}
+
+.image {
+    -fx-padding: 0 100;
+}
+
+.mainTitle {
+    -fx-font: 20 arial;
+}
+
+.mainButton {
+    -fx-padding: 0 20;
+}
+
+.copyRight {
+    -fx-padding: 30 0 0 0 ;
+}

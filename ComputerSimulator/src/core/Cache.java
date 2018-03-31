@@ -3,7 +3,7 @@ package core;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import gui.controllers.CenterPaneController;
+import gui.controllers.EngineerConsoleController;
 
 //fully associated cache
 public class Cache {
@@ -84,13 +84,13 @@ public class Cache {
         if(data.equals("miss")){
             data = Cache.getInstance().getIfMiss(address);
             CPU.getInstance().getMBR().setContent(data);
-            CenterPaneController.setStepInformation("Execute:Cache miss, MBR<=Cache<=Memory[MAR]",true);
+            EngineerConsoleController.setStepInformation("Execute:Cache miss, MBR<=Cache<=Memory[MAR]",true);
 			CPU.cyclePlusOne();
             Halt.halt();
         }else{
             //hit , and store the data in MBR
             CPU.getInstance().getMBR().setContent(data);
-            CenterPaneController.setStepInformation("Execute:Cache hit, MBR<=Cache",true);
+            EngineerConsoleController.setStepInformation("Execute:Cache hit, MBR<=Cache",true);
 			CPU.cyclePlusOne();
             Halt.halt();
         }

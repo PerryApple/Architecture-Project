@@ -1,6 +1,6 @@
 package core;
 
-import gui.controllers.CenterPaneController;
+import gui.controllers.EngineerConsoleController;
 
 public class Decoder {
 	private String opClass;

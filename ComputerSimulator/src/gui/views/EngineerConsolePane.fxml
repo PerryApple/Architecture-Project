@@ -11,8 +11,8 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.control.cell.TextFieldListCell?>
 <?import java.net.URL?>
-<VBox fx:controller="gui.controllers.CenterPaneController"
-      xmlns:fx="http://javafx.com/fxml" minWidth="400" spacing="10" styleClass="root">
+<VBox fx:controller="gui.controllers.EngineerConsoleController"
+      xmlns:fx="http://javafx.com/fxml" minWidth="390" spacing="10" styleClass="root">
     <padding>
         <Insets bottom="10.0" left="10.0" right ="10.0" top="10.0"/>
     </padding>
@@ -21,13 +21,22 @@
         <padding>
             <Insets bottom="5" left="5" right ="5" top="5"/>
         </padding>
-        <Button text="  Switch  " fx:id="switch" onAction="#switchOnOff"/>
-        <Button text="  Load  " fx:id="load" onAction="#loadInstruction"/>
-        <Button text="      Next Step      " fx:id="next" onAction="#nextStep"/>
-        <Button text=" View Cache " fx:id="cache" onAction="#viewCache"/>
-        <Button text="  SingleStep  " onAction="#singleStep"/>
-        <Button text="  SingleInstruction  " onAction="#singleInstruction"/>
-
+        <VBox>
+            <Button text="  Switch  " fx:id="switch" onAction="#switchOnOff"/>
+            <Button text="   Load    " fx:id="load" onAction="#loadInstruction"/>
+        </VBox>
+        <VBox>
+            <Button text="load p2" onAction="#loadP2"/>
+            <Button text="load p3" onAction="#loadP3"/>
+        </VBox>
+        <VBox>
+            <Button text="       SingleStep       " onAction="#singleStep"/>
+            <Button text="  SingleInstruction   " onAction="#singleInstruction"/>
+        </VBox>
+        <VBox>
+            <Button text="Program3 paragraph" onAction="#P3Paragraph"/>
+            <Button text="         Next Step        " fx:id="next" onAction="#nextStep"/>
+        </VBox>
         <Pane HBox.hgrow="ALWAYS"/>
         <HBox GridPane.rowIndex="0" GridPane.columnIndex="1"
               alignment="CENTER_RIGHT">
@@ -36,38 +45,26 @@
         </HBox>
     </HBox>
 
-    <!--Show Status about Current Step, Current Instruction and Memory-->
-    <GridPane styleClass="center_box">
-        <VBox styleClass="info_box" GridPane.rowIndex="0" GridPane.columnIndex="0">
+    <!--Show Status about Current Step, Current Instruction, Printer and Input-->
+    <HBox styleClass="center_box">
+        <VBox styleClass="info_box">
             <Label text="Current Step:"/>
-            <TextArea fx:id="StepInformation" wrapText="true"/>
-        </VBox>
-        <VBox styleClass="info_box" GridPane.rowIndex="0" GridPane.columnIndex="1">
-            <Label text="OUTPUT:"/>
-            <TextArea fx:id="OUTPUT" wrapText="true"/>
-        </VBox>
-        <VBox styleClass="info_box" GridPane.rowIndex="1" GridPane.columnIndex="0">
+            <TextArea fx:id="StepInformation" styleClass="info_show" wrapText="true"/>
             <Label text="Current Instructions:"/>
-            <TextArea fx:id="InstructionField" wrapText="true"/>
-        </VBox>
-        <VBox styleClass="info_box" GridPane.rowIndex="1" GridPane.columnIndex="1">
-            <GridPane hgap="4" vgap="4">
-                <HBox GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2">
-                    <TextField fx:id="INPUT" prefWidth="280"/>
-                    <Button fx:id="Input" text="Input" onAction="#Input"/>
-                </HBox>
-                <Label text="Memory" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER"/>
-                <Label text="Address:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-                <HBox GridPane.rowIndex="2" GridPane.columnIndex="1">
-                    <TextField fx:id="Address" prefWidth="215"/>
-                    <Button text="Search" onAction="#searchMemory"/>
-                </HBox>
-                <Label text="Content:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-                <TextField fx:id="Content" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+            <TextArea fx:id="InstructionField" styleClass="info_show" wrapText="true"/>
 
-            </GridPane>
         </VBox>
-    </GridPane>
+        <VBox styleClass="info_box">
+            <Label text="Printer:"/>
+            <TextArea fx:id="Printer" wrapText="true"/>
+            <Label fx:id="Keyboard" text="Keyboard:"/>
+            <HBox>
+                <TextField fx:id="INPUT" prefWidth="280"/>
+                <Button fx:id="Input" text="Input" onAction="#Input"/>
+            </HBox>
+
+        </VBox>
+    </HBox>
 
     <VBox styleClass="registers_box">
         <Label text="Registers" styleClass="label_register" GridPane.rowIndex="0" GridPane.halignment="CENTER"/>
@@ -156,10 +153,25 @@
             <TextField fx:id="RR" text="" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
         </GridPane>
         </HBox>
+
     </VBox>
+
+    <GridPane styleClass="memory_box" hgap="100" vgap="10">
+        <Label text="Memory" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
+        <Button text="view cache" onAction="#viewCache" GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.halignment="RIGHT"/>
+        <HBox GridPane.rowIndex="1" GridPane.columnIndex="0">
+            <Label text="Address:"/>
+            <TextField fx:id="Address" prefWidth="215"/>
+            <Button text="Search" onAction="#searchMemory"/>
+        </HBox>
+        <HBox GridPane.rowIndex="1" GridPane.columnIndex="1">
+            <Label text="Content:"/>
+            <TextField fx:id="Content"/>
+        </HBox>
+    </GridPane>
 
     <stylesheets>
         <URL value="@../css/Global.css"/>
-        <URL value="@../css/CenterPane.css"/>
+        <URL value="@../css/EngineerConsole.css"/>
     </stylesheets>
 </VBox>

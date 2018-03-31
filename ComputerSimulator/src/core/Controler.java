@@ -1,5 +1,5 @@
 package core;
-import gui.controllers.CenterPaneController;
+import gui.controllers.EngineerConsoleController;
 
 public class Controler {
     //Singleton Pattern
@@ -33,7 +33,7 @@ public class Controler {
             jump = false;
             stepInformation=("Instruction Fetch:MAR<=PC");
             CPU.getInstance().getCC().setContent("0000");
-            CenterPaneController.instructionNum++;//Monitor shows what instruction is processing
+            EngineerConsoleController.instructionNum++;//Monitor shows what instruction is processing
             CPU.getInstance().getMAR().setContent(CPU.getInstance().getPC().getContent());
             sendStepInformation();
             CPU.cyclePlusOne();
@@ -84,7 +84,7 @@ public class Controler {
                 Halt.halt();
             }
         }
-        CenterPaneController.setStepInformation("Execute done, press next to exit", false);
+        EngineerConsoleController.setStepInformation("Execute done, press next to exit", false);
         this.end = true;
         Halt.halt();
     }
@@ -99,7 +99,7 @@ public class Controler {
         		//Halt.halt();
             jump = false;
             CPU.getInstance().getCC().setContent("0000");
-        		CenterPaneController.instructionNum++;//Monitor shows what instruction is processing
+        		EngineerConsoleController.instructionNum++;//Monitor shows what instruction is processing
             CPU.getInstance().getMAR().setContent(CPU.getInstance().getPC().getContent());
             CPU.cyclePlusOne();
 
@@ -135,12 +135,12 @@ public class Controler {
                 CPU.cyclePlusOne();
             }
         }
-        CenterPaneController.setStepInformation("Execute done, press next to exit", false);
+        EngineerConsoleController.setStepInformation("Execute done, press next to exit", false);
         this.end = true;
         Halt.halt();
     }
     public void sendStepInformation(){
-        CenterPaneController.setStepInformation(stepInformation,false);
+        EngineerConsoleController.setStepInformation(stepInformation,false);
     }
 
 }

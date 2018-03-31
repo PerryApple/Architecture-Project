@@ -6,15 +6,6 @@
     -fx-padding: 10;
 }
 
-/*for the center box to show the info in the process*/
-.center_box {
-    -fx-font-family: "Arial";
-    -fx-font-size: 12;
-    -fx-border-color: #ccc;
-    -fx-border-width: 1;
-    -fx-border-radius: 3, 2;
-}
-
 .info_box {
     -fx-padding: 10;
     -fx-min-width: 345;
@@ -23,11 +14,47 @@
     -fx-max-height: 115;
 }
 
-.info_show {
-    -fx-padding: 5;
+
+
+/*Control Box*/
+.control_box {
+    -fx-font-family: "Arial";
+    -fx-font-size: 12;
+    -fx-border-color: #ccc;
+    -fx-border-width: 1;
+    -fx-border-radius: 3, 2;
 }
 
-/*main*/
+/*Info Box*/
+.center_box {
+    -fx-font-family: "Arial";
+    -fx-font-size: 12;
+    -fx-border-color: #ccc;
+    -fx-border-width: 1;
+    -fx-border-radius: 3, 2;
+    -fx-pref-height: 200;
+}
+
+.info_show {
+    -fx-min-height: 70;
+}
+
+#Printer {
+    -fx-min-height: 100;
+}
+
+#Keyboard {
+    -fx-padding: 15 0 0 0;
+}
+
+/*Registers Box*/
+.registers_box {
+    -fx-padding: 10 32;
+    -fx-border-color: #ccc;
+    -fx-border-width: 1;
+    -fx-border-radius: 3, 2;
+}
+
 Label.label_register {
     -fx-font-size: 20px;
     -fx-font-family: "Arial Black";
@@ -35,9 +62,9 @@ Label.label_register {
     /*-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );*/
 }
 
-.control_box {
-    -fx-font-family: "Arial";
-    -fx-font-size: 12;
+/*Memory Box*/
+.memory_box {
+    -fx-padding: 10 32;
     -fx-border-color: #ccc;
     -fx-border-width: 1;
     -fx-border-radius: 3, 2;
@@ -48,19 +75,10 @@ Label.label_register {
     -fx-padding: 10 10;
 }
 
-.registers_box {
-    -fx-padding: 10 32;
-    -fx-border-color: #ccc;
-    -fx-border-width: 1;
-    -fx-border-radius: 3, 2;
-}
+
 
 .stepInformation {
     -fx-min-width: 30px;
-}
-
-Button:hover {
-    -fx-background-color: #99CCFF;
 }
 
 IO {

@@ -1,6 +1,6 @@
 package core;
 
-import gui.controllers.CenterPaneController;
+import gui.controllers.EngineerConsoleController;
 
 //Addressing function, provide the way to calculate the effective address.
 public class Addressing {
@@ -235,7 +235,7 @@ public class Addressing {
     
 //***************************************************************************************************************************
     public static void sendStepInformation(){
-    	CenterPaneController.setStepInformation(stepInformation,false);
+    	EngineerConsoleController.setStepInformation(stepInformation,false);
 	}
     
 }

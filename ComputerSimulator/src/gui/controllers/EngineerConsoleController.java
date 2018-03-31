@@ -17,7 +17,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class CenterPaneController implements Controller {
+public class EngineerConsoleController implements Controller {
     @FXML private TextArea StepInformation;
     @FXML private TextField Address;
     @FXML private TextField Content;
@@ -48,7 +48,7 @@ public class CenterPaneController implements Controller {
     @FXML private TextField DR;
     @FXML private TextField SRR;
     @FXML private TextField INPUT;
-    @FXML private TextArea OUTPUT;
+    @FXML private TextArea Printer;
     
     private static boolean open = false;
     private boolean loadStatus = false;
@@ -73,7 +73,7 @@ public class CenterPaneController implements Controller {
             IOmemory.getInstance().clearIOmemory();
             Cache.getInstance().clearCache();
             Decoder.getInstance().clear();
-            OUTPUT.setText("");
+            Printer.setText("");
             INPUT.setText("");
             instructionNum = 0;
             loadStatus = false;
@@ -162,7 +162,7 @@ public class CenterPaneController implements Controller {
         String tmp = INPUT.getText();
         String binaryInput = CPU.alignment(Integer.toBinaryString(Integer.valueOf(tmp))); 
         IOmemory.getInstance().setContent("00000", binaryInput);
-        OUTPUT.setText("Input: " + binaryInput);
+        Printer.setText("Input: " + binaryInput);
         INPUT.setText("");
     }
 
@@ -179,11 +179,33 @@ public class CenterPaneController implements Controller {
         Controler.getInstance().singleStep = false;
     }
 
+    public void loadP2() {
+
+    }
+
+    public void loadP3() {
+
+    }
+
+    public void P3Paragraph() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader()
+                .getResource("gui/views/P3ParagraphPane.fxml"));
+        Pane p3ParagraphPane = loader.load();
+        Controller controller = loader.getController();
+        controller.initialise();
+        Stage stage = new Stage();
+
+        stage.setTitle("P3 Paragraph");
+        stage.setScene(new Scene(p3ParagraphPane));
+        stage.setResizable(false);
+        stage.show();
+    }
+
     private void update() {
         // set all the TextField in the GUI
         StepInformation.setText(stepInformation);
         if(!IOmemory.getInstance().getContent("00001").equals("0000000000000000")) {
-        		OUTPUT.setText(Integer.valueOf(IOmemory.getInstance().getContent("00001"), 2).toString());
+        		Printer.setText(Integer.valueOf(IOmemory.getInstance().getContent("00001"), 2).toString());
         		
         }
         if (memoryInformation) {
@@ -249,7 +271,7 @@ public class CenterPaneController implements Controller {
         RR.setText("");
         DR.setText("");
         SRR.setText("");
-        OUTPUT.setText("");
+        Printer.setText("");
         INPUT.setText("");
         Halt.flag=true;
     }
@@ -261,7 +283,7 @@ public class CenterPaneController implements Controller {
 
     // used by other class to set current stepInformation and memoryInformation
     public static void setStepInformation(String stepInformation, boolean memoryInformation) {
-        CenterPaneController.stepInformation = stepInformation;
-        CenterPaneController.memoryInformation = memoryInformation;
+        EngineerConsoleController.stepInformation = stepInformation;
+        EngineerConsoleController.memoryInformation = memoryInformation;
     }
 }

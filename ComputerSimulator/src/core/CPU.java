@@ -1,6 +1,6 @@
 package core;
 
-import gui.controllers.CenterPaneController;
+import gui.controllers.EngineerConsoleController;
 // This class include all registers, ALU, and Memory
 public class CPU {
 	private Register pc = PC.getInstance();
@@ -158,7 +158,7 @@ public class CPU {
         srr.setContent("0000000000000000");
         msr.setContent("0000000000000000");
 		cycle = 0;
-		CenterPaneController.setStepInformation("",false);
+		EngineerConsoleController.setStepInformation("",false);
 	}
 	
 	//Cycle plus 1

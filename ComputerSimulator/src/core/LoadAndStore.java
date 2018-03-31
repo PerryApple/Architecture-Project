@@ -1,5 +1,5 @@
 package core;
-import gui.controllers.CenterPaneController;
+import gui.controllers.EngineerConsoleController;
 
 public class LoadAndStore extends ISA{
     private static String stepInformation;
@@ -319,6 +319,6 @@ public class LoadAndStore extends ISA{
 
 
     public static void  sendStepInformation(){
-        CenterPaneController.setStepInformation(stepInformation,memoryInformation);
+        EngineerConsoleController.setStepInformation(stepInformation,memoryInformation);
     }
 }

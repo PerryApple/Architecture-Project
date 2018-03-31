@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.control.cell.TextFieldListCell?>
+<?import java.net.URL?>
+
+<VBox xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="gui.controllers.UserInterfaceController"
+            prefHeight="400.0" prefWidth="600.0">
+    <HBox>
+        <Button text="switch" onAction="#Switch"/>
+        <Button text="load" onAction="#load"/>
+        <Label text="Computer Simulator Simple User Interface"/>
+    </HBox>
+    <Label text="Printer:"/>
+    <TextArea fx:id="Printer"/>
+    <Label text="KeyBoard:"/>
+    <HBox>
+        <TextField fx:id="Input"/>
+        <Button text="Input" onAction="#input"/>
+    </HBox>
+    <GridPane>
+        <Button text="Program2" onAction="#loadP2" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <Button text="Program3" onAction="#loadP3" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+        <Button text="P3 Program" onAction="#P3Program" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+        <Button text="Run" onAction="#Run" GridPane.rowIndex="0" GridPane.columnIndex="3" GridPane.rowSpan="2"/>
+        <Button text="Memory" onAction="#seeMemory" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <Button text="Cache" onAction="#seeCache" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+        <Button text="Registers" onAction="#seeRegisters" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+    </GridPane>
+
+</VBox>

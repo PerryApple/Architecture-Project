@@ -1,5 +1,5 @@
 package core;
-import gui.controllers.CenterPaneController;
+import gui.controllers.EngineerConsoleController;
 
 //This class contains all arithmetic instructions includes add, subtract, multiply and divide.
 //These instructions are parts of ISA.
@@ -44,14 +44,14 @@ public class ArithmeticInstructions extends ISA{
 		//******Cycle++
 		mlr.setContent(rx.getContent());
 		CPU.cyclePlusOne();
-		CenterPaneController.setStepInformation("MLR <= " + rx.getName(), false);
+		EngineerConsoleController.setStepInformation("MLR <= " + rx.getName(), false);
 		Halt.halt();
 		//PR is a 32bits register.
 		//the first 16 bits store the products and the second 16 bits stores the multiplier (Ry).
 		//******Cycle++
 		pr.setContent("0000000000000000" + ry.getContent());
 		CPU.cyclePlusOne();
-		CenterPaneController.setStepInformation("PR <= " + ry.getName() + ". Add 16 zeroes in the higher 16 bits.", false);
+		EngineerConsoleController.setStepInformation("PR <= " + ry.getName() + ". Add 16 zeroes in the higher 16 bits.", false);
 		Halt.halt();
 		for( int i = 0 ; i < rx.getSize(); i++) {
 			//if the last bit of ry == 1, add multiplicand and product in ALU and save result in the high order of PR.
@@ -70,7 +70,7 @@ public class ArithmeticInstructions extends ISA{
 				CPU.cyclePlusOne();
 				pr.rightShift();
 			}
-			CenterPaneController.setStepInformation("Multiple c(PR) whith c(MLR). Result is stored in PR", false);
+			EngineerConsoleController.setStepInformation("Multiple c(PR) whith c(MLR). Result is stored in PR", false);
 			Halt.halt();
 			
 		}
@@ -78,12 +78,12 @@ public class ArithmeticInstructions extends ISA{
 		//******Cycle++
 		rx.setContent(pr.getHighOrderBits());
 		CPU.cyclePlusOne();
-		CenterPaneController.setStepInformation(rx.getName() + " <= PR high order bits", false);
+		EngineerConsoleController.setStepInformation(rx.getName() + " <= PR high order bits", false);
 		Halt.halt();
 		//******Cycle++
 		rxPlusOne.setContent(pr.getLowOrderBits());
 		CPU.cyclePlusOne();
-		CenterPaneController.setStepInformation(rxPlusOne.getName() + " <= PR low order bits", false);
+		EngineerConsoleController.setStepInformation(rxPlusOne.getName() + " <= PR low order bits", false);
 		Halt.halt();
 	}
 	
@@ -184,7 +184,7 @@ public class ArithmeticInstructions extends ISA{
 		if(ry.getContent().equals("0000000000000000")) {
 			cpu.getCC().setContent("DZ");
 			CPU.cyclePlusOne();
-			CenterPaneController.setStepInformation("Divided by Zero, CC(3) <- 1", false);
+			EngineerConsoleController.setStepInformation("Divided by Zero, CC(3) <- 1", false);
 			Halt.halt();
 		}
 		//Get the instance of quotient register and remainder register.
@@ -196,13 +196,13 @@ public class ArithmeticInstructions extends ISA{
 		//1. Initialize
 		dr.setContent(ry.getContent());
 		CPU.cyclePlusOne();
-		CenterPaneController.setStepInformation("DR <= " + ry.getName(), false);
+		EngineerConsoleController.setStepInformation("DR <= " + ry.getName(), false);
 		Halt.halt();
 		
 		rr.setContent(rx.getContent());
 		qr.setContent("0000000000000000");
 		CPU.cyclePlusOne();
-		CenterPaneController.setStepInformation("RR <= " + rx.getName() + ". Set qr to 0", false);
+		EngineerConsoleController.setStepInformation("RR <= " + rx.getName() + ". Set qr to 0", false);
 		Halt.halt();
 
 		//2.calculate
@@ -229,17 +229,17 @@ public class ArithmeticInstructions extends ISA{
 			dr.rightShift();
 			//end of one divide calculation cycle.
 		}
-		CenterPaneController.setStepInformation("Divide c(RR) by c(dr), quotient is stored in QR and Remainder is stored in RR", false);
+		EngineerConsoleController.setStepInformation("Divide c(RR) by c(dr), quotient is stored in QR and Remainder is stored in RR", false);
 		Halt.halt();
 		//4. store result
 		//move content of qr to rx and lower 16 bits of content of rr to rx+1
 		rx.setContent(qr.getContent());
 		CPU.cyclePlusOne();
-		CenterPaneController.setStepInformation(rx.getName() + "<= QR", false);
+		EngineerConsoleController.setStepInformation(rx.getName() + "<= QR", false);
 		Halt.halt();
 		rxPlusOne.setContent(rr.getContent().substring(16));
 		CPU.cyclePlusOne();
-		CenterPaneController.setStepInformation(rxPlusOne.getName() + "<= RR low order 16 bits", false);
+		EngineerConsoleController.setStepInformation(rxPlusOne.getName() + "<= RR low order 16 bits", false);
 		Halt.halt();
 	}
 
@@ -330,25 +330,25 @@ public class ArithmeticInstructions extends ISA{
 		//set MAR register
 		cpu.getMAR().setContent(cpu.getIAR().getContent());
 		CPU.cyclePlusOne();
-		CenterPaneController.setStepInformation("Execute:MAR<=IAR",false);
+		EngineerConsoleController.setStepInformation("Execute:MAR<=IAR",false);
 		Halt.halt();
 		//get the content in memory using address in MAR, and load it to MBR.
 		Cache.getInstance().cacheToMBR(cpu.getMAR().getContent());
 		//Execute the operation move data to IRR
 		cpu.getIRR().setContent(cpu.getMBR().getContent());
 		CPU.cyclePlusOne();
-		CenterPaneController.setStepInformation("Execute:IRR<=MBR",false);
+		EngineerConsoleController.setStepInformation("Execute:IRR<=MBR",false);
 		Halt.halt();
 		//move c(r) to Y
 		cpu.getY().setContent(r.getContent());
 		CPU.cyclePlusOne();
-		CenterPaneController.setStepInformation("Execute:Y<=c(r)",false);
+		EngineerConsoleController.setStepInformation("Execute:Y<=c(r)",false);
 		Halt.halt();
 
 		// r<- c(r)+c(EA)
 		r.setContent(ALU.getInstance().add(cpu.getY().getContent(),cpu.getIRR().getContent()));
 		CPU.cyclePlusOne();
-		CenterPaneController.setStepInformation("Execute:r<=c(r)+c(EA)",false);
+		EngineerConsoleController.setStepInformation("Execute:r<=c(r)+c(EA)",false);
 		Halt.halt();
 	}
 	
@@ -398,18 +398,18 @@ public class ArithmeticInstructions extends ISA{
 		if(!address.equals("00000")){
 			cpu.getY().setContent(CPU.alignmentImmed(Immed));
 			CPU.cyclePlusOne();
-			CenterPaneController.setStepInformation("Y <= immed",false);
+			EngineerConsoleController.setStepInformation("Y <= immed",false);
 			Halt.halt();
 			if(r.getContent().equals("0000000000000000")){
 				r.setContent(cpu.getY().getContent());
 				CPU.cyclePlusOne();
-				CenterPaneController.setStepInformation(r.getName() + " <= immed",false);
+				EngineerConsoleController.setStepInformation(r.getName() + " <= immed",false);
 				Halt.halt();
 			}else{
 				// r<-c(r)+ c(Y)
 				r.setContent(ALU.getInstance().add(r.getContent(),cpu.getY().getContent()));
 				CPU.cyclePlusOne();
-				CenterPaneController.setStepInformation(r.getName() + " <= c(r) + c(Y) (Immed)",false);
+				EngineerConsoleController.setStepInformation(r.getName() + " <= c(r) + c(Y) (Immed)",false);
 				Halt.halt();
 			}
 		}
@@ -459,18 +459,18 @@ public class ArithmeticInstructions extends ISA{
 		if(!address.equals("00000")){
 			cpu.getY().setContent(CPU.alignmentImmed(Immed));
 			CPU.cyclePlusOne();
-			CenterPaneController.setStepInformation("Y <= immed",false);
+			EngineerConsoleController.setStepInformation("Y <= immed",false);
 			Halt.halt();
 			if(r.getContent().equals("0000000000000000")){
 				r.setContent(ALU.getInstance().minus("0000000000000000",cpu.getY().getContent()));
 				CPU.cyclePlusOne();
-				CenterPaneController.setStepInformation(r.getName() + " <= (-immed)",false);
+				EngineerConsoleController.setStepInformation(r.getName() + " <= (-immed)",false);
 				Halt.halt();
 			}else{
 				// r<-c(r)+ c(Y)immed
 				r.setContent(ALU.getInstance().minus(r.getContent(),cpu.getY().getContent()));
 				CPU.cyclePlusOne();
-				CenterPaneController.setStepInformation(r.getName() + " <= c(r) - c(Y) (Immed)",false);
+				EngineerConsoleController.setStepInformation(r.getName() + " <= c(r) - c(Y) (Immed)",false);
 				Halt.halt();
 			}
 		}
@@ -515,7 +515,7 @@ public class ArithmeticInstructions extends ISA{
 		//set MAR register
 		cpu.getMAR().setContent(cpu.getIAR().getContent());
 		CPU.cyclePlusOne();
-		CenterPaneController.setStepInformation("Execute: MAR <= IAR",false);
+		EngineerConsoleController.setStepInformation("Execute: MAR <= IAR",false);
 		Halt.halt();
 
 		//get the content in memory using address in MAR, and load it to MBR.
@@ -523,19 +523,19 @@ public class ArithmeticInstructions extends ISA{
 		//Execute the operation move data to IRR
 		cpu.getIRR().setContent(cpu.getMBR().getContent());
 		CPU.cyclePlusOne();
-		CenterPaneController.setStepInformation("Execute: IRR <= MBR",false);
+		EngineerConsoleController.setStepInformation("Execute: IRR <= MBR",false);
 		Halt.halt();
 
 		//move c(r) to Y
 		cpu.getY().setContent(r.getContent());
 		CPU.cyclePlusOne();
-		CenterPaneController.setStepInformation("Execute:Y <= c(r)",false);
+		EngineerConsoleController.setStepInformation("Execute:Y <= c(r)",false);
 		Halt.halt();
 
 		// r<- c(r)-c(EA)
 		r.setContent(ALU.getInstance().minus(cpu.getY().getContent(),cpu.getIRR().getContent()));
 		CPU.cyclePlusOne();
-		CenterPaneController.setStepInformation("Execute: r <= c(r) - c(EA)",false);
+		EngineerConsoleController.setStepInformation("Execute: r <= c(r) - c(EA)",false);
 		Halt.halt();
 	}
 	

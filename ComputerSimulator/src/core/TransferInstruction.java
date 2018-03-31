@@ -1,5 +1,5 @@
 package core;
-import gui.controllers.CenterPaneController;
+import gui.controllers.EngineerConsoleController;
 //===============================================//
 //            Transfer instruction               //
 //===============================================//
@@ -22,7 +22,7 @@ public class TransferInstruction  extends ISA{
         if(r!=null&&r.getContent().equals("0000000000000000")){
             cpu.getPC().setContent(cpu.getIAR().getContent());
             //UI shows step information
-            CenterPaneController.setStepInformation("PC<-EA",false);
+            EngineerConsoleController.setStepInformation("PC<-EA",false);
             //set jump to make PC not ++
             Controler.getInstance().jump = true;
             CPU.cyclePlusOne();
@@ -67,7 +67,7 @@ public class TransferInstruction  extends ISA{
         if(r!=null&&!r.getContent().equals("0000000000000000")){
             cpu.getPC().setContent(cpu.getIAR().getContent());
             //UI shows step information
-            CenterPaneController.setStepInformation("PC<-EA",false);
+            EngineerConsoleController.setStepInformation("PC<-EA",false);
             //set jump to make PC not ++
             Controler.getInstance().jump = true;
             CPU.cyclePlusOne();
@@ -106,7 +106,7 @@ public class TransferInstruction  extends ISA{
         if(cpu.getCC().getContent().charAt(CC)=='1'){
             cpu.getPC().setContent(cpu.getIAR().getContent());
             //UI shows step information
-            CenterPaneController.setStepInformation("PC<-EA",false);
+            EngineerConsoleController.setStepInformation("PC<-EA",false);
             //set jump to make PC not ++
             Controler.getInstance().jump = true;
             CPU.cyclePlusOne();
@@ -131,7 +131,7 @@ public class TransferInstruction  extends ISA{
 //    Note: r is ignored in this instruction
     public static void JMA(){
         cpu.getPC().setContent(cpu.getIAR().getContent());
-        CenterPaneController.setStepInformation("PC <= IAR", false);
+        EngineerConsoleController.setStepInformation("PC <= IAR", false);
         CPU.cyclePlusOne();
         Halt.halt();
     }
@@ -152,12 +152,12 @@ public class TransferInstruction  extends ISA{
         //R3 <- PC +1
     		cpu.getALU().addPC(cpu.getPC());
         cpu.getR3().setContent(cpu.getZ().getContent());
-        CenterPaneController.setStepInformation("R3<-PC+1",false);
+        EngineerConsoleController.setStepInformation("R3<-PC+1",false);
         CPU.cyclePlusOne();
         Halt.halt();
         //PC <- EA
         cpu.getPC().setContent(cpu.getIAR().getContent());
-        CenterPaneController.setStepInformation("PC<-EA",false);
+        EngineerConsoleController.setStepInformation("PC<-EA",false);
         //set jump to make PC not ++
         Controler.getInstance().jump = true;
         CPU.cyclePlusOne();
@@ -184,12 +184,12 @@ public class TransferInstruction  extends ISA{
     public static void RFS(){
         //R0 <-Immed
         cpu.getR0().setContent(CPU.alignment(Immed));
-        CenterPaneController.setStepInformation("RO<-Immed",false);
+        EngineerConsoleController.setStepInformation("RO<-Immed",false);
         CPU.cyclePlusOne();
         Halt.halt();
         //PC <- c(R3)
         cpu.getPC().setContent(cpu.getR3().getContent());
-        CenterPaneController.setStepInformation("PC<-R3",false);
+        EngineerConsoleController.setStepInformation("PC<-R3",false);
         CPU.cyclePlusOne();
         Halt.halt();
     }
@@ -222,18 +222,18 @@ public class TransferInstruction  extends ISA{
         cpu.getY().setContent("0000000000000001");
         cpu.getALU().minus(r.getContent(), cpu.getY().getContent());
         CPU.cyclePlusOne();
-        CenterPaneController.setStepInformation("Y = 1, Z <= R - Y",false);
+        EngineerConsoleController.setStepInformation("Y = 1, Z <= R - Y",false);
         Halt.halt();
         //r <- c(r) – 1
         r.setContent(cpu.getZ().getContent());
-        CenterPaneController.setStepInformation("r <= Z",false);
+        EngineerConsoleController.setStepInformation("r <= Z",false);
         CPU.cyclePlusOne();
         Halt.halt();
         //first bit != 1 means >0
         if(r.getContent().charAt(0) != '1' &&r.getContent()!="0000000000000000"){
             cpu.getPC().setContent(cpu.getIAR().getContent());
             //UI shows step information
-            CenterPaneController.setStepInformation("PC<-EA",false);
+            EngineerConsoleController.setStepInformation("PC<-EA",false);
             //set jump to make PC not ++
             Controler.getInstance().jump = true;
             CPU.cyclePlusOne();
@@ -285,7 +285,7 @@ public class TransferInstruction  extends ISA{
         if(r.getContent().charAt(0)!= '1'){
             cpu.getPC().setContent(cpu.getIAR().getContent());
             //UI shows step information
-            CenterPaneController.setStepInformation("PC<-EA",false);
+            EngineerConsoleController.setStepInformation("PC<-EA",false);
             //set jump to make PC not ++
             Controler.getInstance().jump = true;
             CPU.cyclePlusOne();

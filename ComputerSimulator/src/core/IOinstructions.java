@@ -1,5 +1,5 @@
 package core;
-import gui.controllers.CenterPaneController;
+import gui.controllers.EngineerConsoleController;
 /*DEVID	Device
         0	Console Keyboard
         1	Console Printer
@@ -11,7 +11,7 @@ public class IOinstructions extends ISA {
     //Input Character To Register from Device, r = 0..3
     public static void IN(){
         Halt.halt();
-        CenterPaneController.setStepInformation("Please enter a number",false);
+        EngineerConsoleController.setStepInformation("Please enter a number",false);
         Register r = null;
         //get the Register according to R
         switch (R){
@@ -21,10 +21,10 @@ public class IOinstructions extends ISA {
             case "11": r = cpu.getR3();break;
         }
         // c(r) <- IOmemory(DevID)
-        CenterPaneController.setStepInformation("Please Input Data!!!",false);
+        EngineerConsoleController.setStepInformation("Please Input Data!!!",false);
         Halt.halt();
         r.setContent(IOmemory.getInstance().getContent(DevID));
-        CenterPaneController.setStepInformation(r.getName()+"<-I/O",false);
+        EngineerConsoleController.setStepInformation(r.getName()+"<-I/O",false);
         CPU.cyclePlusOne();
         Halt.halt();
     }
@@ -40,12 +40,12 @@ public class IOinstructions extends ISA {
             case "11": r = cpu.getR3();break;
         }
         // c(r) <- IOmemory(DevID)
-        CenterPaneController.setStepInformation("Please Input Data!!!",false);
+        EngineerConsoleController.setStepInformation("Please Input Data!!!",false);
         Halt.halt();
         r.setContent(IOmemory.getInstance().getContent(DevID));
-        CenterPaneController.setStepInformation(r.getName()+"<-I/O",false);
+        EngineerConsoleController.setStepInformation(r.getName()+"<-I/O",false);
         CPU.cyclePlusOne();
-        CenterPaneController.setStepInformation("Input success, press \"Next\" to continue!!!",false);
+        EngineerConsoleController.setStepInformation("Input success, press \"Next\" to continue!!!",false);
         Halt.halt();
     }
     
@@ -62,7 +62,7 @@ public class IOinstructions extends ISA {
         }
         // IOmemory(DevID)<-c(r)
         IOmemory.getInstance().setContent(DevID,r.getContent());
-        CenterPaneController.setStepInformation(r.getName()+"<-I/0",false);
+        EngineerConsoleController.setStepInformation(r.getName()+"<-I/0",false);
         CPU.cyclePlusOne();
         Halt.halt();
     }
@@ -97,7 +97,7 @@ public class IOinstructions extends ISA {
         }
         // c(r) <- IOmemorystatus(DevID)
         r.setContent(IOmemory.getInstance().getStatus(DevID));
-        CenterPaneController.setStepInformation("I/0->"+r.getName(),false);
+        EngineerConsoleController.setStepInformation("I/0->"+r.getName(),false);
         CPU.cyclePlusOne();
         Halt.halt();
     }

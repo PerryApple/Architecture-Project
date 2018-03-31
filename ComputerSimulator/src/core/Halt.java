@@ -1,6 +1,6 @@
 package core;
 
-import gui.controllers.CenterPaneController;
+import gui.controllers.EngineerConsoleController;
 public class Halt implements Runnable {
     //	private static final Thread thread = new Thread(new Halt());
 //	private Halt() {};
@@ -21,7 +21,7 @@ public class Halt implements Runnable {
     public static void halt() {
         flag = true;
         while (flag) {
-            if (CenterPaneController.getOpen() == false) break;
+            if (EngineerConsoleController.getOpen() == false) break;
         }
     }
 }

@@ -1,5 +1,5 @@
 package core;
-import gui.controllers.CenterPaneController;
+import gui.controllers.EngineerConsoleController;
 
 public class ShiftAndRotate extends ISA {
 	
@@ -33,14 +33,14 @@ public class ShiftAndRotate extends ISA {
 		//2.Move the content of r to SRR
 		cpu.getSRR().setContent(r.getContent());
 		CPU.cyclePlusOne();
-		CenterPaneController.setStepInformation("SRR <= " + r.getName() , false);
+		EngineerConsoleController.setStepInformation("SRR <= " + r.getName() , false);
 		Halt.halt();
 		//3.Do shift
 		//if L/R = 0 , right shift
 		if(LorR.equals("0")) {
 			//if A/L = 0, arithmetic shift
 			if(AorL.equals("0")) {
-				CenterPaneController.setStepInformation("Arithmetic shift the content of SRR " + count + " bits right", false);
+				EngineerConsoleController.setStepInformation("Arithmetic shift the content of SRR " + count + " bits right", false);
 				while(count > 0) {
 					cpu.getSRR().arithmeticRightShift();
 					count--;
@@ -50,7 +50,7 @@ public class ShiftAndRotate extends ISA {
 			}
 			//if A/L = 1, logical shift
 			else {
-				CenterPaneController.setStepInformation("Logical shift the content of SRR " + count + " bits right", false);
+				EngineerConsoleController.setStepInformation("Logical shift the content of SRR " + count + " bits right", false);
 				while(count > 0) {
 					cpu.getSRR().logicalRightShift();
 					count--;
@@ -63,7 +63,7 @@ public class ShiftAndRotate extends ISA {
 		else {
 			//if A/L = 0, arithmetic shift
 			if(AorL.equals("0")) {
-				CenterPaneController.setStepInformation("Arithmetic shift the content of SRR " + count + " bits left", false);
+				EngineerConsoleController.setStepInformation("Arithmetic shift the content of SRR " + count + " bits left", false);
 				while(count > 0) {
 					cpu.getSRR().arithmeticLeftShift();
 					count--;
@@ -73,7 +73,7 @@ public class ShiftAndRotate extends ISA {
 			}
 			//if A/L = 1, logical shift
 			else {
-				CenterPaneController.setStepInformation("Logical shift the content of SRR " + count + " bits left", false);
+				EngineerConsoleController.setStepInformation("Logical shift the content of SRR " + count + " bits left", false);
 				while(count > 0) {
 					cpu.getSRR().logicalLeftShift();
 					count--;
@@ -85,7 +85,7 @@ public class ShiftAndRotate extends ISA {
 		//4. Write the shifted data back to r
 		r.setContent(cpu.getSRR().getContent());
 		CPU.cyclePlusOne();
-		CenterPaneController.setStepInformation(r.getName() + " <= SRR", false);
+		EngineerConsoleController.setStepInformation(r.getName() + " <= SRR", false);
 		Halt.halt();
 	}
 	
@@ -189,7 +189,7 @@ public class ShiftAndRotate extends ISA {
 				//if L/R = 0 , right rotate
 				if(LorR.equals("0")) {
 					if(AorL.equals("0")) {
-						CenterPaneController.setStepInformation("Right Rotate the content of SRR " + count + " bits", false);
+						EngineerConsoleController.setStepInformation("Right Rotate the content of SRR " + count + " bits", false);
 						while(count > 0) {
 							cpu.getSRR().rightRotate();;
 							count--;
@@ -199,19 +199,19 @@ public class ShiftAndRotate extends ISA {
 						//4. Write the shifted data back to r
 						r.setContent(cpu.getSRR().getContent());
 						CPU.cyclePlusOne();
-						CenterPaneController.setStepInformation(r.getName() + " <= SRR", false);
+						EngineerConsoleController.setStepInformation(r.getName() + " <= SRR", false);
 						Halt.halt();
 					}
 					//else Error
 					else {
-						CenterPaneController.setStepInformation("A/L Should be 0!", false);
+						EngineerConsoleController.setStepInformation("A/L Should be 0!", false);
 						r.setContent("Error!");
 					}
 				}
 				//if L/R = 1 , left rotate
 				else {
 					if(AorL.equals("0")) {
-						CenterPaneController.setStepInformation("Left Rotate the content of SRR " + count + " bits", false);
+						EngineerConsoleController.setStepInformation("Left Rotate the content of SRR " + count + " bits", false);
 						while(count > 0) {
 							cpu.getSRR().leftRotate();
 							count--;
@@ -221,12 +221,12 @@ public class ShiftAndRotate extends ISA {
 						//4. Write the shifted data back to r
 						r.setContent(cpu.getSRR().getContent());
 						CPU.cyclePlusOne();
-						CenterPaneController.setStepInformation(r.getName() + " <= SRR", false);
+						EngineerConsoleController.setStepInformation(r.getName() + " <= SRR", false);
 						Halt.halt();
 					}
 					//else error!
 					else {
-						CenterPaneController.setStepInformation("A/L Should be 0!", false);
+						EngineerConsoleController.setStepInformation("A/L Should be 0!", false);
 						r.setContent("Error");
 						Halt.halt();
 					}

@@ -21,14 +21,12 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Pane centerPane = loadCenterPane();
+        Pane mainPane = loadMainPane();
         BorderPane root = new BorderPane();
-        root.setCenter(centerPane);
+        root.setCenter(mainPane);
 
         primaryStage.setTitle("SIMULATED COMPUTER");
-        primaryStage.setScene(new Scene(root, 760, 700));
-//        primaryStage.setMaxWidth(750);
-//        primaryStage.setMaxHeight(640);
+        primaryStage.setScene(new Scene(root, 300, 350));
         primaryStage.show();
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
@@ -39,13 +37,13 @@ public class Main extends Application {
         });
     }
 
-    private Pane loadCenterPane() throws IOException {
+    private Pane loadMainPane() throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getClassLoader().getResource("gui/views/CenterPane.fxml"));
-        Pane centerPane = loader.load();
+        loader.setLocation(getClass().getClassLoader().getResource("gui/views/mainPane.fxml"));
+        Pane mainPane = loader.load();
         Controller controller = loader.getController();
         controller.initialise();
-        return centerPane;
+        return mainPane;
     }
 
     public static void main(String[] args) {
