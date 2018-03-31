@@ -15,15 +15,15 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 <VBox fx:controller="gui.controllers.MainPaneController"
-      xmlns:fx="http://javafx.com/fxml" spacing="20" styleClass="mainBox">
-    <ImageView styleClass="image">
+      xmlns:fx="http://javafx.com/fxml" spacing="40" styleClass="mainBox">
+    <ImageView styleClass="image" >
         <image>
-            <Image  url="@../images/computer.png" backgroundLoading="true"/>
+            <Image  url="@../images/pc.png" backgroundLoading="true" />
         </image>
     </ImageView>
     <Label text="Computer Simulator"  styleClass="mainTitle"/>
-    <Button styleClass="mainButton" onAction="#viewUserInterface" text="Simple User Interface"/>
-    <Button styleClass="mainButton" onAction="#viewEngineerConsole" text="    Engineer Console   " />
+    <Button onAction="#viewUserInterface" text="Simple User Interface"/>
+    <Button onAction="#viewEngineerConsole" text="    Engineer Console   " />
     <Label text="\@copyright 2018 Group 6" styleClass="copyRight"/>
 
     <stylesheets>
