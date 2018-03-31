@@ -22,7 +22,7 @@ public class Halt implements Runnable {
     public static void halt() {
         flag = true;
         while (flag) {
-            if (!EngineerConsoleController.getOpen() || !UserInterfaceController.getOpen()) break;
+            if (!EngineerConsoleController.getOpen() && !UserInterfaceController.getOpen()) break;
         }
     }
 }
