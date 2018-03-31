@@ -1,6 +1,9 @@
 package core;
 
 import java.util.HashMap;
+import gui.controllers.*;
+
+import gui.controllers.UserInterfaceController;
 //I/O mapped I/O it has separated i/o memory space
 public class IOmemory {
     //use HashMap to represent IOmemory,key represents address,value represents data
@@ -37,6 +40,9 @@ public class IOmemory {
     public void setContent(String address,String value){
        if(address.length()==5){
            IOmemorySpace.get(address).setValue(value);
+           if(address == "00000") {
+        	   		UserInterfaceController.getPrinterContent(value);
+           }
         }else {
             System.err.println("Illegal address length!!");
         }

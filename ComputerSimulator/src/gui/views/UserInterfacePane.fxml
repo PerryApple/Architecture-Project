@@ -29,9 +29,9 @@
         <Button text="Input" onAction="#input"/>
     </HBox>
     <GridPane>
-        <Button text="Program2" onAction="#loadP2" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-        <Button text="Program3" onAction="#loadP3" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-        <Button text="P3 Program" onAction="#P3Program" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+        <Button text="Load Program2" onAction="#loadP2" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <Button text="Load Program3" onAction="#loadP3" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+        <Button text="Program3 Paragraph" onAction="#p3Paragraph" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
         <Button text="Run" onAction="#Run" GridPane.rowIndex="0" GridPane.columnIndex="3" GridPane.rowSpan="2"/>
         <Button text="Memory" onAction="#seeMemory" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
         <Button text="Cache" onAction="#seeCache" GridPane.rowIndex="1" GridPane.columnIndex="1"/>

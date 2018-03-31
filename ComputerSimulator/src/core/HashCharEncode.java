@@ -25,6 +25,8 @@ public class HashCharEncode {
 			//Address++
 			address = CPU.getInstance().getALU().add(address, CPU.alignment("1"));
 		}
+		//add an "END" flag at the end of this paragraph.
+		Cache.getInstance().writeBack(address, CPU.alignment("1011"));
 	}
 
 	public static void encode(String[] s) {
