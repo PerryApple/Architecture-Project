@@ -3,11 +3,13 @@ package gui.controllers;
 import core.CPU;
 import core.Cache;
 import core.CacheLine;
+import core.Controler;
 import core.Decoder;
 import core.Halt;
 import core.HashCharEncode;
 import core.IOmemory;
 import gui.Controller;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -35,8 +37,10 @@ public class UserInterfaceController implements Controller {
 	private boolean loadStatus = false;
 	private boolean paraLoadStatus = false;
 	private static int programNumber = 0;
-	private static int p3SentenceNumber = -1;
-	private static int p3WordNumber = -1;
+	private String paragraph = "";
+	private String userInput = "";
+	private static int p2SentenceNumber = -1;
+	private static int p2WordNumber = -1;
 	//MultiThread
 	Halt halt = new Halt();
 	Thread simulator = new Thread(halt);
@@ -62,8 +66,8 @@ public class UserInterfaceController implements Controller {
             Input.setText("");
             loadStatus = false;
             paraLoadStatus = false;
-            p3SentenceNumber = -1;
-            p3WordNumber = -1;
+            p2SentenceNumber = -1;
+            p2WordNumber = -1;
             // show the information and reverse open status
             open = !open;
         }
@@ -81,17 +85,17 @@ public class UserInterfaceController implements Controller {
 
     public void input() {
     		if(programNumber == 1) {
-    			String userNumber = Input.getText();
-    	        String binaryInput = CPU.alignment(Integer.toBinaryString(Integer.valueOf(userNumber))); 
+    			userInput = Input.getText();
+    	        String binaryInput = CPU.alignment(Integer.toBinaryString(Integer.valueOf(userInput))); 
     	        IOmemory.getInstance().setContent("00000", binaryInput);
     	        Printer.setText("Input: " + binaryInput);
     	        Input.setText("");
     		}else if(programNumber == 2) {
-    			String userWord = Input.getText();
-    			String encodedUserWord = HashCharEncode.getCode(userWord);
+    			userInput = Input.getText();
+    			String encodedUserWord = HashCharEncode.getCode(userInput);
     			IOmemory.getInstance().setContent("00000", CPU.alignment(encodedUserWord));
     			String currentPrinterText = Printer.getText();
-    			Printer.setText(currentPrinterText + "User Inputed Word: " + userWord);
+    			Printer.setText(currentPrinterText + "User Inputed Word: " + userInput);
     		}
     }
 
@@ -115,6 +119,7 @@ public class UserInterfaceController implements Controller {
                         String[] contents = line.split(",");
                         CPU.getInstance().getMemory().setContent(contents[0], contents[1]);
                     }
+                    
                     Printer.setText("Program1 has been successfully loaded");
                     loadStatus = true;
                     //put the beginning address of a program into PC.
@@ -137,7 +142,7 @@ public class UserInterfaceController implements Controller {
                 BufferedReader br=null;
                 FileReader fr=null;
                 try{
-                		this.programNumber = 2;
+                		UserInterfaceController.programNumber = 2;
                     String txt="Program2.txt";
                     fr=new FileReader(txt);
                     br=new BufferedReader(fr);
@@ -158,7 +163,6 @@ public class UserInterfaceController implements Controller {
                     //put the beginning address of a program into PC.
                     CPU.getInstance().getPC().setContent("000001000000");
                     simulator.start();
-
                 }catch (IOException e){
                     Printer.setText("Program2 Load error");
                     System.out.println(e.toString());
@@ -179,7 +183,6 @@ public class UserInterfaceController implements Controller {
                      fr=new FileReader(txt);
                      br=new BufferedReader(fr);
                      String line;
-                     String paragraph = null;
                      while((line=br.readLine())!=null){
                      	//Store sentences in an array of String
                     	 	paragraph = paragraph + line + "\n";
@@ -188,7 +191,7 @@ public class UserInterfaceController implements Controller {
                      String[] sentences = paragraph.split("\\n");
                      //Encode the paragraph and store in memory begin at Address[512]
                      HashCharEncode.saveInMemory("001000000000", sentences);
-                     Printer.setText("Paragraph for program2 has been successfully loaded.");
+                     Printer.setText(paragraph);
                      paraLoadStatus = true;
 
                  }catch (IOException e){
@@ -200,35 +203,43 @@ public class UserInterfaceController implements Controller {
     }
     
     //print result of Program2 in printer
-    private static void p2Result(int s) {
+    private void showP2Result() {
     		if(open && programNumber == 2) {
-    			if(p3SentenceNumber == -1) {
-    				p3SentenceNumber = s;
-    			}else if(p3WordNumber == -1) {
-    				p3SentenceNumber = s;
-    			}
-    			
-    			if(p3SentenceNumber != -1 && p3WordNumber != -1) {
-    				String currentPrinterText = Printer.getText();
-    				if(p3SentenceNumber == 0) {
-    					Printer.setText(currentPrinterText + "\n" + "The user input word DOES NOT exist in this paragraph!");
-    				}
-    				Printer.setText(currentPrinterText + "\n" + "The user input word first appears in SENTENCE NO." + p3SentenceNumber + " WORD NO." + p3WordNumber + "!");
+    			if(p2SentenceNumber != -1 && p2WordNumber != -1) {
+    				if(p2SentenceNumber == 0) {
+    					Printer.setText(paragraph + "\n" + "The user input word DOES NOT exist in this paragraph!");
+    				}else {
+    					Printer.setText(paragraph + "\n" + "The user input word first appears in SENTENCE NO." + p2SentenceNumber + " WORD NO." + p2WordNumber + "!");
+    				}	
     			}
     		}
     }
     
-    //Get content from Device "printer"
-    public static void getPrinterContent(String printerContent) {
-    		if(programNumber == 1) {
-    			
-    		}else if(programNumber == 2) {
-    			p3Result(Integer.valueOf(printerContent, 2));
-    		}
+//    Get content from Device "printer"
+    public static void getP2Result(String printerContent) {
+    		if(open && programNumber == 2) {
+			if(p2SentenceNumber == -1) {
+				p2SentenceNumber = Integer.valueOf(printerContent, 2);
+			}else if(p2WordNumber == -1) {
+				p2WordNumber = Integer.valueOf(printerContent, 2);
+			}
+	    	}
     }
 
     public void Run() {
-
+    		System.out.print(CPU.getInstance().getPC().getContent());
+    		if(!Controler.getInstance().end) {
+			if(open && loadStatus) {
+	    			Halt.flag = false;
+	    			while(!Halt.flag){}
+	    			if(programNumber == 2) {
+	    				showP2Result();
+	    			}
+			}
+    		}else{
+			Platform.exit();
+			System.exit(0);
+		}
     }
 
     public void seeMemory() throws IOException {
@@ -271,5 +282,9 @@ public class UserInterfaceController implements Controller {
         stage.setScene(new Scene(seeRegistersPane));
         stage.setResizable(false);
         stage.show();
+    }
+    
+    public static boolean getOpen() {
+        return open;
     }
 }
