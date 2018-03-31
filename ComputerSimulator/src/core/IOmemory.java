@@ -40,9 +40,6 @@ public class IOmemory {
     public void setContent(String address,String value){
        if(address.length()==5){
            IOmemorySpace.get(address).setValue(value);
-           if(address == "00000") {
-        	   		UserInterfaceController.getP2Result(value);;
-           }
         }else {
             System.err.println("Illegal address length!!");
         }

@@ -40,7 +40,6 @@ public class HashCharEncode {
 			for(int j = 0 ; j < singleWords.length; j++) {
 				//delete all characters which is not a-z.
 				singleWords[j] = singleWords[j].replaceAll("[^a-z\\s]","");
-				System.out.println(singleWords[j]);
 				if(!complexCodeMap.containsKey(singleWords[j])) {
 					complexCodeMap.put(singleWords[j], Integer.valueOf(code));
 					code += (int)(Math.random()*8 + 1);

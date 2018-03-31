@@ -49,7 +49,7 @@ Button {
     -fx-pref-height: 28;
 }
 
-Button, TextArea, TextField {
+Button, TextArea, TextField{
     -fx-opacity: 75%;
 }
 

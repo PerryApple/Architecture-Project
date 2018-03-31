@@ -1,5 +1,6 @@
 package core;
 import gui.controllers.EngineerConsoleController;
+import gui.controllers.UserInterfaceController;
 
 public class Controler {
     //Singleton Pattern
@@ -135,8 +136,9 @@ public class Controler {
                 CPU.cyclePlusOne();
             }
         }
-        EngineerConsoleController.setStepInformation("Execute done, press next to exit", false);
         this.end = true;
+        EngineerConsoleController.setStepInformation("Execute done", false);
+        UserInterfaceController.setStepInformation("Execute done, press next to see result");
         Halt.halt();
     }
     public void sendStepInformation(){

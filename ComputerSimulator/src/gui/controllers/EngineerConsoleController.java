@@ -54,6 +54,11 @@ public class EngineerConsoleController implements Controller {
     private boolean loadStatus = false;
     private static String stepInformation = "";
     private static boolean memoryInformation;
+    private boolean paraLoadStatus = false;
+    private String paragraph = "";
+    private String userInput = "";
+    private int programNumber = 0;
+
     static String[]  instruction={"","","","INPUT NUMBER 1","","INPUT NUMBER 2","","INPUT NUMBER 3","","INPUT NUMBER 4","","INPUT NUMBER 5","","INPUT NUMBER 6","","INPUT NUMBER 7","","INPUT NUMBER 8","","INPUT NUMBER 9","","INPUT NUMBER 10","","INPUT NUMBER 11",
     		"","INPUT NUMBER 12","","INPUT NUMBER 13","","INPUT NUMBER 14","","INPUT NUMBER 15","","INPUT NUMBER 16","","INPUT NUMBER 17","","INPUT NUMBER 18","","INPUT NUMBER 19","","INPUT NUMBER 20","","INPUT USER NUMBER","","Find The Closest Number"};
     public static int instructionNum;
@@ -94,6 +99,7 @@ public class EngineerConsoleController implements Controller {
             if(loadStatus) {
                 update();
             }else {
+            		programNumber = 1;
                 BufferedReader br=null;
                 FileReader fr=null;
                 try{
@@ -154,11 +160,19 @@ public class EngineerConsoleController implements Controller {
     }
 
     public void Input() {
-        String tmp = INPUT.getText();
-        String binaryInput = CPU.alignment(Integer.toBinaryString(Integer.valueOf(tmp))); 
-        IOmemory.getInstance().setContent("00000", binaryInput);
-        Printer.setText("Input: " + binaryInput);
-        INPUT.setText("");
+    		if(programNumber == 1) {
+			userInput = INPUT.getText();
+	        String binaryInput = CPU.alignment(Integer.toBinaryString(Integer.valueOf(userInput))); 
+	        IOmemory.getInstance().setContent("00000", binaryInput);
+	        Printer.setText("Input: " + binaryInput);
+	        INPUT.setText("");
+		}else if(programNumber == 2) {
+			userInput = INPUT.getText();
+			String encodedUserWord = HashCharEncode.getCode(userInput);
+			IOmemory.getInstance().setContent("00000", CPU.alignment(encodedUserWord));
+			String currentPrinterText = Printer.getText();
+			Printer.setText(currentPrinterText + "User Inputed Word: " + userInput);
+		}
     }
 
     public void searchMemory() {
@@ -175,21 +189,72 @@ public class EngineerConsoleController implements Controller {
     }
 
     public void loadP2() {
-
+    		if(open){
+            if(loadStatus) {
+                StepInformation.setText("Program" + programNumber +"Already loaded!");
+            }else {
+                BufferedReader br=null;
+                FileReader fr=null;
+                try{
+                		programNumber = 2;
+                    String txt="Program2.txt";
+                    fr=new FileReader(txt);
+                    br=new BufferedReader(fr);
+                    String line;
+                    
+                    while((line=br.readLine())!=null){
+                    	//If this line starts with "//", skip it
+                        if(line.substring(0,2).equals("//")) {
+                            continue;
+                        	}
+                        // else load data or instructions into memory
+                        String[] contents = line.split(",");
+                        CPU.getInstance().getMemory().setContent(contents[0], contents[1]);
+                    }
+                        
+                    StepInformation.setText("Program2 has been successfully loaded.");
+                    loadStatus = true;
+                    //put the beginning address of a program into PC.
+                    CPU.getInstance().getPC().setContent("000001000000");
+                    simulator.start();
+                }catch (IOException e){
+                    StepInformation.setText("Program2 Load error");
+                    System.out.println(e.toString());
+                }
+            }
+        }
     }
 
-    public void P2Paragraph() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader()
-                .getResource("gui/views/P2ParagraphPane.fxml"));
-        Pane p3ParagraphPane = loader.load();
-        Controller controller = loader.getController();
-        controller.initialise();
-        Stage stage = new Stage();
+    public void P2Paragraph() {
+    		if(open) {
+			if(paraLoadStatus) {
+				StepInformation.setText("Paragraph has already been loaded!");
+			}else{
+				 BufferedReader br=null;
+	             FileReader fr=null;
+	             try{
+                 String txt="Program2 Paragraph.txt";
+                 fr=new FileReader(txt);
+                 br=new BufferedReader(fr);
+                 String line;
+                 while((line=br.readLine())!=null){
+                 	//Store sentences in an array of String
+                	 	paragraph = paragraph + line + "\n";
+                 }
+                 //Split String paragraph
+                 String[] sentences = paragraph.split("\\n");
+                 //Encode the paragraph and store in memory begin at Address[512]
+                 HashCharEncode.encode(sentences);
+                 HashCharEncode.saveInMemory("001000000000", sentences);
+                 Printer.setText(paragraph);
+                 paraLoadStatus = true;
 
-        stage.setTitle("P2 Paragraph");
-        stage.setScene(new Scene(p3ParagraphPane));
-        stage.setResizable(false);
-        stage.show();
+             }catch (IOException e){
+                 StepInformation.setText("Program2 Load error");
+                 System.out.println(e.toString());
+             }
+			}
+		}
     }
 
     private void update() {

@@ -42,6 +42,7 @@ public class UserInterfaceController implements Controller {
 	private static int p2SentenceNumber = -1;
 	private static int p2WordNumber = -1;
 	private static String stepInformation;
+	private boolean terminate = false;
 	//MultiThread
 	Halt halt = new Halt();
 	Thread simulator = new Thread(halt);
@@ -50,6 +51,7 @@ public class UserInterfaceController implements Controller {
 	//Element in Interface
 	@FXML private TextArea Printer;
 	@FXML private TextField Input;
+	@FXML private TextField StepInformation;
 	
     @Override
     public void initialise() {
@@ -69,6 +71,7 @@ public class UserInterfaceController implements Controller {
             Input.setText("");
             loadStatus = false;
             paraLoadStatus = false;
+            terminate = false;
             p2SentenceNumber = -1;
             p2WordNumber = -1;
             // show the information and reverse open status
@@ -81,8 +84,17 @@ public class UserInterfaceController implements Controller {
     }
     //shut down
     private void shutdown() {
-    		Printer.setText("");
+    		if(loadStatus == true) {
+    			Printer.setText("Please exit and reopen if you want to execute anonther program.\nThe simulator will automatically exit if you try to load any program");
+    		}else {
+    			Printer.setText("Press Switch to turn this simulator and press load botton to load program");
+    		}
     		Input.setText("");
+    		StepInformation.setText("");
+    		paragraph = "";
+    		userInput = "";
+    		p2SentenceNumber = -1;
+    		p2WordNumber = -1;
     		Halt.flag=true;
     }
 
@@ -105,7 +117,7 @@ public class UserInterfaceController implements Controller {
     public void loadP1() {
     	if(open){
             if(loadStatus) {
-            		Printer.setText("Program" + programNumber +"Already loaded!");
+            		StepInformation.setText("Program" + programNumber +"Already loaded!");
             }else {
                 BufferedReader br=null;
                 FileReader fr=null;
@@ -123,29 +135,29 @@ public class UserInterfaceController implements Controller {
                         CPU.getInstance().getMemory().setContent(contents[0], contents[1]);
                     }
                     
-                    Printer.setText("Program1 has been successfully loaded");
+                    StepInformation.setText("Program1 has been successfully loaded");
                     loadStatus = true;
                     //put the beginning address of a program into PC.
                     CPU.getInstance().getPC().setContent("000001111110");
                     simulator.start();
 
                 }catch (IOException e){
-                    Printer.setText("Program1 Load Error");
+                		StepInformation.setText("Program1 Load Error");
                     System.out.println(e.toString());
                 }
             }
         }
     }
 
-    public void loadP2() {
+    public void loadP2(){
 	    	if(open){
             if(loadStatus) {
-                Printer.setText("Program" + programNumber +"Already loaded!");
+                StepInformation.setText("Program" + programNumber +"Already loaded!");
             }else {
                 BufferedReader br=null;
                 FileReader fr=null;
                 try{
-                		UserInterfaceController.programNumber = 2;
+                		programNumber = 2;
                     String txt="Program2.txt";
                     fr=new FileReader(txt);
                     br=new BufferedReader(fr);
@@ -161,13 +173,18 @@ public class UserInterfaceController implements Controller {
                         CPU.getInstance().getMemory().setContent(contents[0], contents[1]);
                     }
                         
-                    Printer.setText("Program2 has been successfully loaded.");
+                    StepInformation.setText("Program2 has been successfully loaded.");
                     loadStatus = true;
                     //put the beginning address of a program into PC.
                     cpu.getPC().setContent("000001000000");
-                    simulator.start();
+                    if(simulator.getState() == Thread.State.NEW) {
+                    		simulator.start();
+                    }else {
+                    		StepInformation.setText("Illegal operation. Please click run to exit and restart this program!");
+                    		terminate = true;
+                    }
                 }catch (IOException e){
-                    Printer.setText("Program2 Load error");
+                    StepInformation.setText("Program2 Load error");
                     System.out.println(e.toString());
                 }
             }
@@ -177,7 +194,7 @@ public class UserInterfaceController implements Controller {
     public void p2Paragraph() {
     		if(open) {
     			if(paraLoadStatus) {
-    				Printer.setText("Paragraph has already been loaded!");
+    				StepInformation.setText("Paragraph has already been loaded!");
     			}else{
     				 BufferedReader br=null;
     	             FileReader fr=null;
@@ -193,12 +210,13 @@ public class UserInterfaceController implements Controller {
                      //Split String paragraph
                      String[] sentences = paragraph.split("\\n");
                      //Encode the paragraph and store in memory begin at Address[512]
+                     HashCharEncode.encode(sentences);
                      HashCharEncode.saveInMemory("001000000000", sentences);
                      Printer.setText(paragraph);
                      paraLoadStatus = true;
 
                  }catch (IOException e){
-                     Printer.setText("Program2 Load error");
+                     StepInformation.setText("Program2 Load error");
                      System.out.println(e.toString());
                  }
     			}
@@ -208,18 +226,18 @@ public class UserInterfaceController implements Controller {
     //print result of Program2 in printer
     private void showP2Result() {
     		if(open && programNumber == 2) {
-    			if(p2SentenceNumber != -1 && p2WordNumber != -1) {
+    			if(p2SentenceNumber != -1 || p2WordNumber != -1) {
     				if(p2SentenceNumber == 0) {
-    					Printer.setText(paragraph + "\n" + "The user input word DOES NOT exist in this paragraph!");
+    					StepInformation.setText("The user input word DOES NOT exist in this paragraph!");
     				}else {
-    					Printer.setText(paragraph + "\n" + "The user input word first appears in SENTENCE NO." + p2SentenceNumber + " WORD NO." + p2WordNumber + "!");
+    					StepInformation.setText("The user input word first appears in SENTENCE NO." + p2SentenceNumber + " WORD NO." + p2WordNumber + "!");
     				}	
     			}
     		}
     }
     
 //    Get content from Device "printer"
-    public static void getP2Result(String printerContent) {
+    public static void setP2Result(String printerContent) {
     		if(open && programNumber == 2) {
 			if(p2SentenceNumber == -1) {
 				p2SentenceNumber = Integer.valueOf(printerContent, 2);
@@ -235,22 +253,26 @@ public class UserInterfaceController implements Controller {
     }
 //	Display step information
     public void showStepInformation() {
-    		Printer.setText(stepInformation);
+    		StepInformation.setText(stepInformation);
     }
 
     public void Run() {
+    		if(terminate) {
+    			Platform.exit();
+    			System.exit(0);
+    		}
     		if(!Controler.getInstance().end) {
 			if(open && loadStatus) {
 	    			Halt.flag = false;
 	    			while(!Halt.flag){}
-	    			if(programNumber == 2) {
-	    				showP2Result();
-	    			}
 	    			showStepInformation();
 			}
     		}else{
-			Platform.exit();
-			System.exit(0);
+    			if(programNumber == 2) {
+    				p2SentenceNumber = Integer.valueOf(CPU.getInstance().getMemory().getContent("000000001111"),2);
+    				p2WordNumber = Integer.valueOf(CPU.getInstance().getMemory().getContent("000000010000"),2);
+    				showP2Result();
+    			}
 		}
     }
 
