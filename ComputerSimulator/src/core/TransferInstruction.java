@@ -131,6 +131,7 @@ public class TransferInstruction  extends ISA{
 //    Note: r is ignored in this instruction
     public static void JMA(){
         cpu.getPC().setContent(cpu.getIAR().getContent());
+        Controler.getInstance().jump = true;
         EngineerConsoleController.setStepInformation("PC <= IAR", false);
         CPU.cyclePlusOne();
         Halt.halt();
@@ -139,6 +140,7 @@ public class TransferInstruction  extends ISA{
     //JMA without single step halt
     public static void JMANHLT(){
         cpu.getPC().setContent(cpu.getIAR().getContent());
+        Controler.getInstance().jump = true;
         CPU.cyclePlusOne();
     }
     

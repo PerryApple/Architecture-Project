@@ -11,7 +11,7 @@ public class Controler {
     //if hlt == true halt the process
     public boolean hlt = false;
     //Flag single step, if true, execute with single step
-    public boolean singleStep = true;
+    public boolean singleStep = false;
     public boolean end = false;
     public boolean trap = false;
     public boolean fault = false;

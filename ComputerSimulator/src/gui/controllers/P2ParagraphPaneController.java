@@ -14,7 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
 
-public class P3ParagraphPaneController implements Controller {
+public class P2ParagraphPaneController implements Controller {
     @FXML private TextArea paragraph;
     @Override
     public void initialise(){}

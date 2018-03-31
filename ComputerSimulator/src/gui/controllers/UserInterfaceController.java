@@ -41,9 +41,12 @@ public class UserInterfaceController implements Controller {
 	private String userInput = "";
 	private static int p2SentenceNumber = -1;
 	private static int p2WordNumber = -1;
+	private static String stepInformation;
 	//MultiThread
 	Halt halt = new Halt();
 	Thread simulator = new Thread(halt);
+	
+	CPU cpu = CPU.getInstance();
 	//Element in Interface
 	@FXML private TextArea Printer;
 	@FXML private TextField Input;
@@ -161,7 +164,7 @@ public class UserInterfaceController implements Controller {
                     Printer.setText("Program2 has been successfully loaded.");
                     loadStatus = true;
                     //put the beginning address of a program into PC.
-                    CPU.getInstance().getPC().setContent("000001000000");
+                    cpu.getPC().setContent("000001000000");
                     simulator.start();
                 }catch (IOException e){
                     Printer.setText("Program2 Load error");
@@ -225,9 +228,17 @@ public class UserInterfaceController implements Controller {
 			}
 	    	}
     }
+    
+//	Get step information
+    public static void setStepInformation(String information) {
+    		stepInformation = information;
+    }
+//	Display step information
+    public void showStepInformation() {
+    		Printer.setText(stepInformation);
+    }
 
     public void Run() {
-    		System.out.print(CPU.getInstance().getPC().getContent());
     		if(!Controler.getInstance().end) {
 			if(open && loadStatus) {
 	    			Halt.flag = false;
@@ -235,6 +246,7 @@ public class UserInterfaceController implements Controller {
 	    			if(programNumber == 2) {
 	    				showP2Result();
 	    			}
+	    			showStepInformation();
 			}
     		}else{
 			Platform.exit();

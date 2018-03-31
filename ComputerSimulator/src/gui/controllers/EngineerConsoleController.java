@@ -89,7 +89,7 @@ public class EngineerConsoleController implements Controller {
 
 
     // load data
-    public void loadInstruction() {
+    public void loadP1() {
         if(open){
             if(loadStatus) {
                 update();
@@ -97,23 +97,18 @@ public class EngineerConsoleController implements Controller {
                 BufferedReader br=null;
                 FileReader fr=null;
                 try{
-                    String txt="instruction.txt";
+                    String txt="Program1.txt";
                     fr=new FileReader(txt);
                     br=new BufferedReader(fr);
                     String line;
-                    // flag is used to mark whether the loaded line is data or instruction
-                    Boolean flag = true;
+
                     while((line=br.readLine())!=null){
-                        String test = line.substring(0,2);
-                        char xx = test.charAt(0);
                         if(line.substring(0,2).equals("//")) {
                             continue;
                         }
-                        // when flag is true, the loaded content is data, put it into the memory
                             String[] contents = line.split(",");
                             CPU.getInstance().getMemory().setContent(contents[0], contents[1]);
                         }
-                        // when flag is false, the loaded content is instruction, put it into the memory
                     stepInformation="Load success";
                     loadStatus = true;
                     //put the beginning address of a program into PC.
@@ -183,19 +178,15 @@ public class EngineerConsoleController implements Controller {
 
     }
 
-    public void loadP3() {
-
-    }
-
-    public void P3Paragraph() throws IOException {
+    public void P2Paragraph() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader()
-                .getResource("gui/views/P3ParagraphPane.fxml"));
+                .getResource("gui/views/P2ParagraphPane.fxml"));
         Pane p3ParagraphPane = loader.load();
         Controller controller = loader.getController();
         controller.initialise();
         Stage stage = new Stage();
 
-        stage.setTitle("P3 Paragraph");
+        stage.setTitle("P2 Paragraph");
         stage.setScene(new Scene(p3ParagraphPane));
         stage.setResizable(false);
         stage.show();

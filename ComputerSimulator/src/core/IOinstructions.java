@@ -1,5 +1,6 @@
 package core;
 import gui.controllers.EngineerConsoleController;
+import gui.controllers.UserInterfaceController;
 /*DEVID	Device
         0	Console Keyboard
         1	Console Printer
@@ -41,11 +42,13 @@ public class IOinstructions extends ISA {
         }
         // c(r) <- IOmemory(DevID)
         EngineerConsoleController.setStepInformation("Please Input Data!!!",false);
+        UserInterfaceController.setStepInformation("Please Input Data!");
         Halt.halt();
         r.setContent(IOmemory.getInstance().getContent(DevID));
         EngineerConsoleController.setStepInformation(r.getName()+"<-I/O",false);
         CPU.cyclePlusOne();
         EngineerConsoleController.setStepInformation("Input success, press \"Next\" to continue!!!",false);
+        UserInterfaceController.setStepInformation("Input success, press \"Run\" to continue!!!");
         Halt.halt();
     }
     
