@@ -24,10 +24,12 @@
         </HBox>
         <TextArea fx:id="Printer"/>
         <Label text="KeyBoard:"  styleClass="betterFont"/>
-        <HBox>
+        <HBox spacing="10">
             <TextField fx:id="Input"/>
             <Button text="Input" onAction="#input"/>
         </HBox>
+        <Label text="Step Information:" styleClass="betterFont"/>
+        <TextField fx:id="stepInformation"/>
     </VBox>
     <GridPane hgap="17" vgap="10" styleClass="control_box">
         <Button text=" Load P1 " onAction="#loadP1" GridPane.rowIndex="0" GridPane.columnIndex="0"/>

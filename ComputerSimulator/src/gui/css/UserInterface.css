@@ -3,8 +3,8 @@
     -fx-background-insets: 0, 1, 2;
     -fx-background-radius: 5, 4, 3;
     -fx-padding: 20;
-    -fx-pref-width: 480;
-    -fx-pref-height: 430;
+    -fx-pref-width: 500;
+    -fx-pref-height: 460;
     -fx-background-image: url(../images/userInterface.jpg);
     -fx-background-size: cover;
 }
@@ -25,13 +25,14 @@
 
 #Printer {
     -fx-pref-width: 400;
-    -fx-opacity: 75%;
 }
 
 #Input {
     -fx-pref-width: 350;
-    -fx-opacity: 75%;
+    -fx-pref-height: 28;
 }
+
+
 
 /*.box {*/
     /*-fx-padding: 10 10;*/
@@ -44,8 +45,11 @@
 }
 
 Button {
-    -fx-pref-width: 97;
+    -fx-pref-width: 102;
     -fx-pref-height: 28;
+}
+
+Button, TextArea, TextField {
     -fx-opacity: 75%;
 }
 
