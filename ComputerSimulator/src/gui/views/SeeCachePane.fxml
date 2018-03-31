@@ -10,7 +10,7 @@
 <?import javafx.scene.control.skin.TableHeaderRow?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="gui.controllers.SeeCachePane"
+      fx:controller="gui.controllers.SeeCachePaneController"
       prefHeight="448" prefWidth="648" styleClass="outer">
     <padding>
         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
@@ -35,6 +35,5 @@
 
     <stylesheets>
         <URL value="@../css/Global.css" />
-        <URL value="@../css/SeeCachePane.css"/>
     </stylesheets>
 </VBox>

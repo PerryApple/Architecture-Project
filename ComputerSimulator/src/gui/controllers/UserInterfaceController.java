@@ -31,10 +31,6 @@ public class UserInterfaceController implements Controller {
 
     }
 
-    public void load() {
-
-    }
-
     public void input() {
 
     }

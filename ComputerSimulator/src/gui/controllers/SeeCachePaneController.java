@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Queue;
 
 
-public class SeeCachePane implements Controller {
+public class SeeCachePaneController implements Controller {
     @FXML private TableView<CacheLineOuput> CacheView;
     @FXML private TableColumn TAG;
     @FXML private TableColumn Valid;
