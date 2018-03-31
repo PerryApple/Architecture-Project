@@ -12,7 +12,7 @@
 <?import javafx.scene.control.cell.TextFieldListCell?>
 <?import java.net.URL?>
 <VBox fx:controller="gui.controllers.EngineerConsoleController"
-      xmlns:fx="http://javafx.com/fxml" minWidth="390" spacing="10" styleClass="root">
+      xmlns:fx="http://javafx.com/fxml" spacing="10" styleClass="root">
     <padding>
         <Insets bottom="10.0" left="10.0" right ="10.0" top="10.0"/>
     </padding>
@@ -22,21 +22,19 @@
             <Insets bottom="5" left="5" right ="5" top="5"/>
         </padding>
         <VBox>
-            <Button text="  Switch  " fx:id="switch" onAction="#switchOnOff"/>
-            <Button text="   Load    " fx:id="load" onAction="#loadInstruction"/>
+            <Button text="Switch" fx:id="switch" onAction="#switchOnOff" styleClass="normalButton"/>
+            <Button text="P3 Paragraph" onAction="#P3Paragraph"  styleClass="normalButton"/>
         </VBox>
         <VBox>
-            <Button text="load p2" onAction="#loadP2"/>
-            <Button text="load p3" onAction="#loadP3"/>
+            <Button text="load p2" onAction="#loadP2" styleClass="normalButton"/>
+            <Button text="load p3" onAction="#loadP3" styleClass="normalButton"/>
         </VBox>
         <VBox>
-            <Button text="       SingleStep       " onAction="#singleStep"/>
-            <Button text="  SingleInstruction   " onAction="#singleInstruction"/>
+            <Button text="SingleStep" onAction="#singleStep" styleClass="normalButton"/>
+            <Button text="SingleInstruction" onAction="#singleInstruction" styleClass="normalButton"/>
         </VBox>
-        <VBox>
-            <Button text="Program3 paragraph" onAction="#P3Paragraph"/>
-            <Button text="         Next Step        " fx:id="next" onAction="#nextStep"/>
-        </VBox>
+        <Button text="Next Step" fx:id="next" onAction="#nextStep" styleClass="bigButton"/>
+        <Button text="View Cache" onAction="#viewCache" styleClass="bigButton"/>
         <Pane HBox.hgrow="ALWAYS"/>
         <HBox GridPane.rowIndex="0" GridPane.columnIndex="1"
               alignment="CENTER_RIGHT">
@@ -60,14 +58,14 @@
             <Label fx:id="Keyboard" text="Keyboard:"/>
             <HBox>
                 <TextField fx:id="INPUT" prefWidth="280"/>
-                <Button fx:id="Input" text="Input" onAction="#Input"/>
+                <Button fx:id="Input" text="Input" onAction="#Input" styleClass="normalButton"/>
             </HBox>
 
         </VBox>
     </HBox>
 
     <VBox styleClass="registers_box">
-        <Label text="Registers" styleClass="label_register" GridPane.rowIndex="0" GridPane.halignment="CENTER"/>
+        <Label text="Registers" styleClass="boldLabel" alignment="CENTER"/>
         <HBox>
         <GridPane alignment="center" hgap="10" vgap="10">
             <padding>
@@ -157,16 +155,15 @@
     </VBox>
 
     <GridPane styleClass="memory_box" hgap="100" vgap="10">
-        <Label text="Memory" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
-        <Button text="view cache" onAction="#viewCache" GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.halignment="RIGHT"/>
+        <Label text="Memory" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER" styleClass="boldLabel"/>
         <HBox GridPane.rowIndex="1" GridPane.columnIndex="0">
             <Label text="Address:"/>
             <TextField fx:id="Address" prefWidth="215"/>
-            <Button text="Search" onAction="#searchMemory"/>
+            <Button text="Search" onAction="#searchMemory" styleClass="normalButton"/>
         </HBox>
         <HBox GridPane.rowIndex="1" GridPane.columnIndex="1">
             <Label text="Content:"/>
-            <TextField fx:id="Content"/>
+            <TextField fx:id="Content" prefWidth="150"/>
         </HBox>
     </GridPane>
 

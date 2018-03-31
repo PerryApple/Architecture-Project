@@ -18,7 +18,7 @@
     </padding>
 
     <VBox styleClass="registers_box">
-        <Label text="Registers" styleClass="label_register" GridPane.rowIndex="0" GridPane.halignment="CENTER"/>
+        <Label text="Registers" styleClass="boldLabel" alignment="CENTER"/>
         <HBox>
             <GridPane alignment="center" hgap="10" vgap="10">
                 <padding>

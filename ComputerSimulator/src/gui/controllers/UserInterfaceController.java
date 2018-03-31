@@ -79,10 +79,6 @@ public class UserInterfaceController implements Controller {
     		Halt.flag=true;
     }
 
-    public void load() {
-
-    }
-
     public void input() {
     		if(programNumber == 1) {
     			String userNumber = Input.getText();
@@ -99,7 +95,7 @@ public class UserInterfaceController implements Controller {
     		}
     }
 
-    public void loadP2() {
+    public void loadP1() {
     	if(open){
             if(loadStatus) {
             		Printer.setText("Program" + programNumber +"Already loaded!");
@@ -133,7 +129,7 @@ public class UserInterfaceController implements Controller {
         }
     }
 
-    public void loadP3() {
+    public void loadP2() {
 	    	if(open){
             if(loadStatus) {
                 Printer.setText("Program" + programNumber +"Already loaded!");
@@ -171,7 +167,7 @@ public class UserInterfaceController implements Controller {
         }
     }
 
-    public void p3Paragraph() {
+    public void p2Paragraph() {
     		if(open) {
     			if(paraLoadStatus) {
     				Printer.setText("Paragraph has already been loaded!");
@@ -204,7 +200,7 @@ public class UserInterfaceController implements Controller {
     }
     
     //print result of Program2 in printer
-    private static void p3Result(int s) {
+    private static void p2Result(int s) {
     		if(open && programNumber == 2) {
     			if(p3SentenceNumber == -1) {
     				p3SentenceNumber = s;

@@ -3,7 +3,7 @@
     -fx-background-color: -fx-outer-border, -fx-inner-border, -fx-body-color;
     -fx-background-insets: 0, 1, 2;
     -fx-background-radius: 5, 4, 3;
-    -fx-padding: 10;
+    -fx-padding: 20;
 }
 
 .info_box {
@@ -49,13 +49,13 @@
 
 /*Registers Box*/
 .registers_box {
-    -fx-padding: 10 32;
+    -fx-padding: 10;
     -fx-border-color: #ccc;
     -fx-border-width: 1;
     -fx-border-radius: 3, 2;
 }
 
-Label.label_register {
+.boldLabel {
     -fx-font-size: 20px;
     -fx-font-family: "Arial Black";
     -fx-fill: #818181;
@@ -83,4 +83,14 @@ Label.label_register {
 
 IO {
     -fx-padding: 0 20;
+}
+
+.normalButton {
+    -fx-pref-width: 110;
+    -fx-pref-height: 23;
+}
+
+.bigButton {
+    -fx-pref-width: 100;
+    -fx-pref-height: 70;
 }
