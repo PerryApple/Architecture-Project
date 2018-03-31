@@ -67,7 +67,9 @@ public class UserInterfaceController implements Controller {
             Cache.getInstance().clearCache();
             Decoder.getInstance().clear();
             Printer.setText("Welcome to use Computer Simulator implemented by group 6.\r\n"
-            		+ "Group member: Yunpeng Li, Linghai Xu, Zhuo Zheng, Yunlong Zhao");
+            		+ "Group member: Yunpeng Li, Linghai Xu, Zhuo Zheng, Yunlong Zhao\r\n" 
+            		+ "Please select program to Load with click correspond button\r\n"
+            		+ "For program2, please remember to click \"P2 Paragraph\" button to load paragraph.");
             Input.setText("");
             loadStatus = false;
             paraLoadStatus = false;
@@ -172,8 +174,12 @@ public class UserInterfaceController implements Controller {
                         String[] contents = line.split(",");
                         CPU.getInstance().getMemory().setContent(contents[0], contents[1]);
                     }
-                        
-                    StepInformation.setText("Program2 has been successfully loaded.");
+                    if(paraLoadStatus) {
+                    	StepInformation.setText("Program2 and paragraph has been successfully loaded. press \"Run\" to execute.");
+                    }else {
+                    	StepInformation.setText("Program2 has been successfully loaded. Load paragraph next!");
+                    }
+                    
                     loadStatus = true;
                     //put the beginning address of a program into PC.
                     cpu.getPC().setContent("000001000000");
@@ -214,7 +220,11 @@ public class UserInterfaceController implements Controller {
                      HashCharEncode.saveInMemory("001000000000", sentences);
                      Printer.setText(paragraph);
                      paraLoadStatus = true;
-
+                     if(loadStatus) {
+                    	 	StepInformation.setText("Program2 and paragraph has been successfully loaded. press \"Run\" to execute.");
+                     }else {
+                    	 	StepInformation.setText("paragraph has been successfully loaded. Remember to load Program2.");
+                     }
                  }catch (IOException e){
                      StepInformation.setText("Program2 Load error");
                      System.out.println(e.toString());
