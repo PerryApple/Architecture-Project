@@ -1,19 +1,35 @@
 .mainBox {
     -fx-padding: 20 60 0 60;
-}
-
-.image {
-    -fx-padding: 0 100;
+    -fx-background-image: url('../images/main.jpg');
+    -fx-background-size: cover;
 }
 
 .mainTitle {
-    -fx-font: 20 arial;
+    -fx-font: 25 arial;
+    -fx-font-weight: bold;
+    -fx-translate-y: 10;
 }
 
-.mainButton {
-    -fx-padding: 0 20;
+.image {
+    -fx-translate-x: 60;
+    -fx-translate-y: 30;
 }
 
 .copyRight {
-    -fx-padding: 30 0 0 0 ;
+    -fx-text-fill: #000000;
+    -fx-translate-x: 40;
+    -fx-translate-y: 30;
+}
+
+Label {
+    -fx-text-fill: #ffffff;
+    -fx-translate-x: 10;
+}
+
+Button {
+    -fx-pref-width: 250;
+    -fx-pref-height: 50;
+    -fx-translate-x: 10;
+    -fx-opacity: 75%;
+    -fx-font-size: 15;
 }
