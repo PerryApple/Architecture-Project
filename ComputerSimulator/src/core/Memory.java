@@ -82,8 +82,4 @@ public class Memory {
         }
     }
 
-//    public static void main(String[] args){
-//        Memory memory = Memory.getInstance();
-//
-//    }
 }

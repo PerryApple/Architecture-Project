@@ -50,6 +50,7 @@ public class HashCharEncode {
 	
 	public static String getCode(String s) {
 		//delete all characters which is not a-z.
+		s = s.toLowerCase();
 		s = s.replaceAll("[^a-z\\s]","");
 		if(complexCodeMap.containsKey(s)) {
 			return Integer.toBinaryString(complexCodeMap.get(s));

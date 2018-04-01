@@ -39,7 +39,7 @@ public class Main extends Application {
 
     private Pane loadMainPane() throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getClassLoader().getResource("gui/views/mainPane.fxml"));
+        loader.setLocation(getClass().getClassLoader().getResource("gui/views/MainPane.fxml"));
         Pane mainPane = loader.load();
         Controller controller = loader.getController();
         controller.initialise();
