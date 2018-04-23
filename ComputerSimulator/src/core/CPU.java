@@ -28,6 +28,7 @@ public class CPU {
 	private Register mlr = MLR.getInstance();
 	private SRR srr = SRR.getInstance();
 	private Decoder decoder = Decoder.getInstance();
+	private TomasuloDecoder tomasuloDecoder = TomasuloDecoder.getInstance();
 	private ALU alu = ALU.getInstance();
 	private Memory memory = Memory.getInstance();
 	private Controler controler = Controler.getInstance();
@@ -117,6 +118,9 @@ public class CPU {
 	}
 	public Decoder getDecoder() {
 		return decoder;
+	}
+	public TomasuloDecoder getTomasuloDecoder() {
+		return tomasuloDecoder;
 	}
 	public ALU getALU() {
 		return alu;

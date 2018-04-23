@@ -71,6 +71,26 @@ public class LoadAndStore extends ISA{
         CPU.cyclePlusOne();
     }
 
+    //LDR for Tomasulo
+    public static String LDRTom(String operand1){
+    		if(operand1.length() == 12) {
+    			 //set MAR register
+    	        cpu.getMAR().setContent(operand1);
+    	        CPU.cyclePlusOne();
+    	        //get the content in memory using address in MAR, and load it to MBR.
+    	        Cache.getInstance().cacheToMBRNHLT(cpu.getMAR().getContent());
+    	        CPU.cyclePlusOne();
+    	        //Execute the operation move data to IRR
+    	        cpu.getIRR().setContent(cpu.getMBR().getContent());
+    	        CPU.cyclePlusOne();
+    	        //Return the result
+    	        return CPU.getInstance().getIRR().getContent();
+    		}else if(operand1.length() == 16) {
+    			return operand1;
+    		} 
+    		return "LDR ERROR";
+    }
+    
   //******************************************************************************************************************************
     public static void STR(){
         //set MAR register
@@ -147,6 +167,25 @@ public class LoadAndStore extends ISA{
         Cache.getInstance().writeBack(cpu.getMAR().getContent(),cpu.getMBR().getContent());
         CPU.cyclePlusOne();
     }
+    
+  //STR for Tomasulo
+    public static String STRTom(String operand){
+        if(operand.length() == 2) {
+        		switch (operand){
+	            case "00":
+	                return CPU.getInstance().getR0().getContent();
+	            case "01":
+	            		return CPU.getInstance().getR1().getContent();
+	            case "10":
+	            		return CPU.getInstance().getR2().getContent();
+	            case "11":
+	                return CPU.getInstance().getR3().getContent();
+	        }
+        }else if(operand.length() == 16) {
+        		return operand;
+        }
+        return "STR Error";
+    }
 
   //******************************************************************************************************************************
     public static void LDA(){
@@ -183,6 +222,11 @@ public class LoadAndStore extends ISA{
                 cpu.getR3().setContent(cpu.getIAR().getContent());
         }
         CPU.cyclePlusOne();
+    }
+    
+    //LDA for Tomasulo
+    public static String LDATom(String operand){
+        return operand;
     }
     
   //******************************************************************************************************************************
@@ -243,6 +287,25 @@ public class LoadAndStore extends ISA{
         CPU.cyclePlusOne();
     }
 
+    //LDX for Tomasulo
+    public static String LDXTom(String operand){
+    		if(operand.length() == 12) {
+    			//set MAR register
+    	        cpu.getMAR().setContent(operand);
+    	        CPU.cyclePlusOne();
+    	        //fetch the data from cache according to MAR
+    	        Cache.getInstance().cacheToMBRNHLT(cpu.getMAR().getContent());
+    	        CPU.cyclePlusOne();
+    	        //return data
+    	        cpu.getIRR().setContent(cpu.getMBR().getContent());
+    	        CPU.cyclePlusOne();
+    	        return CPU.getInstance().getIRR().getContent();
+    		}else if (operand.length() == 16) {
+    			return operand;
+    		}
+    		return "LDX Error";
+    }
+    
   //******************************************************************************************************************************
     public static void STX(){
         //set MAR register
@@ -315,6 +378,24 @@ public class LoadAndStore extends ISA{
         //move data from MBR to memory
         Cache.getInstance().writeBack(cpu.getMAR().getContent(),cpu.getMBR().getContent());
         CPU.cyclePlusOne();
+    }
+    
+	//STX for Tomasulo
+    public static String STXTom(String operand){
+    		if(operand.length() == 3) {
+    			 switch (operand){
+    	            case "x01":
+    	                return CPU.getInstance().getX1().getContent();
+    	            case "x10":
+    	            		return CPU.getInstance().getX2().getContent();
+    	            case "x11":
+    	            		return CPU.getInstance().getX3().getContent();
+    	        }
+    			 CPU.cyclePlusOne();
+    		}else if (operand.length() == 16) {
+    			return operand;
+    		}
+    		return "STX Error";
     }
 
 

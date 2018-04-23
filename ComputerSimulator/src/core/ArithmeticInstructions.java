@@ -150,6 +150,11 @@ public class ArithmeticInstructions extends ISA{
 		CPU.cyclePlusOne();
 	}
 	
+	//MLT for Tomasulo
+	public static String MLTTom (String operand1, String operand2) {
+		return "";
+	}
+	
 	//******************************************************************************************************************************************************************************************	
 	//*************************************************************************
 	//*		Divide Register by Register										*
@@ -315,6 +320,12 @@ public class ArithmeticInstructions extends ISA{
 		rxPlusOne.setContent(rr.getContent().substring(16));
 		CPU.cyclePlusOne();
 	}
+	
+	//DVD for Tomasulo
+	public static String DVDTom (String operand1, String operand2) {
+		return "";
+	}
+	
 //******************************************************************************************************************************************************************************************		
 //	Add Memory To Register, r = 0..3
 //	r<- c(r) + c(EA)
@@ -378,6 +389,81 @@ public class ArithmeticInstructions extends ISA{
 		CPU.cyclePlusOne();
 	}
 	
+	//AMR for Tomasulo
+		public static String AMRTom(String operand, String address){
+			if(operand.length() == 2) {
+				Register r = null;
+				//get the Register according to R
+				switch (operand){
+					case "00": r = cpu.getR0(); break;
+					case "01": r = cpu.getR1();break;
+					case "10": r = cpu.getR2();break;
+					case "11": r = cpu.getR3();break;
+				}
+				if(address.length() == 12) {
+					//set MAR register
+					cpu.getMAR().setContent(address);
+					CPU.cyclePlusOne();
+					//get the content in memory using address in MAR, and load it to MBR.
+					Cache.getInstance().cacheToMBRNHLT(cpu.getMAR().getContent());
+					//Execute the operation move data to IRR
+					cpu.getIRR().setContent(cpu.getMBR().getContent());
+					CPU.cyclePlusOne();
+					//move c(r) to Y
+					cpu.getY().setContent(r.getContent());
+					CPU.cyclePlusOne();
+					//return the result
+					CPU.cyclePlusOne();
+					return ALU.getInstance().add(cpu.getY().getContent(),cpu.getIRR().getContent());
+				}else if(address.length() == 16){
+					//Execute the operation move data to IRR
+					cpu.getIRR().setContent(address);
+					CPU.cyclePlusOne();
+					//move c(r) to Y
+					cpu.getY().setContent(r.getContent());
+					CPU.cyclePlusOne();
+					//calculate
+					CPU.cyclePlusOne();
+					return ALU.getInstance().add(cpu.getY().getContent(),cpu.getIRR().getContent());
+				}else {
+					return "AMR Addr Error";
+				}
+			}else if (operand.length() == 16) {
+				if(address.length() == 12) {
+					//set MAR register
+					cpu.getMAR().setContent(address);
+					CPU.cyclePlusOne();
+					//get the content in memory using address in MAR, and load it to MBR.
+					Cache.getInstance().cacheToMBRNHLT(cpu.getMAR().getContent());
+					//Execute the operation move data to IRR
+					cpu.getIRR().setContent(cpu.getMBR().getContent());
+					CPU.cyclePlusOne();
+					//move c(r) to Y
+					cpu.getY().setContent(operand);
+					CPU.cyclePlusOne();
+					//calculate
+					String result = ALU.getInstance().add(cpu.getY().getContent(),cpu.getIRR().getContent());
+					CPU.cyclePlusOne();
+					//return the result
+					return result;
+				}else if (address.length() == 16) {
+					//Execute the operation move data to IRR
+					cpu.getIRR().setContent(address);
+					CPU.cyclePlusOne();
+					//move c(r) to Y
+					cpu.getY().setContent(operand);
+					CPU.cyclePlusOne();
+					//calculate
+					CPU.cyclePlusOne();
+					return ALU.getInstance().add(cpu.getY().getContent(),cpu.getIRR().getContent());
+				}else {
+					return "AMR Addr Error";
+				}
+			}else {
+				return "AMR OP Error";
+			}
+		}
+		
 //******************************************************************************************************************************************************************************************		
 //	Add Immediate to Register, r = 0..3
 //	r <- c(r) + Immed
@@ -439,6 +525,60 @@ public class ArithmeticInstructions extends ISA{
 		}
 	}
 	
+	//AIR without single step halt
+	public static String AIRTom(String operand1, String operand2){
+		if(operand1.length() == 2) {
+			Register r = null;
+			//get the Register according to operand1
+			switch (operand1){
+				case "00": r = cpu.getR0(); break;
+				case "01": r = cpu.getR1();break;
+				case "10": r = cpu.getR2();break;
+				case "11": r = cpu.getR3();break;
+			}
+			if(operand2.length() == 5) {
+				if(!operand2.equals("00000")){
+					cpu.getY().setContent(CPU.alignmentImmed(operand2));
+					CPU.cyclePlusOne();
+					if(r.getContent().equals("0000000000000000")){
+						CPU.cyclePlusOne();
+						return CPU.getInstance().getY().getContent();
+					}else{
+						// return c(r)+ c(Y)
+						CPU.cyclePlusOne();
+						return ALU.getInstance().add(r.getContent(), CPU.getInstance().getY().getContent());
+					}
+				}else {
+					return r.getContent();
+				}
+			}else {
+				return "AIR IM Error";
+			}
+		}else if (operand1.length() == 16) {
+			if(operand2.length() == 5) {
+				if(!operand2.equals("00000")){
+					cpu.getY().setContent(CPU.alignmentImmed(operand2));
+					CPU.cyclePlusOne();
+					if(operand1.equals("0000000000000000")){
+						CPU.cyclePlusOne();
+						return CPU.getInstance().getY().getContent();
+					}else{
+						// return c(r)+ c(Y)
+						CPU.cyclePlusOne();
+						return ALU.getInstance().add(operand1, CPU.getInstance().getY().getContent());
+					}
+				}else {
+					return operand1;
+				}
+			}else {
+				return "AIR IM Error";
+			}
+		}else {
+			return "AIR OP Error";
+		}
+	}
+	
+	
 //******************************************************************************************************************************************************************************************	
 //	Subtract  Immediate  from Register, r = 0..3
 //	r <- c(r) - Immed
@@ -497,6 +637,59 @@ public class ArithmeticInstructions extends ISA{
 				r.setContent(ALU.getInstance().minus(r.getContent(),cpu.getY().getContent()));
 				CPU.cyclePlusOne();
 			}
+		}
+	}
+	
+	//SIR for Tomasulo
+	public static String SIRTom(String operand1, String operand2){
+		if(operand1.length() == 2) {
+			Register r = null;
+			//get the Register according to operand1
+			switch (operand1){
+				case "00": r = cpu.getR0(); break;
+				case "01": r = cpu.getR1();break;
+				case "10": r = cpu.getR2();break;
+				case "11": r = cpu.getR3();break;
+			}
+			if(operand2.length() == 5) {
+				if(!operand2.equals("00000")){
+					cpu.getY().setContent(CPU.alignmentImmed(operand2));
+					CPU.cyclePlusOne();
+					if(r.getContent().equals("0000000000000000")){
+						CPU.cyclePlusOne();
+						return ALU.getInstance().minus("0000000000000000",cpu.getY().getContent());
+					}else{
+						// return c(r) - c(Y)
+						CPU.cyclePlusOne();
+						return ALU.getInstance().minus(r.getContent(),cpu.getY().getContent());
+					}
+				}else {
+					return r.getContent();
+				}
+			}else {
+				return "SIR IM Error";
+			}
+		}else if(operand1.length() == 16) {
+			if(operand2.length() == 5) {
+				if(!operand2.equals("00000")){
+					cpu.getY().setContent(CPU.alignmentImmed(operand2));
+					CPU.cyclePlusOne();
+					if(operand1.equals("0000000000000000")){
+						CPU.cyclePlusOne();
+						return ALU.getInstance().minus("0000000000000000",cpu.getY().getContent());
+					}else{
+						// return c(r) - c(Y)
+						CPU.cyclePlusOne();
+						return ALU.getInstance().minus(operand1,cpu.getY().getContent());
+					}
+				}else {
+					return operand1;
+				}
+			}else {
+				return "SIR IM Error";
+			}
+		}else {
+			return "SIR OP Error";
 		}
 	}
 	
@@ -567,5 +760,96 @@ public class ArithmeticInstructions extends ISA{
 		// r<- c(r)-c(EA)
 		r.setContent(ALU.getInstance().minus(cpu.getY().getContent(),cpu.getIRR().getContent()));
 		CPU.cyclePlusOne();
+	}
+	
+	//SMR for Tomasulo
+	public static String SMRTom(String operand, String address){
+		if(operand.length() == 2) {
+			Register r = null;
+			//get the Register according to operand
+			switch (operand){
+				case "00": r = cpu.getR0(); break;
+				case "01": r = cpu.getR1();break;
+				case "10": r = cpu.getR2();break;
+				case "11": r = cpu.getR3();break;
+			}
+			if(address.length() == 12) {
+				//set MAR register
+				cpu.getMAR().setContent(address);
+				CPU.cyclePlusOne();
+
+				//get the content in memory using address in MAR, and load it to MBR.
+				Cache.getInstance().cacheToMBRNHLT(cpu.getMAR().getContent());
+				CPU.cyclePlusOne();
+				//Execute the operation move data to IRR
+				cpu.getIRR().setContent(cpu.getMBR().getContent());
+				CPU.cyclePlusOne();
+
+				//move c(r) to Y
+				cpu.getY().setContent(r.getContent());
+				CPU.cyclePlusOne();
+
+				// return c(r)-c(EA)
+				CPU.cyclePlusOne();
+				return ALU.getInstance().minus(cpu.getY().getContent(),cpu.getIRR().getContent());
+			}else if(address.length() == 16){
+				//Execute the operation move data to IRR
+				cpu.getIRR().setContent(address);
+				CPU.cyclePlusOne();
+
+				//move c(r) to Y
+				cpu.getY().setContent(r.getContent());
+				CPU.cyclePlusOne();
+
+				// return c(r)-c(EA)
+				CPU.cyclePlusOne();
+				return ALU.getInstance().minus(cpu.getY().getContent(),cpu.getIRR().getContent());
+			}else {
+				return "SMR AD Error";
+			}
+		}
+		
+		else if(operand.length() == 16) {
+			if(address.length() == 12) {
+				//set MAR register
+				cpu.getMAR().setContent(address);
+				CPU.cyclePlusOne();
+
+				//get the content in memory using address in MAR, and load it to MBR.
+				Cache.getInstance().cacheToMBRNHLT(cpu.getMAR().getContent());
+				CPU.cyclePlusOne();
+				//Execute the operation move data to IRR
+				cpu.getIRR().setContent(cpu.getMBR().getContent());
+				CPU.cyclePlusOne();
+
+				//move c(r) to Y
+				cpu.getY().setContent(operand);
+				CPU.cyclePlusOne();
+
+				// return c(r)-c(EA)
+				CPU.cyclePlusOne();
+				return ALU.getInstance().minus(cpu.getY().getContent(),cpu.getIRR().getContent());
+			}else if(address.length() == 16){
+				//Execute the operation move data to IRR
+				cpu.getIRR().setContent(address);
+				CPU.cyclePlusOne();
+
+				//move c(r) to Y
+				cpu.getY().setContent(operand);
+				CPU.cyclePlusOne();
+
+				// return c(r)-c(EA)
+				CPU.cyclePlusOne();
+				return ALU.getInstance().minus(cpu.getY().getContent(),cpu.getIRR().getContent());
+			}else {
+				return "SMR AD Error";
+			}
+		}
+		
+		else {
+			return "SMR OP Error";
+		}
+		
+		
 	}
 }

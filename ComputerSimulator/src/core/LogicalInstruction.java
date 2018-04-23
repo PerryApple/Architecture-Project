@@ -350,4 +350,43 @@ public class LogicalInstruction extends ISA {
 		rx.setContent(cpu.getZ().getContent());
 		CPU.cyclePlusOne();
 	}
+	
+	//NOT without single step halt
+	public static String NOTTom(String operand) {
+		//This operation will be done by ALU.
+		//Firstly, get r, determine which register will be used in this instruction
+		if(operand.length() == 2) {
+			Register r = null;
+			switch(operand) {
+				case"00":
+		            r = cpu.getR0();
+		            break;
+				case"01":
+		            r = cpu.getR1();
+		            break;
+		        case "10":
+		        		r = cpu.getR2();
+		            break;
+		        case "11":
+		        		r = cpu.getR3();
+		            break;
+			}
+			//Move the content of r to ALU, get ready for operate NOT instruction.
+			//Do "NOT" operation in ALU
+			//The result will be temporarily stored in Register Z.
+			cpu.getALU().not(r.getContent());
+			CPU.cyclePlusOne();
+			//return the result
+			CPU.cyclePlusOne();
+			return CPU.getInstance().getZ().getContent();
+		}else if(operand.length() == 16){
+			cpu.getALU().not(operand);
+			CPU.cyclePlusOne();
+			//return the result
+			CPU.cyclePlusOne();
+			return CPU.getInstance().getZ().getContent();
+		}else {
+			return "NOT Error";
+		}	
+	}
 }

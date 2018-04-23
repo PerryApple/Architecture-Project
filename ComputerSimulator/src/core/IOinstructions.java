@@ -52,6 +52,27 @@ public class IOinstructions extends ISA {
         Halt.halt();
     }
     
+  //Input for Tomasulo
+    public static String INTom(String operand){
+    	
+    		if(operand.length() == 5) {
+    			// c(r) <- IOmemory(DevID)
+    	        EngineerConsoleController.setStepInformation("Please Input Data!!!",false);
+    	        UserInterfaceController.setStepInformation("Please Input Data!");
+    	        Halt.halt();
+    	        String input = IOmemory.getInstance().getContent(operand);
+    	        CPU.cyclePlusOne();
+    	        EngineerConsoleController.setStepInformation("Input success, press \"Next\" to continue!!!",false);
+    	        UserInterfaceController.setStepInformation("Input success, press \"Run\" to continue!!!");
+    	        Halt.halt();
+    	        return input;
+    		}
+    		else {
+    			return "IN OP Error";
+    		}
+        
+    }
+    
 //*************************************************************************************************************************
 //    Output Character to Device from Register, r = 0..3
     public static void OUT(){
@@ -84,6 +105,27 @@ public class IOinstructions extends ISA {
         IOmemory.getInstance().setContent(DevID,r.getContent());
         CPU.cyclePlusOne();
         
+    }
+    
+    //Output for Tomasulo
+    public static String OUTTom(String operand){
+    		if(operand.length() == 2) {
+    			Register r = null;
+    	        //get the Register according to operand
+    	        switch (operand){
+    	            case "00": r = cpu.getR0(); break;
+    	            case "01": r = cpu.getR1();break;
+    	            case "10": r = cpu.getR2();break;
+    	            case "11": r = cpu.getR3();break;
+    	        }
+    	        //return
+    	        CPU.cyclePlusOne();
+    	        return r.getContent();
+    		}else if (operand.length() == 16) {
+    			return operand;
+    		}else {
+    			return "Out Error";
+    		}
     }
 
     //*************************************************************************************************************************

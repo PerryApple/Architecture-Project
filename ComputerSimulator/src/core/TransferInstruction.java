@@ -48,6 +48,37 @@ public class TransferInstruction  extends ISA{
             CPU.cyclePlusOne();
         }
     }
+    
+    //JZ for Tomasulo
+    public static String JZTom(String operand){
+    	
+    		if(operand.length() == 2) {
+    			Register r = null;
+    			//get the Register according to operand
+    	        switch (operand){
+    	            case "00": r = cpu.getR0();	break;
+    	            case "01": r = cpu.getR1();	break;
+    	            case "10": r = cpu.getR2();	break;
+    	            case "11": r = cpu.getR3();	break;
+    	        }
+    	        //return jump result
+    	        if(r!=null&&r.getContent().equals("0000000000000000")){
+    	        		CPU.cyclePlusOne();
+    	            return "1";
+    	        }else {
+    	        		return "0";
+    	        }
+    		}else if(operand.length() == 16) {
+    			if(operand.equals("0000000000000000")){
+	        		CPU.cyclePlusOne();
+	            return "1";
+	        }else {
+	        		return "0";
+	        }
+    		}
+    		return "JZ Error";
+    }
+    
   //********************************************************************************************************************************
     //======================================//
     //*    Jump If Not Equal:               *//
@@ -92,6 +123,35 @@ public class TransferInstruction  extends ISA{
             Controler.getInstance().jump = true;
             CPU.cyclePlusOne();
         }
+    }
+    
+    //JNE for Tomasulo
+    public static String JNETom(String operand){
+    		if(operand.length() == 2) {
+    			Register r = null;
+    	        //get the Register according to operand
+    	        switch (operand){
+    	            case "00": r = cpu.getR0(); break;
+    	            case "01": r = cpu.getR1();break;
+    	            case "10": r = cpu.getR2();break;
+    	            case "11": r = cpu.getR3();break;
+    	        }
+    	        //return jump result
+    	        if(r!=null&&!r.getContent().equals("0000000000000000")){
+    	            CPU.cyclePlusOne();
+    	            return "1";
+    	        }else {
+    	        		return "0";
+    	        }
+    		}else if(operand.length() == 16){
+    			if(operand.equals("0000000000000000")){
+    	            CPU.cyclePlusOne();
+    	            return "1";
+    	        }else {
+    	        		return "0";
+    	        }
+    		}
+    		return "JNE Error";
     }
 
   //********************************************************************************************************************************
@@ -142,6 +202,12 @@ public class TransferInstruction  extends ISA{
         cpu.getPC().setContent(cpu.getIAR().getContent());
         Controler.getInstance().jump = true;
         CPU.cyclePlusOne();
+    }
+    
+    //JMA for Tomasulo
+    public static String JMATom(){
+        CPU.cyclePlusOne();
+        return "1";
     }
     
   //********************************************************************************************************************************
@@ -312,5 +378,36 @@ public class TransferInstruction  extends ISA{
             Controler.getInstance().jump = true;
             CPU.cyclePlusOne();
         }
+    }
+    
+    //JGE for Tomasulo
+    public static String JGETom(String operand){
+    		if(operand.length() == 2) {
+    			Register r = null;
+    	        //get the Register according to operand
+    	        switch (operand){
+    	            case "00": r = cpu.getR0(); break;
+    	            case "01": r = cpu.getR1();break;
+    	            case "10": r = cpu.getR2();break;
+    	            case "11": r = cpu.getR3();break;
+    	        }
+    	        
+    	        // if c(r)>=0
+    	        CPU.cyclePlusOne();
+    	        if(r.getContent().charAt(0)!= '1'){
+    	            return "1";
+    	        }else {
+    	        		return "0";
+    	        }
+    		}else if(operand.length() == 16) {
+    			// if c(r)>=0
+    	        CPU.cyclePlusOne();
+    	        if(operand.charAt(0)!= '1'){
+    	            return "1";
+    	        }else {
+    	        		return "0";
+    	        }
+    		}
+    		return "JGE Error";
     }
 }
