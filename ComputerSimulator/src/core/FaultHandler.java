@@ -94,7 +94,7 @@ public class FaultHandler {
         CPU.getInstance().getPC().setContent(CPU.getInstance().getMBR().getContent());
         CPU.cyclePlusOne();
         Halt.halt();
-        Controler.getInstance().fault =false;
+        Controler.getInstance().fault = false;
     }
 
     public void backAfterHandleNHLT(){

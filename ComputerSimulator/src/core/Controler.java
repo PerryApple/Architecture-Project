@@ -6,6 +6,8 @@ public class Controler {
     private static final Controler instance = new Controler();
     private  String stepInformation="";
     private Controler() {}
+    //记录是否要在BTB和DP中放入新的值
+    private boolean firstBranchPrediction = false;
     //if jump == true PC<-EA
     public boolean jump = false;
     //if hlt == true halt the process
@@ -112,6 +114,26 @@ public class Controler {
             //IR = MBR
             CPU.getInstance().getIR().setContent(CPU.getInstance().getMBR().getContent());
             CPU.cyclePlusOne();
+//======================================================================================================================
+            //branch prediction
+            String op=CPU.getInstance().getIR().getContent().substring(0,3);
+            if(op.equals("001")){
+                //transfer instruction
+                String target = BranchTargetBuffer.getInstance().getTarget(CPU.getInstance().getIR().getContent());
+                int isTaken = DirectionPredictor.getInstance().get(CPU.getInstance().getIR().getContent());
+                if(isTaken==1){
+                    //taken
+                    stepInformation ="Predicted Next Address: " + target;
+                }else if(isTaken ==0){
+                    //not taken
+                    stepInformation = "Predicted Next Address: " + CPU.getInstance().getALU().add(PC.getInstance().getContent(),"1");
+                }else {
+                    //第一次遇到,预测taken
+                    stepInformation ="Predicted Next Address: " + CPU.getInstance().getALU().add(PC.getInstance().getContent(),"1");
+                    firstBranchPrediction = true;
+                }
+            }
+//======================================================================================================================
             //Decode the instruction in IR
             //In 1 cycle  process the instruction and use it to set several flags:
             CPU.getInstance().getDecoder().setInstruction(CPU.getInstance().getIR().getContent());
@@ -133,6 +155,18 @@ public class Controler {
                 CPU.getInstance().getPC().setContent(CPU.getInstance().getZ().getContent());
                 CPU.cyclePlusOne();
             }
+
+            //==========================================================================================================
+            //content of MAR is the branch address, put into BTB
+            if(firstBranchPrediction){
+                BranchTargetBuffer.getInstance().add(CPU.getInstance().getIR().getContent(),CPU.getInstance().getMAR().getContent());
+                firstBranchPrediction = false;
+            }
+            if(jump){
+                DirectionPredictor.getInstance().addOrUpdate(CPU.getInstance().getIR().getContent(),true);
+            }else  DirectionPredictor.getInstance().addOrUpdate(CPU.getInstance().getIR().getContent(),false);
+
+            //==========================================================================================================
         }
         CenterPaneController.setStepInformation("Execute done, press next to exit", false);
         this.end = true;
