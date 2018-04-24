@@ -250,17 +250,6 @@ public class UserInterfaceController implements Controller {
     		}
     }
     
-//    Get content from Device "printer"
-    public static void setP2Result(String printerContent) {
-    		if(open && programNumber == 2) {
-			if(p2SentenceNumber == -1) {
-				p2SentenceNumber = Integer.valueOf(printerContent, 2);
-			}else if(p2WordNumber == -1) {
-				p2WordNumber = Integer.valueOf(printerContent, 2);
-			}
-	    	}
-    }
-    
 //	Get step information
     public static void setStepInformation(String information) {
     		stepInformation = information;
@@ -289,20 +278,6 @@ public class UserInterfaceController implements Controller {
     			}
 		}
     }
-
-//    public void Part4() throws IOException {
-//        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader()
-//                .getResource("gui/views/UserPart4.fxml"));
-//        Pane userPart4 = loader.load();
-//        Controller controller = loader.getController();
-//        controller.initialise();
-//        Stage stage = new Stage();
-//
-//        stage.setTitle("User Part4");
-//        stage.setScene(new Scene(userPart4));
-//        stage.setResizable(false);
-//        stage.show();
-//    }
 
     public void seeMemory() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader()

@@ -2,17 +2,19 @@ package core;
 
 import gui.controllers.EngineerConsoleController;
 import gui.controllers.UserInterfaceController;
+import gui.controllers.UserPart4MainController;
 
 public class Tomasulo {
 	
 	private static boolean flush = false;
+	public static boolean terminate = false;
 	
 	public static void proceedTomasulo() {
 		TomasuloThreadControllor.halt();
 		//proceed start from here
 		//In order to simulate the speculative execution, fetch 10 instructions first into the ROB
 		//Using branch prediction
-		while(!CPU.getInstance().getPC().getContent().equals("000000000000")) {
+		while(!terminate) {
 			flush = false;
 			int i = 1;
 			while(i < 11) {
@@ -164,7 +166,13 @@ public class Tomasulo {
 		            curInstruction = ReOrderBuffer.commit();
 				}
 			}
+			if(curInstruction.equals("0000000000000000")) {
+				terminate = true;
+			}
 		}
+		
+		UserPart4MainController.setStepInformation("Execute done, press next to see result");
+		TomasuloThreadControllor.halt();
 	}
 	
 	private static String execute(ReservationStation.Instruction instruction) {

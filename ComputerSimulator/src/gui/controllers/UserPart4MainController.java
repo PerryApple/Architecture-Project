@@ -3,10 +3,10 @@ package gui.controllers;
 import core.CPU;
 import core.Cache;
 import core.CacheLine;
-import core.Controler;
 import core.Decoder;
 import core.HashCharEncode;
 import core.IOmemory;
+import core.Tomasulo;
 import core.TomasuloThreadControllor;
 import gui.Controller;
 import javafx.application.Platform;
@@ -251,17 +251,6 @@ public class UserPart4MainController implements Controller {
         }
     }
 
-    //    Get content from Device "printer"
-    public static void setP2Result(String printerContent) {
-        if(open && programNumber == 2) {
-            if(p2SentenceNumber == -1) {
-                p2SentenceNumber = Integer.valueOf(printerContent, 2);
-            }else if(p2WordNumber == -1) {
-                p2WordNumber = Integer.valueOf(printerContent, 2);
-            }
-        }
-    }
-
     //	Get step information
     public static void setStepInformation(String information) {
         stepInformation = information;
@@ -276,7 +265,7 @@ public class UserPart4MainController implements Controller {
             Platform.exit();
             System.exit(0);
         }
-        if(!Controler.getInstance().end) {
+        if(!Tomasulo.terminate) {
             if(open && loadStatus) {
                 TomasuloThreadControllor.flag = false;
                 while(!TomasuloThreadControllor.flag){}
