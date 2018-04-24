@@ -140,7 +140,9 @@ public class UserInterfaceController implements Controller {
                     StepInformation.setText("Program1 has been successfully loaded");
                     loadStatus = true;
                     //put the beginning address of a program into PC.
-                    CPU.getInstance().getPC().setContent("000001111110");
+                    CPU.getInstance().getPC().setContent("000010000000");
+                    CPU.getInstance().getX1().setContent("0000000001000000");
+                    CPU.getInstance().getX2().setContent("0000000010101010");
                     simulator.start();
 
                 }catch (IOException e){
@@ -182,7 +184,9 @@ public class UserInterfaceController implements Controller {
                     
                     loadStatus = true;
                     //put the beginning address of a program into PC.
-                    cpu.getPC().setContent("000001000000");
+                    cpu.getPC().setContent("000001000010");
+                    cpu.getX1().setContent("0000000001000000");
+                    cpu.getX2().setContent("0000000001100000");
                     if(simulator.getState() == Thread.State.NEW) {
                     		simulator.start();
                     }else {

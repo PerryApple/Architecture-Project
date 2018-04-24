@@ -185,7 +185,7 @@ public class UserPart4MainController implements Controller {
 
                     loadStatus = true;
                     //put the beginning address of a program into PC.
-                    cpu.getPC().setContent("000001000000");
+                    cpu.getPC().setContent("000001000010");
                     cpu.getX1().setContent("0000000001000000");
                     cpu.getX2().setContent("0000000001100000");
                     if(simulator.getState() == Thread.State.NEW) {

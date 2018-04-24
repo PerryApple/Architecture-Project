@@ -58,7 +58,7 @@ public class Tomasulo {
 			//Execute the instructions which operands are ready.
 			String curInstruction = ReOrderBuffer.commit();
 			while(curInstruction != "0000000000000000"){
-				TomasuloThreadControllor.halt();
+				//TomasuloThreadControllor.halt();
 				//Go through all the instructions in Reservation Station
 				i = 1;
 				for(; i < 11 ; i++) {
@@ -77,7 +77,7 @@ public class Tomasulo {
 						}
 					}
 					
-					if(instruction.Qi == 0 && instruction.Qj == 0) {
+					if(instruction.Qi == 0 && instruction.Qj == 0 && !instruction.ex) {
 						//if qi and qj == 0, which means all the operand of that instruction is ready, execute it.
 						//if the instruction is IN, do not execute until it is committing.
 						if(!instruction.opCode.equals("IN") || ReOrderBuffer.commitPointer == i) {
@@ -86,8 +86,8 @@ public class Tomasulo {
 							RegisterFile.refreshResult(i, result);
 							//set execute flag to true
 							ReservationStation.getInstruction(i).ex = true;
-						}	
-					}
+						}
+					}	
 				}
 				
 				//commit instruction, write result back to register or memory
