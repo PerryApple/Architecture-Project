@@ -51,4 +51,8 @@ public class ReservationStation {
 	public static Instruction getInstruction(int index) {
 		return reservationStation.get(index);
 	}
+	
+	public static void clear() {
+		reservationStation.clear();
+	}
 }

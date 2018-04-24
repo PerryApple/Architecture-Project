@@ -4,98 +4,17 @@ import gui.controllers.EngineerConsoleController;
 import gui.controllers.UserInterfaceController;
 
 public class Tomasulo {
+	private boolean flush = false;
+	
 	public void proceedTomasulo() {
+		flush = false;
 		Halt.halt();
 		//proceed start from here
 		//In order to simulate the speculative execution, fetch 10 instructions first into the ROB
 		//Using branch prediction
-		int i = 0;
-		while(i < 10) {
-			//fetch instructions index by PC
-			//Set instruction address in MAR
-			CPU.getInstance().getMAR().setContent(CPU.getInstance().getPC().getContent());
-			CPU.cyclePlusOne();
-			//uses the address in the MAR to fetch a word from cache. This fetch occurs in one cycle.
-            //The word fetched from cache is placed in the Memory Buffer Register (MBR).
-            //if it is a miss, extract from memory and store it in cache
-            Cache.getInstance().cacheToMBR(CPU.getInstance().getMAR().getContent());
-            //Store instruction in ROB
-            ReOrderBuffer.fetchInstruction(CPU.getInstance().getMAR().getContent(), CPU.getInstance().getMBR().getContent());
-            
-            //PC++
-			//Branch prediction
-			/***************************/
-            
-            i++;
-		}
-		
-		
-		//decode those 10 instructions into ReservationStation and renaming the registers
-		i = 1;
-		while(i < 11) {
-			//Instruction decode start here
-            //The contents of the Reorderbuffer are moved to the Instruction Register (IR) sequentially.
-            //IR = ROB[i]
-			CPU.getInstance().getIR().setContent(ReOrderBuffer.getInstruction(i));
-			//Decode the instruction in IR
-            //In 1 cycle  process the instruction and use it to set several flags:
-			CPU.getInstance().getTomasuloDecoder().setInstruction(CPU.getInstance().getIR().getContent());
-			CPU.getInstance().getTomasuloDecoder().decode();
-			ReservationStation.rsPushInstruction(i,ReOrderBuffer.getAddress(i));
-			//Save Register's new name in Register File
-			RegisterFile.reNameRegister(ReservationStation.getInstruction(i).des, i);
-			i++;
-		}
-		
-		
-		//Execute the instructions which operands are ready.
-		String curInstruction = ReOrderBuffer.commit();
-		while(curInstruction != "0000000000000000"){
-			//Go through all the instructions in Reservation Station
-			i = 0;
-			for(; i < 10 ; i++) {
-				ReservationStation.Instruction instruction = ReservationStation.getInstruction(i);
-				//Check Register file to find the replaceable variables;
-				if(instruction.Qi != 0) {
-					if(RegisterFile.getTempResult(instruction.Qi)!="") {
-						instruction.Vi = RegisterFile.getTempResult(instruction.Qi);
-						instruction.Qi = 0;
-					}
-				}
-				if(instruction.Qj != 0) {
-					if(RegisterFile.getTempResult(instruction.Qj)!="") {
-						instruction.Vj = RegisterFile.getTempResult(instruction.Qj);
-						instruction.Qj = 0;
-					}
-				}
-				
-				if(instruction.Qi == 0 && instruction.Qj == 0) {
-					//if qi and qj == 0, which means all the operand of that instruction is ready, execute it.
-					String result = execute(instruction);
-					//save the result in Register file tempResult table.
-					RegisterFile.refreshResult(i, result);
-					//set execute flag to true
-					ReservationStation.getInstruction(i).ex = true;
-				}
-			}
-			
-			//commit instruction, write result back to register or memory
-			//This block of code will only run if the committing instruction is executed successfully.
-			if(ReservationStation.getInstruction(ReOrderBuffer.commitPointer).ex) {
-				writeBackData(ReservationStation.getInstruction(ReOrderBuffer.commitPointer).des,RegisterFile.getTempResult(ReOrderBuffer.commitPointer));
-				//clear corresponding data in two register file table
-				
-				//if the temp name of the destination register of this committed instruction is the index of this instruction. set register name to 0; 
-				if(RegisterFile.getRegisterName(ReservationStation.getInstruction(ReOrderBuffer.commitPointer).des) == ReOrderBuffer.commitPointer) {
-					RegisterFile.reNameRegister(ReservationStation.getInstruction(ReOrderBuffer.commitPointer).des, 0);
-				}
-				
-				//clean the tempResult table
-				if(ReservationStation.getInstruction(ReOrderBuffer.commitPointer).des != "") {
-					RegisterFile.refreshResult(ReOrderBuffer.commitPointer, "");
-				}
-				
-				//fetch a new instruction into reorder buffer:
+		while(!CPU.getInstance().getPC().getContent().equals("000000000000")) {
+			int i = 0;
+			while(i < 10) {
 				//fetch instructions index by PC
 				//Set instruction address in MAR
 				CPU.getInstance().getMAR().setContent(CPU.getInstance().getPC().getContent());
@@ -106,26 +25,135 @@ public class Tomasulo {
 	            Cache.getInstance().cacheToMBR(CPU.getInstance().getMAR().getContent());
 	            //Store instruction in ROB
 	            ReOrderBuffer.fetchInstruction(CPU.getInstance().getMAR().getContent(), CPU.getInstance().getMBR().getContent());
+	            
 	            //PC++
-				//Branch prediction
-				/***************************/
-	            
-	            
-	            //Decode the new Instruction into Reservation Station
+				//Branch prediction, get next instruction address
+				DirectionPredictor.getInstance().predict(CPU.getInstance().getPC().getContent());
+	
+	            i++;
+			}
+			
+			
+			//decode those 10 instructions into ReservationStation and renaming the registers
+			i = 1;
+			while(i < 11) {
+				//Instruction decode start here
 	            //The contents of the Reorderbuffer are moved to the Instruction Register (IR) sequentially.
 	            //IR = ROB[i]
-				CPU.getInstance().getIR().setContent(ReOrderBuffer.getInstruction(ReOrderBuffer.fetchPointer));
+				CPU.getInstance().getIR().setContent(ReOrderBuffer.getInstruction(i));
 				//Decode the instruction in IR
 	            //In 1 cycle  process the instruction and use it to set several flags:
-				CPU.getInstance().getTomasuloDecoder().setInstruction(CPU.getInstance().getIR().getContent());
+				CPU.getInstance().getTomasuloDecoder().setInstruction(ReOrderBuffer.getAddress(i), CPU.getInstance().getIR().getContent());
 				CPU.getInstance().getTomasuloDecoder().decode();
-				ReservationStation.rsPushInstruction(ReOrderBuffer.fetchPointer,ReOrderBuffer.getAddress(ReOrderBuffer.fetchPointer));
+				ReservationStation.rsPushInstruction(i,ReOrderBuffer.getAddress(i));
 				//Save Register's new name in Register File
-				RegisterFile.reNameRegister(ReservationStation.getInstruction(ReOrderBuffer.fetchPointer).des, ReOrderBuffer.fetchPointer);
+				RegisterFile.reNameRegister(ReservationStation.getInstruction(i).des, i);
+				i++;
+			}
+			
+			
+			//Execute the instructions which operands are ready.
+			String curInstruction = ReOrderBuffer.commit();
+			while(curInstruction != "0000000000000000"){
+				//Go through all the instructions in Reservation Station
+				i = 0;
+				for(; i < 10 ; i++) {
+					ReservationStation.Instruction instruction = ReservationStation.getInstruction(i);
+					//Check Register file to find the replaceable variables;
+					if(instruction.Qi != 0) {
+						if(RegisterFile.getTempResult(instruction.Qi)!="") {
+							instruction.Vi = RegisterFile.getTempResult(instruction.Qi);
+							instruction.Qi = 0;
+						}
+					}
+					if(instruction.Qj != 0) {
+						if(RegisterFile.getTempResult(instruction.Qj)!="") {
+							instruction.Vj = RegisterFile.getTempResult(instruction.Qj);
+							instruction.Qj = 0;
+						}
+					}
+					
+					if(instruction.Qi == 0 && instruction.Qj == 0) {
+						//if qi and qj == 0, which means all the operand of that instruction is ready, execute it.
+						String result = execute(instruction);
+						//save the result in Register file tempResult table.
+						RegisterFile.refreshResult(i, result);
+						//set execute flag to true
+						ReservationStation.getInstruction(i).ex = true;
+					}
+				}
 				
-				
-				//commit a new instruction
-	            curInstruction = ReOrderBuffer.commit();
+				//commit instruction, write result back to register or memory
+				//This block of code will only run if the committing instruction is executed successfully.
+				if(ReservationStation.getInstruction(ReOrderBuffer.commitPointer).ex) {
+					//If this is an branch instruction
+					String opCode = ReservationStation.getInstruction(ReOrderBuffer.commitPointer).opCode;
+					boolean result = RegisterFile.getTempResult(ReOrderBuffer.commitPointer).equals("1") ? true : false;
+					switch(opCode) {
+					case "JZ":
+						returnBranchResult(result, ReservationStation.getInstruction(ReOrderBuffer.commitPointer));
+						break;
+					case "JNE":
+						returnBranchResult(result, ReservationStation.getInstruction(ReOrderBuffer.commitPointer));
+						break;
+					case "JMA":
+						returnBranchResult(result, ReservationStation.getInstruction(ReOrderBuffer.commitPointer));
+						break;
+					case "JGE":
+						returnBranchResult(result, ReservationStation.getInstruction(ReOrderBuffer.commitPointer));
+						break;
+					}
+					
+					//if flushed, terminate the while loop and restart.
+					if(flush) {
+						break;
+					}
+					
+					writeBackData(ReservationStation.getInstruction(ReOrderBuffer.commitPointer).des,RegisterFile.getTempResult(ReOrderBuffer.commitPointer));
+					//clear corresponding data in two register file table
+					
+					//if the temp name of the destination register of this committed instruction is the index of this instruction. set register name to 0; 
+					if(RegisterFile.getRegisterName(ReservationStation.getInstruction(ReOrderBuffer.commitPointer).des) == ReOrderBuffer.commitPointer) {
+						RegisterFile.reNameRegister(ReservationStation.getInstruction(ReOrderBuffer.commitPointer).des, 0);
+					}
+					
+					//clean the tempResult table
+					if(ReservationStation.getInstruction(ReOrderBuffer.commitPointer).des != "") {
+						RegisterFile.refreshResult(ReOrderBuffer.commitPointer, "");
+					}
+					
+					//fetch a new instruction into reorder buffer:
+					//fetch instructions index by PC
+					//Set instruction address in MAR
+					CPU.getInstance().getMAR().setContent(CPU.getInstance().getPC().getContent());
+					CPU.cyclePlusOne();
+					//uses the address in the MAR to fetch a word from cache. This fetch occurs in one cycle.
+		            //The word fetched from cache is placed in the Memory Buffer Register (MBR).
+		            //if it is a miss, extract from memory and store it in cache
+		            Cache.getInstance().cacheToMBR(CPU.getInstance().getMAR().getContent());
+		            //Store instruction in ROB
+		            ReOrderBuffer.fetchInstruction(CPU.getInstance().getMAR().getContent(), CPU.getInstance().getMBR().getContent());
+		            
+		            //PC++
+					//Branch prediction
+		            DirectionPredictor.getInstance().predict(CPU.getInstance().getPC().getContent());
+		            
+		            //Decode the new Instruction into Reservation Station
+		            //The contents of the Reorderbuffer are moved to the Instruction Register (IR) sequentially.
+		            //IR = ROB[i]
+					CPU.getInstance().getIR().setContent(ReOrderBuffer.getInstruction(ReOrderBuffer.fetchPointer));
+					//Decode the instruction in IR
+		            //In 1 cycle  process the instruction and use it to set several flags:
+					CPU.getInstance().getTomasuloDecoder().setInstruction(ReOrderBuffer.getAddress(ReOrderBuffer.fetchPointer), CPU.getInstance().getIR().getContent());
+					CPU.getInstance().getTomasuloDecoder().decode();
+					ReservationStation.rsPushInstruction(ReOrderBuffer.fetchPointer,ReOrderBuffer.getAddress(ReOrderBuffer.fetchPointer));
+					//Save Register's new name in Register File
+					RegisterFile.reNameRegister(ReservationStation.getInstruction(ReOrderBuffer.fetchPointer).des, ReOrderBuffer.fetchPointer);
+					
+					
+					//commit a new instruction
+		            curInstruction = ReOrderBuffer.commit();
+				}
 			}
 		}
 	}
@@ -134,6 +162,9 @@ public class Tomasulo {
 		String opCode = instruction.opCode;
 		String result = "opCode Error";
 		switch(opCode){
+			case "HLT":
+				result = "";
+				break;
 			case "LDR":
 				result = LoadAndStore.LDRTom(instruction.Vi);
 				break;
@@ -241,5 +272,59 @@ public class Tomasulo {
 			EngineerConsoleController.setStepInformation("Commit Write Bake Error",false);
 	        UserInterfaceController.setStepInformation("Commit Write Bake Error");
 		}
+	}
+	
+	private void flushInstructions() {
+		//reset PC
+		CPU.getInstance().getPC().setContent(ReOrderBuffer.getAddress(ReOrderBuffer.commitPointer));
+		//set flush flag to restart the fetch of instruction.
+		flush = true;
+		//clear ReOrder Buffer, Register File, Reservation Station
+		ReOrderBuffer.clear();
+		RegisterFile.clear();
+		ReservationStation.clear();
+	}
+	
+	private void returnBranchResult(boolean branchResult, ReservationStation.Instruction instruction) {
+		//See whether the branch prediction is correct or not
+		boolean prediction = DirectionPredictor.getInstance().get(instruction.address);	
+		try {
+			//if correct, keep running
+			if(prediction == branchResult) {
+				//use the result of this jump instruction to modify the Direction Predictor.
+				//Branch taken
+				if(branchResult) {
+					DirectionPredictor.getInstance().addOrUpdate(instruction.address, true);
+				}
+				//Branch not taken
+				else if (!branchResult) {
+					DirectionPredictor.getInstance().addOrUpdate(instruction.address, false);
+				}else {
+					System.out.print("returnBranchResult Error");
+				}
+			}
+			//if not correct
+			else {
+				//use the result of this jump instruction to modify the Direction Predictor.
+				//Branch taken
+				if(branchResult) {
+					DirectionPredictor.getInstance().addOrUpdate(instruction.address, true);
+				}
+				//Branch not taken
+				else if (!branchResult) {
+					DirectionPredictor.getInstance().addOrUpdate(instruction.address, false);
+				}
+				//Otherwise
+				else {
+					System.out.print("returnBranchResult Error");
+				}
+				//Flush all wrong instructions
+				flushInstructions();
+			}
+		}catch(Exception e) {
+			System.out.print(e);
+		}
+		
+		
 	}
 }

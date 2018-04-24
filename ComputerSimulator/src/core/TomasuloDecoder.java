@@ -3,8 +3,8 @@ package core;
 import gui.controllers.EngineerConsoleController;
 
 public class TomasuloDecoder {
+	private String address;
 	private String instruction;
-	private String opClass;
 	private String opCode;
 	private String operand1;
 	private String operand2;
@@ -21,7 +21,14 @@ public class TomasuloDecoder {
 	}
 
 	//get the instruction
-	public void setInstruction(String instruction){
+	public void setInstruction(String address, String instruction){
+		if(address.length() == 12) {
+			this.address = address;
+		}else if (address.length() == 16) {
+			this.address = address.substring(4);
+		}else {
+			this.address = "address error";
+		}
 		if(instruction.length() == 16) {
 			this.instruction=instruction;
 		}else {
@@ -40,7 +47,9 @@ public class TomasuloDecoder {
 			//Miscellaneous Instructions
 			case "000000":
 				opCode = "HLT";
-				opClass = "HLT";
+				operand1 = "";
+				operand2 = "";
+				destination = "";
 				break;
 
 			//Load and Store Instructions
@@ -81,12 +90,16 @@ public class TomasuloDecoder {
 				operand1 = instruction.substring(6,8);
 				operand2 = Addressing.getEffectiveAddressTom(instruction.substring(8,10),instruction.substring(10,11),instruction.substring(11,16));;
 				destination = "";
+				//Store the address and jump target into Branch Target Buffer
+				BranchTargetBuffer.getInstance().add(address, operand2);
 				break;
 			case "001001":
 				opCode = "JNE";
 				operand1 = instruction.substring(6,8);
 				operand2 = Addressing.getEffectiveAddressTom(instruction.substring(8,10),instruction.substring(10,11),instruction.substring(11,16));;
 				destination = "";
+				//Store the address and jump target into Branch Target Buffer
+				BranchTargetBuffer.getInstance().add(address, operand2);
 				break;
 			case "001010":
 				//Reserved!
@@ -94,12 +107,16 @@ public class TomasuloDecoder {
 				operand1 = "";
 				operand2 = "";
 				destination = "";
+				//Store the address and jump target into Branch Target Buffer
+				BranchTargetBuffer.getInstance().add(address, operand2);
 				break;
 			case "001011":
 				opCode = "JMA";
 				operand1 = Addressing.getEffectiveAddressTom(instruction.substring(8,10),instruction.substring(10,11),instruction.substring(11,16));;
 				operand2 = "";
 				destination = "";
+				//Store the address and jump target into Branch Target Buffer
+				BranchTargetBuffer.getInstance().add(address, operand2);
 				break;
 			case "001100":
 				//Reserved!
@@ -107,6 +124,8 @@ public class TomasuloDecoder {
 				operand1 = "";
 				operand2 = "";
 				destination = "11";
+				//Store the address and jump target into Branch Target Buffer
+				BranchTargetBuffer.getInstance().add(address, operand2);
 				break;
 			case "001101":
 				//Reserved!
@@ -114,18 +133,24 @@ public class TomasuloDecoder {
 				operand1 = "";
 				operand2 = "";
 				destination = "";
+				//Store the address and jump target into Branch Target Buffer
+				BranchTargetBuffer.getInstance().add(address, operand2);
 				break;
 			case "001110":
 				opCode = "SOB";
 				operand1 = instruction.substring(6,8);
 				operand2 = Addressing.getEffectiveAddressTom(instruction.substring(8,10),instruction.substring(10,11),instruction.substring(11,16));
 				destination = instruction.substring(6,8);
+				//Store the address and jump target into Branch Target Buffer
+				BranchTargetBuffer.getInstance().add(address, operand2);
 				break;
 			case "001111":
 				opCode = "JGE";
 				operand1 = instruction.substring(6,8);
 				operand2 = Addressing.getEffectiveAddressTom(instruction.substring(8,10),instruction.substring(10,11),instruction.substring(11,16));
 				destination = "";
+				//Store the address and jump target into Branch Target Buffer
+				BranchTargetBuffer.getInstance().add(address, operand2);
 				break;
 
 			//Arithmetic Instructions

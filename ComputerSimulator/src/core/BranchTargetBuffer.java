@@ -17,7 +17,10 @@ public class BranchTargetBuffer {
 
     //add into BTB
     public void add(String address,String target){
-        BTB.put(address,target);
+    		if(!BTB.containsKey(address)) {
+    			//save in BTB
+    			BTB.put(address,target);
+    		}
     }
 
     //search

@@ -15,13 +15,15 @@ public class DirectionPredictor {
     }
 
     //check the previous branch status
-    private int get(String address) {
-        if (predictor.get(address).equals("11") || predictor.get(address).equals("10")) {
-            return 1;
-        } else if (predictor.get(address).equals("01") || predictor.get(address).equals("00")) {
-            return 0;
-        } else
-            return -1;
+    public boolean get(String address) {
+    		if(predictor.containsKey(address)) {
+    			if (predictor.get(address).equals("11") || predictor.get(address).equals("10")) {
+    	            return true;
+    	        } else if (predictor.get(address).equals("01") || predictor.get(address).equals("00")) {
+    	            return false;
+    	        }
+    		}
+    		return false;		
     }
 
     //put the recent status into predictor
@@ -65,20 +67,20 @@ public class DirectionPredictor {
         if (address.substring(0, 3).equals("001")) {
             if (!predictor.containsKey(address)) {
                 //说明是第一次遇到,not taken
-                predictor.put(address, "00");
+                //predictor.put(address, "00");
                 //返回PC++
-                return CPU.getInstance().getALU().add(address, "1");
+                return CPU.getInstance().getALU().add(address, "000000000001");
             } else {
                 //之前遇到过
-                if (get(address) == 1) {
+                if (get(address)) {
                     //taken
                     return BranchTargetBuffer.getInstance().getTarget(address);
-                } else if (get(address) == 0) {
+                } else if (!get(address)) {
                     //not taken
-                    return CPU.getInstance().getALU().add(address, "1");
+                    return CPU.getInstance().getALU().add(address, "000000000001");
                 }
             }
         }
-        return null;
+        return "BP Error";
     }
 }

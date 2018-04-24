@@ -15,7 +15,13 @@ public class RegisterFile {
 		}
 	};
 	
-	private static HashMap<Integer,String> tempResult = new HashMap<> ();
+	private static HashMap<Integer,String> tempResult = new HashMap<> () {
+		{
+			for(int i = 1; i < 11 ; i++) {
+				put(i,"");
+			}
+		}
+	};
 	
 	public static void reNameRegister(String registerName, Integer newName) {
 		registerFile.put(registerName, newName);
@@ -40,5 +46,22 @@ public class RegisterFile {
 	}
 	public static void refreshResult(Integer index, String newValue) {
 		tempResult.put(index, newValue);
+	}
+	
+	public static void clear() {
+		//clear tempResult
+		for(int i = 1 ; i < 11 ; i++) {
+			tempResult.put(i, "");
+		}
+		
+		//clear registerFile
+		registerFile.clear();
+		registerFile.put("00",0);
+		registerFile.put("01",0);
+		registerFile.put("10",0);
+		registerFile.put("11",0);
+		registerFile.put("x01",0);
+		registerFile.put("x10",0);
+		registerFile.put("x11",0);
 	}
 }

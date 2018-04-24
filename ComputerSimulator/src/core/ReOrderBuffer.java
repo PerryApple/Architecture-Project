@@ -42,4 +42,10 @@ public class ReOrderBuffer {
 		String committedInstruction = reOrderBuffer.get(commitPointer).instruction;
 		return committedInstruction;
 	}
+	
+	public static void clear() {
+		reOrderBuffer.clear();
+		fetchPointer = 1;
+		commitPointer = 0;
+	}
 }
