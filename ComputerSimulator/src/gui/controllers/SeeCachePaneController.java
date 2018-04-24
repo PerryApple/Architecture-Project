@@ -30,7 +30,6 @@ public class SeeCachePaneController implements Controller {
     @Override
     public void initialise() {
         updateCache();
-
     }
 
     public void updateCache(){

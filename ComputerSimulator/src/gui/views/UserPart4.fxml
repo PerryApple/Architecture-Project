@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.control.cell.TextFieldListCell?>
+<?import java.net.URL?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="gui.controllers.UserPart4Controller"
+      spacing="10" styleClass="root">
+    <HBox spacing="10">
+        <Label text="PC" styleClass="betterFont" />
+        <TextField fx:id="PC" maxWidth="140"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Button fx:id="Refresh" onAction="#Refresh" text="Refresh"/>
+    </HBox>
+    <HBox spacing="20">
+        <VBox styleClass="BranchPredictor" spacing="10">
+            <Label text="Branch Predictor" alignment="BASELINE_CENTER" styleClass="betterFont"/>
+            <TableView fx:id="BranchPredictorView" maxHeight="283" maxWidth="157">
+                <columns>
+                    <TableColumn fx:id="Address" text="Address">
+                    </TableColumn>
+                    <TableColumn fx:id="BP" text="BP">
+                    </TableColumn>
+                </columns>
+            </TableView>
+            <Label text="Branch Target Buffer" styleClass="betterFont"/>
+            <TableView fx:id="BranchTargetBufferView" >
+                <columns>
+                    <TableColumn fx:id="Address2" text="Address">
+                    </TableColumn>
+                    <TableColumn fx:id="TargetAddress" text="Target Address">
+                    </TableColumn>
+                </columns>
+            </TableView>
+        </VBox>
+        <VBox prefWidth="700" spacing="10">
+            <Label text="Re-order Buffer" styleClass="betterFont"/>
+            <TableView fx:id="ReorderBufferView" maxHeight="285" prefWidth="325">
+                <columns>
+                    <TableColumn fx:id="Index" text="Index">
+                    </TableColumn>
+                    <TableColumn fx:id="Address1" text="Address">
+                    </TableColumn>
+                    <TableColumn fx:id="Instruction" text="Instruction">
+                    </TableColumn>
+                </columns>
+            </TableView>
+            <Label text="Reservation Station" styleClass="betterFont"/>
+            <TableView fx:id="ReservationStationView" >
+                <columns>
+                    <TableColumn fx:id="Index1" text="Index">
+                    </TableColumn>
+                    <TableColumn fx:id="OpCode" text="OpCode">
+                    </TableColumn>
+                    <TableColumn fx:id="Qi" text="Qi">
+                    </TableColumn>
+                    <TableColumn fx:id="Vi" text="Vi">
+                    </TableColumn>
+                    <TableColumn fx:id="Qj" text="Qj">
+                    </TableColumn>
+                    <TableColumn fx:id="Vj" text="Vj">
+                    </TableColumn>
+                    <TableColumn fx:id="des" text="des">
+                    </TableColumn>
+                    <TableColumn fx:id="ex" text="ex">
+                    </TableColumn>
+                </columns>
+            </TableView>
+        </VBox>
+        <VBox spacing="10">
+            <Label text="Register File" styleClass="betterFont" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <TableView fx:id="T1View" GridPane.columnIndex="0" GridPane.rowIndex="1" prefHeight="300">
+                <columns>
+                    <TableColumn fx:id="Register" text="Register">
+                    </TableColumn>
+                    <TableColumn fx:id="Content" text="Content">
+                    </TableColumn>
+                </columns>
+            </TableView>
+            <Label text="   "/>
+            <TableView fx:id="T2View" GridPane.columnIndex="1" GridPane.rowIndex="1" prefHeight="300">
+                <columns>
+                    <TableColumn fx:id="Register1" text="Register">
+                    </TableColumn>
+                    <TableColumn fx:id="Content1" text="Content">
+                    </TableColumn>
+                </columns>
+            </TableView>
+        </VBox>
+    </HBox>
+    <stylesheets>
+        <URL value="@../css/Global.css"/>
+        <URL value="@../css/UserPart4.css"/>
+    </stylesheets>
+</VBox>

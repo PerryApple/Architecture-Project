@@ -4,9 +4,9 @@ public class MAR implements Register {
 
 	private static final String name = "MAR";
 	//Size of MAR is 16bits.
-	private static final int size = 16;
+	private static final int size = 12;
 	//Initially set the content to 16 zeroes.
-	private String content = "0000000000000000";
+	private String content = "000000000000";
 	//Our computer has only one MAR register
 	private static final MAR instance = new MAR();
 	

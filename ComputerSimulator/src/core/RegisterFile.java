@@ -64,4 +64,11 @@ public class RegisterFile {
 		registerFile.put("x10",0);
 		registerFile.put("x11",0);
 	}
+	
+	public static HashMap getRegisterFileContent(){
+		return registerFile;
+	}
+	public static HashMap getTempResultContent(){
+		return tempResult;
+	}
 }

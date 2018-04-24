@@ -13,12 +13,12 @@ public class ReOrderBuffer {
 	}
 	
 	private static HashMap<Integer, Instruction> reOrderBuffer = new HashMap<Integer, Instruction>();
-	public static int fetchPointer = 1;
+	public static int fetchPointer = 0;
 	public static int commitPointer = 0;
 
 	public static void fetchInstruction(String address, String instruction) {
+		fetchPointer = fetchPointer == 10 ? 1 : fetchPointer+1;
 		reOrderBuffer.put(fetchPointer, new Instruction(address,instruction));
-		fetchPointer = fetchPointer == 10 ? 1 : fetchPointer++;
 	}
 	
 	public static String getInstruction(int index) {
@@ -38,14 +38,18 @@ public class ReOrderBuffer {
 	}
 	
 	public static String commit() {
-		commitPointer = commitPointer == 10 ? 1 : commitPointer++; 
+		commitPointer = commitPointer == 10 ? 1 : commitPointer+1; 
 		String committedInstruction = reOrderBuffer.get(commitPointer).instruction;
 		return committedInstruction;
 	}
 	
 	public static void clear() {
 		reOrderBuffer.clear();
-		fetchPointer = 1;
+		fetchPointer = 0;
 		commitPointer = 0;
+	}
+	
+	public static HashMap getContent() {
+		return  reOrderBuffer;
 	}
 }

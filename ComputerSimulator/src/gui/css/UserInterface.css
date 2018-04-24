@@ -3,8 +3,6 @@
     -fx-background-insets: 0, 1, 2;
     -fx-background-radius: 5, 4, 3;
     -fx-padding: 20;
-    -fx-pref-width: 650;
-    -fx-pref-height: 550;
     -fx-background-image: url(../images/userInterface.jpg);
     -fx-background-size: cover;
 }

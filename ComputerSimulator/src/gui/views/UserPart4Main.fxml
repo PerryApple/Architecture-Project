@@ -13,9 +13,9 @@
 <?import java.net.URL?>
 
 <VBox xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="gui.controllers.UserInterfaceController"
-             spacing="10" styleClass="root">
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="gui.controllers.UserPart4MainController"
+      spacing="10" styleClass="root">
     <VBox styleClass="box" spacing="15">
         <HBox>
             <Label text="Printer:" styleClass="betterFont"/>
@@ -35,9 +35,9 @@
         <Button text=" Load P1 " onAction="#loadP1" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
         <Button text=" Load P2 " onAction="#loadP2" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
         <Button text="P2 Paragraph" onAction="#p2Paragraph" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
-        <!--<Button text="Run" onAction="#Run" GridPane.rowIndex="0" GridPane.columnIndex="3"/>-->
-        <!--<Button text="Part4" onAction="#Part4" GridPane.rowIndex="1" GridPane.columnIndex="3"/>-->
-        <Button fx:id="runButton" text="    Run   " onAction="#Run" GridPane.rowIndex="0" GridPane.columnIndex="3" GridPane.rowSpan="2"/>
+        <Button text="Run" onAction="#Run" GridPane.rowIndex="0" GridPane.columnIndex="3"/>
+        <Button text="Part4" onAction="#Part4" GridPane.rowIndex="1" GridPane.columnIndex="3"/>
+        <!--<Button fx:id="runButton" text="    Run   " onAction="#Run" GridPane.rowIndex="0" GridPane.columnIndex="3" GridPane.rowSpan="2"/>-->
         <Button text="   Memory  " onAction="#seeMemory" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
         <Button text="    Cache    " onAction="#seeCache" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
         <Button text="  Registers  " onAction="#seeRegisters" GridPane.rowIndex="1" GridPane.columnIndex="2"/>

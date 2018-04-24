@@ -26,7 +26,7 @@ public class Main extends Application {
         root.setCenter(mainPane);
 
         primaryStage.setTitle("SIMULATED COMPUTER");
-        primaryStage.setScene(new Scene(root, 380, 500));
+        primaryStage.setScene(new Scene(root, 380, 600));
         primaryStage.show();
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override

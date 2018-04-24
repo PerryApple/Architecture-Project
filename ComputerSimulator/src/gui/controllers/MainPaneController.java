@@ -29,6 +29,20 @@ public class MainPaneController implements Controller {
         stage.show();
     }
 
+    public void viewUserPart4() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader()
+                .getResource("gui/views/UserPart4Main.fxml"));
+        Pane userPart4Main = loader.load();
+        Controller controller = loader.getController();
+        controller.initialise();
+        Stage stage = new Stage();
+
+        stage.setTitle("User Part4 Main");
+        stage.setScene(new Scene(userPart4Main));
+        stage.setResizable(false);
+        stage.show();
+    }
+
     public void viewEngineerConsole() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader()
                 .getResource("gui/views/EngineerConsolePane.fxml"));

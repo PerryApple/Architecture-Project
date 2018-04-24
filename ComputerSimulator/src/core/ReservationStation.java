@@ -40,11 +40,13 @@ public class ReservationStation {
 		instruction.Vj = vj;
 		instruction.des = des;
 	}
+	
+	//
 	public static void rsPushInstruction(Integer index, String address) {
-		instruction.address = address;
-		reservationStation.put(index, instruction);
-		if(instruction.des != "") {
-			RegisterFile.reNameRegister(instruction.des, index);
+		Instruction newInstruction = new Instruction(address, instruction.opCode, instruction.Qi, instruction.Vi, instruction.Qj, instruction.Vj, instruction.des);
+		reservationStation.put(index, newInstruction);
+		if(newInstruction.des != "") {
+			RegisterFile.reNameRegister(newInstruction.des, index);
 		}
 	}
 	
@@ -54,5 +56,9 @@ public class ReservationStation {
 	
 	public static void clear() {
 		reservationStation.clear();
+	}
+	
+	public static HashMap getContent() {
+		return reservationStation;
 	}
 }

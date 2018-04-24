@@ -116,7 +116,7 @@ public class TomasuloDecoder {
 				operand2 = "";
 				destination = "";
 				//Store the address and jump target into Branch Target Buffer
-				BranchTargetBuffer.getInstance().add(address, operand2);
+				BranchTargetBuffer.getInstance().add(address, operand1);
 				break;
 			case "001100":
 				//Reserved!
@@ -288,7 +288,7 @@ public class TomasuloDecoder {
 		}else {
 			if(RegisterFile.getRegisterName(operand2) == 0) {
 				qj = 0;
-				vj = operand1;
+				vj = operand2;
 			}else {
 				qj = RegisterFile.getRegisterName(operand2);
 				vj = "";

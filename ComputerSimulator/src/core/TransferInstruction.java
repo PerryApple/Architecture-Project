@@ -144,7 +144,7 @@ public class TransferInstruction  extends ISA{
     	        		return "0";
     	        }
     		}else if(operand.length() == 16){
-    			if(operand.equals("0000000000000000")){
+    			if(!operand.equals("0000000000000000")){
     	            CPU.cyclePlusOne();
     	            return "1";
     	        }else {

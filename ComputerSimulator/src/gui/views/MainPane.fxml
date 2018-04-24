@@ -23,6 +23,7 @@
     </ImageView>
     <Label text="Computer Simulator"  styleClass="mainTitle"/>
     <Button onAction="#viewUserInterface" text="Simple User Interface"/>
+    <Button onAction="#viewUserPart4" text="User Part4"/>
     <Button onAction="#viewEngineerConsole" text="    Engineer Console   " />
     <Label text="\@copyright 2018 Group 6" styleClass="copyRight"/>
 

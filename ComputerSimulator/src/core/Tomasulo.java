@@ -4,17 +4,19 @@ import gui.controllers.EngineerConsoleController;
 import gui.controllers.UserInterfaceController;
 
 public class Tomasulo {
-	private boolean flush = false;
 	
-	public void proceedTomasulo() {
-		flush = false;
-		Halt.halt();
+	private static boolean flush = false;
+	
+	public static void proceedTomasulo() {
+		TomasuloThreadControllor.halt();
 		//proceed start from here
 		//In order to simulate the speculative execution, fetch 10 instructions first into the ROB
 		//Using branch prediction
 		while(!CPU.getInstance().getPC().getContent().equals("000000000000")) {
-			int i = 0;
-			while(i < 10) {
+			flush = false;
+			int i = 1;
+			while(i < 11) {
+				
 				//fetch instructions index by PC
 				//Set instruction address in MAR
 				CPU.getInstance().getMAR().setContent(CPU.getInstance().getPC().getContent());
@@ -25,11 +27,13 @@ public class Tomasulo {
 	            Cache.getInstance().cacheToMBR(CPU.getInstance().getMAR().getContent());
 	            //Store instruction in ROB
 	            ReOrderBuffer.fetchInstruction(CPU.getInstance().getMAR().getContent(), CPU.getInstance().getMBR().getContent());
+
+				//Branch prediction, get next instruction address
+				String nextPC = DirectionPredictor.getInstance().predict(CPU.getInstance().getPC().getContent());
 	            
 	            //PC++
-				//Branch prediction, get next instruction address
-				DirectionPredictor.getInstance().predict(CPU.getInstance().getPC().getContent());
-	
+				CPU.getInstance().getPC().setContent(nextPC);
+				
 	            i++;
 			}
 			
@@ -51,13 +55,13 @@ public class Tomasulo {
 				i++;
 			}
 			
-			
 			//Execute the instructions which operands are ready.
 			String curInstruction = ReOrderBuffer.commit();
 			while(curInstruction != "0000000000000000"){
+				TomasuloThreadControllor.halt();
 				//Go through all the instructions in Reservation Station
-				i = 0;
-				for(; i < 10 ; i++) {
+				i = 1;
+				for(; i < 11 ; i++) {
 					ReservationStation.Instruction instruction = ReservationStation.getInstruction(i);
 					//Check Register file to find the replaceable variables;
 					if(instruction.Qi != 0) {
@@ -75,11 +79,14 @@ public class Tomasulo {
 					
 					if(instruction.Qi == 0 && instruction.Qj == 0) {
 						//if qi and qj == 0, which means all the operand of that instruction is ready, execute it.
-						String result = execute(instruction);
-						//save the result in Register file tempResult table.
-						RegisterFile.refreshResult(i, result);
-						//set execute flag to true
-						ReservationStation.getInstruction(i).ex = true;
+						//if the instruction is IN, do not execute until it is committing.
+						if(!instruction.opCode.equals("IN") || ReOrderBuffer.commitPointer == i) {
+							String result = execute(instruction);
+							//save the result in Register file tempResult table.
+							RegisterFile.refreshResult(i, result);
+							//set execute flag to true
+							ReservationStation.getInstruction(i).ex = true;
+						}	
 					}
 				}
 				
@@ -130,13 +137,15 @@ public class Tomasulo {
 					//uses the address in the MAR to fetch a word from cache. This fetch occurs in one cycle.
 		            //The word fetched from cache is placed in the Memory Buffer Register (MBR).
 		            //if it is a miss, extract from memory and store it in cache
-		            Cache.getInstance().cacheToMBR(CPU.getInstance().getMAR().getContent());
+					Cache.getInstance().cacheToMBR(CPU.getInstance().getMAR().getContent());
 		            //Store instruction in ROB
-		            ReOrderBuffer.fetchInstruction(CPU.getInstance().getMAR().getContent(), CPU.getInstance().getMBR().getContent());
+					ReOrderBuffer.fetchInstruction(CPU.getInstance().getMAR().getContent(), CPU.getInstance().getMBR().getContent());
+		            
+		            //Branch prediction, get next instruction address
+					String nextPC = DirectionPredictor.getInstance().predict(CPU.getInstance().getPC().getContent());
 		            
 		            //PC++
-					//Branch prediction
-		            DirectionPredictor.getInstance().predict(CPU.getInstance().getPC().getContent());
+					CPU.getInstance().getPC().setContent(nextPC);
 		            
 		            //Decode the new Instruction into Reservation Station
 		            //The contents of the Reorderbuffer are moved to the Instruction Register (IR) sequentially.
@@ -158,7 +167,7 @@ public class Tomasulo {
 		}
 	}
 	
-	private String execute(ReservationStation.Instruction instruction) {
+	private static String execute(ReservationStation.Instruction instruction) {
 		String opCode = instruction.opCode;
 		String result = "opCode Error";
 		switch(opCode){
@@ -217,7 +226,7 @@ public class Tomasulo {
 	}
 	
 	//Write back data
-	private void writeBackData(String destination, String data) {
+	private static void writeBackData(String destination, String data) {
 		
 		CPU.cyclePlusOne();
 		//Instruction has no destination
@@ -274,7 +283,7 @@ public class Tomasulo {
 		}
 	}
 	
-	private void flushInstructions() {
+	private static void flushInstructions() {
 		//reset PC
 		CPU.getInstance().getPC().setContent(ReOrderBuffer.getAddress(ReOrderBuffer.commitPointer));
 		//set flush flag to restart the fetch of instruction.
@@ -285,7 +294,7 @@ public class Tomasulo {
 		ReservationStation.clear();
 	}
 	
-	private void returnBranchResult(boolean branchResult, ReservationStation.Instruction instruction) {
+	private static void returnBranchResult(boolean branchResult, ReservationStation.Instruction instruction) {
 		//See whether the branch prediction is correct or not
 		boolean prediction = DirectionPredictor.getInstance().get(instruction.address);	
 		try {
